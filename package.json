@@ -1,0 +1,42 @@
+{
+  "name": "ut-port-swagger",
+  "version": "0.1.0",
+  "description": "UT Port Swagger",
+  "main": "index.js",
+  "scripts": {
+    "lint": "ut-lint .",
+    "release": "ut-release",
+    "changelog": "ut-changelog",
+    "check": "ut-check",
+    "cover": "ut-cover",
+    "precover": "ut-precover",
+    "lint-js": "ut-lint-js .",
+    "postpublish": "ut-postpublish",
+    "postversion": "ut-postversion",
+    "precommit": "ut-precommit",
+    "prepublish": "ut-prepublish",
+    "prepush": "ut-prepush",
+    "pretest": "ut-pretest",
+    "preversion": "ut-preversion",
+    "test": "ut-test",
+    "version": "ut-version",
+    "jenkins": "ut-jenkins",
+    "gitlab": "ut-gitlab"
+  },
+  "keywords": [
+    "swagger"
+  ],
+  "devDependencies": {
+    "ut-tools": "^5.32.10"
+  },
+  "dependencies": {
+    "swagger-parser": "^4.1.0",
+    "swagger2-koa": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:stambata/ut-port-swagger.git"
+  },
+  "author": "Stamen Peev",
+  "license": "ISC"
+}
