@@ -13,6 +13,7 @@ module.exports = (params = {}) => {
                 pathRoot: '/docs',
                 skipPaths: [],
                 definitionPath: ''
+                // port, host, path, backlog, exclusive (as per: https://nodejs.org/api/net.html#net_server_listen_options_callback)
             }, params.config);
             Object.assign(this.errors, errorsFactory(this.bus));
         }
@@ -61,7 +62,6 @@ module.exports = (params = {}) => {
                     });
                 });
             });
-            const host = swaggerDocument.host.split(':');
             const app = swaggerRouter.app();
             app.middleware.unshift(async (ctx, next) => {
                 await next();
@@ -72,14 +72,13 @@ module.exports = (params = {}) => {
                     }
                 }
             });
+            let {port, host, path, backlog, exclusive} = this.config;
             this.server = app
                 .use(swagger2Koa.ui(swaggerDocument, this.config.pathRoot, this.config.skipPaths))
-                .listen({
-                    host: host[0],
-                    port: host[1]
-                });
+                .listen({port, host, path, backlog, exclusive});
             this.log.info && this.log.info({
                 message: 'Swagger port started',
+                address: this.server.address(),
                 $meta: {
                     mtid: 'event',
                     opcode: 'port.started'
