@@ -7,13 +7,18 @@ module.exports = (params = {}) => {
         constructor(params = {}) {
             super(params);
             this.config = this.merge({
+                // UT specific configuration
                 id: 'swagger',
                 type: 'swagger',
                 logLevel: 'debug',
+                // swagger2-koa specific options
+                // https://github.com/carlansley/swagger2-koa#uidocument-pathroot---skippaths----koa2-middleware
+                definitionPath: '', // absolute path to the swagger document
                 pathRoot: '/docs',
-                skipPaths: [],
-                definitionPath: ''
-                // port, host, path, backlog, exclusive (as per: https://nodejs.org/api/net.html#net_server_listen_options_callback)
+                skipPaths: []
+                // http server connection options
+                // https://nodejs.org/api/net.html#net_server_listen_options_callback
+                // port, host, path, backlog, exclusive
             }, params.config);
             Object.assign(this.errors, errorsFactory(this.bus));
         }
