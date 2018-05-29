@@ -41,7 +41,6 @@ module.exports = (params = {}) => {
             paths.forEach(path => {
                 Object.keys(swaggerDocument.paths[path]).forEach(method => {
                     const busMethod = this.bus.importMethod(swaggerDocument.paths[path][method]['x-method']);
-                    // "x-swagger-router-controller": "Weather"
                     swaggerRouter[method](path, async (ctx, next) => {
                         const {params, query} = ctx;
                         const {body} = ctx.request;
