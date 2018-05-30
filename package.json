@@ -30,13 +30,12 @@
     "ut-tools": "^5.32.10"
   },
   "dependencies": {
-    "swagger-parser": "^4.1.0",
-    "swagger2-koa": "^1.0.0"
+    "swagger-parser": "^5.0.0",
+    "swagger2-koa": "^1.0.1"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:stambata/ut-port-swagger.git"
+    "url": "git@github.com:softwaregroup-bg/ut-port-swagger.git"
   },
-  "author": "Stamen Peev",
-  "license": "ISC"
+  "license": "Apache-2.0"
 }
