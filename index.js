@@ -1,3 +1,4 @@
+'use strict';
 const swagger2Koa = require('swagger2-koa');
 const swaggerParser = require('swagger-parser');
 const errorsFactory = require('./errorsFactory');
