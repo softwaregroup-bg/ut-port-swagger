@@ -1,3 +1,13 @@
+<a name="0.2.1"></a>
+## [0.2.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v0.2.0...v0.2.1) (2018-05-31)
+
+
+### Bug Fixes
+
+* use uuid module and fix port start log message ([b2b30f7](https://github.com/softwaregroup-bg/ut-port-swagger/commit/b2b30f7))
+
+
+
 <a name="0.2.0"></a>
 # 0.2.0 (2018-05-30)
 
