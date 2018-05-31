@@ -2,7 +2,7 @@
 const swagger2Koa = require('swagger2-koa');
 const swaggerParser = require('swagger-parser');
 const errorsFactory = require('./errorsFactory');
-const utils = require('./utils');
+const uuid = require('uuid');
 module.exports = (params = {}) => {
     const Port = params.parent;
     class SwaggerPort extends Port {
@@ -43,7 +43,7 @@ module.exports = (params = {}) => {
                     swaggerRouter[method](path, async (ctx, next) => {
                         const {params, query} = ctx;
                         const {body} = ctx.request;
-                        const trace = utils.uuid.v4();
+                        const trace = uuid.v4();
                         if (this.log.trace) {
                             this.log.trace({$meta: {mtid: 'request', trace}, body, params, query});
                         }
@@ -98,10 +98,10 @@ module.exports = (params = {}) => {
             this.log.info && this.log.info({
                 message: 'Swagger port started',
                 address: this.server.address(),
+                paths: paths.sort(),
                 $meta: {
                     mtid: 'event',
-                    opcode: 'port.started',
-                    paths: paths.sort()
+                    opcode: 'port.started'
                 }
             });
         }
