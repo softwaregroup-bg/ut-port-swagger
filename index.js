@@ -48,9 +48,9 @@ module.exports = (params = {}) => {
             app.use(middleware.formParser());
             app.use(middleware.bodyParser());
             app.use(middleware.validator(this, swaggerDocument));
+            app.use(middleware.swaggerUI(this, swaggerDocument));
             app.use(router.routes());
             app.use(router.allowedMethods());
-            app.use(middleware.ui(swaggerDocument, this.config.pathRoot, this.config.skipPaths));
             let {port, host, path, backlog, exclusive, readableAll, writableAll} = this.config;
             this.server = app.listen({port, host, path, backlog, exclusive, readableAll, writableAll});
             this.log.info && this.log.info({

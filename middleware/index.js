@@ -3,6 +3,6 @@ module.exports = {
     cors: require('./cors'),
     formParser: require('./formParser'),
     requestHandler: require('./requestHandler'),
-    ui: require('./ui'),
+    swaggerUI: require('./swaggerUI'),
     validator: require('./validator')
 };
