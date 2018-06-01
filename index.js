@@ -1,8 +1,10 @@
 'use strict';
-const swagger2Koa = require('swagger2-koa');
-const swaggerParser = require('swagger-parser');
 const errorsFactory = require('./errorsFactory');
-const uuid = require('uuid');
+const swaggerParser = require('swagger-parser');
+const Koa = require('koa');
+const koaRouter = require('koa-router');
+const middleware = require('./middleware');
+
 module.exports = (params = {}) => {
     const Port = params.parent;
     class SwaggerPort extends Port {
@@ -13,9 +15,8 @@ module.exports = (params = {}) => {
                 id: 'swagger',
                 type: 'swagger',
                 logLevel: 'debug',
-                // swagger2-koa specific options
-                // https://github.com/carlansley/swagger2-koa#uidocument-pathroot---skippaths----koa2-middleware
                 definitionPath: '', // absolute path to the swagger document
+                // swagger ui options
                 pathRoot: '/docs',
                 skipPaths: []
                 // http server connection options
@@ -30,75 +31,31 @@ module.exports = (params = {}) => {
         }
 
         async start() {
-            this.context = {requests: {}};
-            this.stream = this.pull(false, this.context);
+            this.stream = this.pull(false, { requests: {} });
             await super.start();
             const swaggerDocument = await swaggerParser.bundle(this.config.definitionPath);
             await swaggerParser.validate(swaggerDocument);
-            const swaggerRouter = swagger2Koa.router(swaggerDocument);
-            const paths = Object.keys(swaggerDocument.paths);
-            paths.forEach(path => {
-                Object.keys(swaggerDocument.paths[path]).forEach(method => {
-                    const methodName = swaggerDocument.paths[path][method]['x-bus-method'];
-                    swaggerRouter[method](path, async (ctx, next) => {
-                        const {params, query} = ctx;
-                        const {body} = ctx.request;
-                        const trace = uuid.v4();
-                        if (this.log.trace) {
-                            this.log.trace({$meta: {mtid: 'request', trace}, body, params, query});
-                        }
-                        return new Promise(resolve => {
-                            const msg = Object.assign({}, body, params, query);
-                            const $meta = {
-                                trace,
-                                mtid: 'request',
-                                method: methodName,
-                                reply: (response, $responseMeta) => {
-                                    switch ($responseMeta.mtid) {
-                                        case 'response':
-                                            ctx.body = response;
-                                            ctx.status = 200;
-                                            break;
-                                        case 'error':
-                                            ctx.status = (response.details && response.details.statusCode) || 400;
-                                            ctx.body = {
-                                                error: response
-                                            };
-                                            break;
-                                        default:
-                                            ctx.status = 400;
-                                            ctx.body = {
-                                                error: this.errors.swagger({cause: response})
-                                            };
-                                            break;
-                                    }
-                                    return resolve(next());
-                                }
-                            };
-                            this.stream.push([msg, $meta]);
-                        });
-                    });
+            const router = koaRouter();
+            Object.keys(swaggerDocument.paths).forEach(path => {
+                const fullPath = [swaggerDocument.basePath, path].filter(x => x).join('');
+                const collection = swaggerDocument.paths[path];
+                Object.keys(collection).forEach(method => {
+                    router[method](fullPath, middleware.requestHandler(this, collection[method]['x-bus-method']));
                 });
             });
-            const app = swaggerRouter.app();
-            app.middleware.unshift(async (ctx, next) => {
-                await next();
-                if (ctx.status < 200 || ctx.status >= 300) {
-                    if (!ctx.body || !ctx.body.error || !ctx.body.error.type) {
-                        ctx.status = 400;
-                        ctx.body = this.errors.swagger({cause: ctx.body});
-                    }
-                }
-            });
+            const app = new Koa();
+            app.use(middleware.cors());
+            app.use(middleware.formParser());
+            app.use(middleware.bodyParser());
+            app.use(middleware.validator(this, swaggerDocument));
+            app.use(middleware.swaggerUI(this, swaggerDocument));
+            app.use(router.routes());
+            app.use(router.allowedMethods());
             let {port, host, path, backlog, exclusive, readableAll, writableAll} = this.config;
-            this.server = app
-                .use(swagger2Koa.ui(swaggerDocument, this.config.pathRoot, this.config.skipPaths))
-                .listen({port, host, path, backlog, exclusive, readableAll, writableAll});
-
+            this.server = app.listen({port, host, path, backlog, exclusive, readableAll, writableAll});
             this.log.info && this.log.info({
                 message: 'Swagger port started',
                 address: this.server.address(),
-                paths: paths.sort(),
                 $meta: {
                     mtid: 'event',
                     opcode: 'port.started'

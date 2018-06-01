@@ -30,8 +30,15 @@
     "ut-tools": "^5.32.10"
   },
   "dependencies": {
+    "koa": "^2.5.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-cors": "0.0.16",
+    "koa-router": "^7.4.0",
+    "koa-send": "^4.1.3",
+    "koa2-formidable": "^1.0.2",
     "swagger-parser": "^5.0.0",
-    "swagger2-koa": "^1.0.1",
+    "swagger-ui-dist": "^3.16.0",
+    "swagger2": "^1.0.1",
     "uuid": "^3.2.1"
   },
   "repository": {
