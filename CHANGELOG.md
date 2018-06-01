@@ -1,3 +1,21 @@
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v0.2.1...v0.3.0) (2018-06-01)
+
+
+### Bug Fixes
+
+* improve code structure ([a7ee4f1](https://github.com/softwaregroup-bg/ut-port-swagger/commit/a7ee4f1))
+* improve errors ([2b344eb](https://github.com/softwaregroup-bg/ut-port-swagger/commit/2b344eb))
+* refactor ([382c287](https://github.com/softwaregroup-bg/ut-port-swagger/commit/382c287))
+* remove unused file ([2ea523c](https://github.com/softwaregroup-bg/ut-port-swagger/commit/2ea523c))
+
+
+### Features
+
+* use swagger2 instead of swagger2-koa ([a88442f](https://github.com/softwaregroup-bg/ut-port-swagger/commit/a88442f))
+
+
+
 <a name="0.2.1"></a>
 ## [0.2.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v0.2.0...v0.2.1) (2018-05-31)
 
