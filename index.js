@@ -1,14 +1,9 @@
 'use strict';
 const errorsFactory = require('./errorsFactory');
-const uuid = require('uuid');
 const swaggerParser = require('swagger-parser');
-const swagger2 = require('swagger2');
 const Koa = require('koa');
-const koaCors = require('koa-cors');
-const koaFormidable = require('koa2-formidable');
-const koaBodyparser = require('koa-bodyparser');
 const koaRouter = require('koa-router');
-const ui = require('./ui');
+const middleware = require('./middleware');
 
 module.exports = (params = {}) => {
     const Port = params.parent;
@@ -36,130 +31,31 @@ module.exports = (params = {}) => {
         }
 
         async start() {
-            this.ctx = {
-                requests: {}
-            };
-            this.stream = this.pull(false, this.ctx);
+            this.stream = this.pull(false, { requests: {} });
             await super.start();
-
             const swaggerDocument = await swaggerParser.bundle(this.config.definitionPath);
             await swaggerParser.validate(swaggerDocument);
-            const paths = Object.keys(swaggerDocument.paths);
-
             const router = koaRouter();
-            paths.forEach(path => {
+            Object.keys(swaggerDocument.paths).forEach(path => {
                 const fullPath = [swaggerDocument.basePath, path].filter(x => x).join('');
                 const collection = swaggerDocument.paths[path];
                 Object.keys(collection).forEach(method => {
-                    const spec = collection[method];
-                    const methodName = spec['x-bus-method'];
-                    router[method](fullPath, async (ctx, next) => {
-                        const {
-                            params,
-                            query
-                        } = ctx;
-                        const {
-                            body
-                        } = ctx.request;
-                        const trace = uuid.v4();
-                        if (this.log.trace) {
-                            this.log.trace({
-                                $meta: {
-                                    mtid: 'request',
-                                    trace
-                                },
-                                body,
-                                params,
-                                query
-                            });
-                        }
-                        return new Promise(resolve => {
-                            const msg = Object.assign({}, body, params, query);
-                            const $meta = {
-                                trace,
-                                mtid: 'request',
-                                method: methodName,
-                                reply: (response, $responseMeta) => {
-                                    switch ($responseMeta.mtid) {
-                                        case 'response':
-                                            ctx.body = response;
-                                            ctx.status = 200;
-                                            break;
-                                        case 'error':
-                                            ctx.status = (response.details && response.details.statusCode) || 400;
-                                            ctx.body = {
-                                                error: response
-                                            };
-                                            break;
-                                        default:
-                                            ctx.status = 400;
-                                            ctx.body = {
-                                                error: this.errors.swagger({
-                                                    cause: response
-                                                })
-                                            };
-                                            break;
-                                    }
-                                    return resolve(next());
-                                }
-                            };
-                            this.stream.push([msg, $meta]);
-                        });
-                    });
+                    router[method](fullPath, middleware.requestHandler(this, collection[method]['x-bus-method']));
                 });
             });
             const app = new Koa();
-            app.use(koaCors());
-            app.use(koaFormidable());
-            app.use(koaBodyparser());
-            const compiled = swagger2.compileDocument(swaggerDocument);
-            app.use(async (ctx, next) => {
-                if (!ctx.path.startsWith(swaggerDocument.basePath)) {
-                    return next();
-                }
-                let compiledPath = compiled(ctx.path);
-                if (compiledPath === undefined) {
-                    // if there is no single matching path, return 404 (not found)
-                    ctx.status = 404;
-                    return;
-                }
-                let errors = swagger2.validateRequest(compiledPath, ctx.method, ctx.request.query, ctx.request.body);
-                if (errors === undefined) {
-                    // operation not defined, return 405 (method not allowed)
-                    ctx.status = 405;
-                    return;
-                }
-
-                if (errors.length > 0) {
-                    ctx.status = 400;
-                    ctx.body = this.errors['swagger.requestValidation']({errors});
-                    return;
-                }
-
-                await next();
-
-                errors = swagger2.validateResponse(compiledPath, ctx.method, ctx.status, ctx.body);
-                if (errors) {
-                    ctx.status = 500;
-                    ctx.body = this.errors['swagger.responseValidation']({errors});
-                }
-            });
+            app.use(middleware.cors());
+            app.use(middleware.formParser());
+            app.use(middleware.bodyParser());
+            app.use(middleware.validator(this, swaggerDocument));
             app.use(router.routes());
             app.use(router.allowedMethods());
-            app.use(ui(swaggerDocument, this.config.pathRoot, this.config.skipPaths));
-            this.server = app.listen({
-                port: this.config.port,
-                host: this.config.host,
-                path: this.config.path,
-                backlog: this.config.backlog,
-                exclusive: this.config.exclusive,
-                readableAll: this.config.readableAll,
-                writableAll: this.config.writableAll
-            });
+            app.use(middleware.ui(swaggerDocument, this.config.pathRoot, this.config.skipPaths));
+            let {port, host, path, backlog, exclusive, readableAll, writableAll} = this.config;
+            this.server = app.listen({port, host, path, backlog, exclusive, readableAll, writableAll});
             this.log.info && this.log.info({
                 message: 'Swagger port started',
                 address: this.server.address(),
-                paths: paths.sort(),
                 $meta: {
                     mtid: 'event',
                     opcode: 'port.started'
