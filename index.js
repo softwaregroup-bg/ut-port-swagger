@@ -109,17 +109,6 @@ module.exports = (params = {}) => {
                 });
             });
             const app = new Koa();
-            app.use(async (ctx, next) => {
-                await next();
-                if (ctx.status < 200 || ctx.status >= 300) {
-                    if (!ctx.body || !ctx.body.error || !ctx.body.error.type) {
-                        ctx.status = 400;
-                        ctx.body = this.errors.swagger({
-                            cause: ctx.body
-                        });
-                    }
-                }
-            });
             app.use(koaCors());
             app.use(koaFormidable());
             app.use(koaBodyparser());
@@ -132,36 +121,27 @@ module.exports = (params = {}) => {
                 if (compiledPath === undefined) {
                     // if there is no single matching path, return 404 (not found)
                     ctx.status = 404;
-                    return true;
+                    return;
                 }
-                let validationErrors = swagger2.validateRequest(compiledPath, ctx.method, ctx.request.query, ctx.request.body);
-                if (validationErrors === undefined) {
+                let errors = swagger2.validateRequest(compiledPath, ctx.method, ctx.request.query, ctx.request.body);
+                if (errors === undefined) {
                     // operation not defined, return 405 (method not allowed)
                     ctx.status = 405;
                     return;
                 }
 
-                if (validationErrors.length > 0) {
+                if (errors.length > 0) {
                     ctx.status = 400;
-                    ctx.body = {
-                        code: 'SWAGGER_REQUEST_VALIDATION_FAILED',
-                        errors: validationErrors
-                    };
+                    ctx.body = this.errors['swagger.requestValidation']({errors});
                     return;
                 }
 
-                // wait for the operation to execute
                 await next();
 
-                // check the response matches the swagger schema
-                let error = swagger2.validateResponse(compiledPath, ctx.method, ctx.status, ctx.body);
-                if (error) {
-                    error.where = 'response';
+                errors = swagger2.validateResponse(compiledPath, ctx.method, ctx.status, ctx.body);
+                if (errors) {
                     ctx.status = 500;
-                    ctx.body = {
-                        code: 'SWAGGER_RESPONSE_VALIDATION_FAILED',
-                        errors: [error]
-                    };
+                    ctx.body = this.errors['swagger.responseValidation']({errors});
                 }
             });
             app.use(router.routes());
