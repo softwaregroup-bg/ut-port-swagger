@@ -2,13 +2,13 @@ const uuid = require('uuid');
 module.exports = (port, method) => {
     return async (ctx, next) => {
         const { params, query } = ctx;
-        const { body } = ctx.request;
+        const { body, files } = ctx.request;
         const trace = uuid.v4();
         if (port.log.trace) {
-            port.log.trace({ $meta: { mtid: 'request', trace }, body, params, query });
+            port.log.trace({ $meta: { mtid: 'request', trace }, body, files, params, query });
         }
         return new Promise(resolve => {
-            const msg = Object.assign({}, body, params, query);
+            const msg = Object.assign({}, body, files, params, query);
             const $meta = {
                 trace,
                 mtid: 'request',
