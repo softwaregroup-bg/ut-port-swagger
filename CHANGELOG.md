@@ -1,3 +1,13 @@
+<a name="0.5.2"></a>
+## [0.5.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v0.5.1...v0.5.2) (2018-06-05)
+
+
+### Bug Fixes
+
+* optimize code ([6548f3f](https://github.com/softwaregroup-bg/ut-port-swagger/commit/6548f3f))
+
+
+
 <a name="0.5.1"></a>
 ## [0.5.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v0.5.0...v0.5.1) (2018-06-05)
 
