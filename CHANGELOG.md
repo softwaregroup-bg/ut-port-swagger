@@ -1,3 +1,13 @@
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v0.5.0...v0.5.1) (2018-06-05)
+
+
+### Bug Fixes
+
+* abstract koa router and request handlers into a common middleware called router ([d15361d](https://github.com/softwaregroup-bg/ut-port-swagger/commit/d15361d))
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v0.4.0...v0.5.0) (2018-06-05)
 
