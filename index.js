@@ -2,7 +2,6 @@
 const errorsFactory = require('./errorsFactory');
 const swaggerParser = require('swagger-parser');
 const Koa = require('koa');
-const koaRouter = require('koa-router');
 const middleware = require('./middleware');
 
 module.exports = (params = {}) => {
@@ -35,22 +34,13 @@ module.exports = (params = {}) => {
             await super.start();
             const swaggerDocument = await swaggerParser.bundle(this.config.definitionPath);
             await swaggerParser.validate(swaggerDocument);
-            const router = koaRouter();
-            Object.keys(swaggerDocument.paths).forEach(path => {
-                const fullPath = [swaggerDocument.basePath, path].filter(x => x).join('');
-                const collection = swaggerDocument.paths[path];
-                Object.keys(collection).forEach(method => {
-                    router[method](fullPath, middleware.requestHandler(this, collection[method]['x-bus-method']));
-                });
-            });
             const app = new Koa();
             app.use(middleware.cors());
             app.use(middleware.formParser());
             app.use(middleware.bodyParser());
             app.use(middleware.validator(this, swaggerDocument));
             app.use(middleware.swaggerUI(this, swaggerDocument));
-            app.use(router.routes());
-            app.use(router.allowedMethods());
+            app.use(middleware.router(this, swaggerDocument));
             let {port, host, path, backlog, exclusive, readableAll, writableAll} = this.config;
             this.server = app.listen({port, host, path, backlog, exclusive, readableAll, writableAll});
             this.log.info && this.log.info({
