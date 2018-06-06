@@ -1,8 +1,8 @@
 const send = require('koa-send');
 const root = require('swagger-ui-dist').getAbsoluteFSPath();
 const html = require('./html');
-module.exports = (port, swaggerDocument) => {
-    const {pathRoot, skipPaths} = port.config;
+module.exports = ({swaggerDocument, options}) => {
+    const {pathRoot, skipPaths} = options;
     const pathPrefix = pathRoot.endsWith('/') ? pathRoot : pathRoot + '/';
     const htmlBody = html(swaggerDocument, pathPrefix);
     return async (context, next) => {

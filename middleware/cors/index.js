@@ -1,4 +1,4 @@
 const koaCors = require('koa-cors');
-module.exports = (options) => {
+module.exports = ({options}) => {
     return koaCors(options);
 };

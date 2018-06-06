@@ -14,13 +14,23 @@ module.exports = (params = {}) => {
                 id: 'swagger',
                 type: 'swagger',
                 logLevel: 'debug',
-                definitionPath: '', // absolute path to the swagger document
-                // swagger ui options
-                pathRoot: '/docs',
-                skipPaths: []
+                swaggerPath: '', // absolute path to the swagger document
+                // middleware options
+                middleware: {
+                    cors: {},
+                    formParser: {},
+                    bodyParser: {},
+                    validator: {},
+                    swaggerUI: {
+                        pathRoot: '/docs',
+                        skipPaths: []
+                    },
+                    router: {}
+                },
                 // http server connection options
                 // https://nodejs.org/api/net.html#net_server_listen_options_callback
-                // port, host, path, backlog, exclusive, readableAll, writableAll
+                // {port, host, path, backlog, exclusive, readableAll, writableAll}
+                server: {}
             }, params.config);
             Object.assign(this.errors, errorsFactory(this.bus));
         }
@@ -32,17 +42,27 @@ module.exports = (params = {}) => {
         async start() {
             this.stream = this.pull(false, { requests: {} });
             await super.start();
-            const swaggerDocument = await swaggerParser.bundle(this.config.definitionPath);
+            const swaggerDocument = await swaggerParser.bundle(this.config.swaggerPath);
             await swaggerParser.validate(swaggerDocument);
             const app = new Koa();
-            app.use(middleware.cors());
-            app.use(middleware.formParser());
-            app.use(middleware.bodyParser());
-            app.use(middleware.validator(this, swaggerDocument));
-            app.use(middleware.swaggerUI(this, swaggerDocument));
-            app.use(middleware.router(this, swaggerDocument));
-            let {port, host, path, backlog, exclusive, readableAll, writableAll} = this.config;
-            this.server = app.listen({port, host, path, backlog, exclusive, readableAll, writableAll});
+            this.config.middleware && [
+                // middleware order
+                'cors',
+                'formParser',
+                'bodyParser',
+                'validator',
+                'swaggerUI',
+                'router'
+            ].forEach(name => {
+                if (this.config.middleware[name] !== false && this.config.middleware[name] !== 'false') {
+                    app.use(middleware[name]({
+                        port: this,
+                        swaggerDocument,
+                        options: Object.assign({}, this.config.middleware[name])
+                    }));
+                }
+            });
+            this.server = app.listen(this.config.server);
             this.log.info && this.log.info({
                 message: 'Swagger port started',
                 address: this.server.address(),
