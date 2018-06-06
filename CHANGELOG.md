@@ -1,3 +1,19 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v0.5.2...v1.0.0) (2018-06-06)
+
+
+### Features
+
+* reorganize config an add possibility to pass options per middleware ([4f847d6](https://github.com/softwaregroup-bg/ut-port-swagger/commit/4f847d6))
+
+
+### BREAKING CHANGES
+
+* configuration options are different
+* this version is not compatible with previous versions
+
+
+
 <a name="0.5.2"></a>
 ## [0.5.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v0.5.1...v0.5.2) (2018-06-05)
 
