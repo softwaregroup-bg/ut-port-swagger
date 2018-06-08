@@ -1,7 +1,7 @@
 const swagger2 = require('swagger2');
 const merge = require('lodash.merge');
-module.exports = ({port, swaggerDocument}) => {
-    let document = merge({}, swaggerDocument);
+module.exports = ({port}) => {
+    let document = merge({}, port.swaggerDocument);
     let formFiles = {};
     Object.keys(document.paths).forEach(path => {
         Object.keys(document.paths[path]).forEach(method => {

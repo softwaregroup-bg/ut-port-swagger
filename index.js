@@ -14,6 +14,7 @@ module.exports = (params = {}) => {
                 id: 'swagger',
                 type: 'swagger',
                 logLevel: 'debug',
+                swaggerDocument: null,
                 swaggerPath: '', // absolute path to the swagger document
                 // middleware options
                 middleware: {
@@ -42,8 +43,8 @@ module.exports = (params = {}) => {
         async start() {
             this.stream = this.pull(false, { requests: {} });
             await super.start();
-            const swaggerDocument = await swaggerParser.bundle(this.config.swaggerPath);
-            await swaggerParser.validate(swaggerDocument);
+            this.swaggerDocument = this.config.swaggerDocument || await swaggerParser.bundle(this.config.swaggerPath);
+            await swaggerParser.validate(this.swaggerDocument);
             const app = new Koa();
             this.config.middleware && [
                 // middleware order
@@ -57,7 +58,6 @@ module.exports = (params = {}) => {
                 if (this.config.middleware[name] !== false && this.config.middleware[name] !== 'false') {
                     app.use(middleware[name]({
                         port: this,
-                        swaggerDocument,
                         options: Object.assign({}, this.config.middleware[name])
                     }));
                 }
