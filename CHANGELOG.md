@@ -1,3 +1,13 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.0.0...v1.1.0) (2018-06-08)
+
+
+### Features
+
+* add possibility to pass swaggerDocument ([402c831](https://github.com/softwaregroup-bg/ut-port-swagger/commit/402c831))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v0.5.2...v1.0.0) (2018-06-06)
 
