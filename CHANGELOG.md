@@ -1,3 +1,13 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.1.0...v1.1.1) (2018-06-08)
+
+
+### Bug Fixes
+
+* make swaggerDocument private ([478916d](https://github.com/softwaregroup-bg/ut-port-swagger/commit/478916d))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.0.0...v1.1.0) (2018-06-08)
 
