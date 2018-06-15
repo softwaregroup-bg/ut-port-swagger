@@ -56,23 +56,21 @@ module.exports = (params = {}) => {
             }
             await swaggerParser.validate(swaggerDocument);
             const app = new Koa();
-            this.config.middleware && [
-                // middleware order
-                'cors',
-                'formParser',
-                'bodyParser',
-                'validator',
-                'swaggerUI',
-                'router'
-            ].forEach(name => {
-                if (this.config.middleware[name] !== false && this.config.middleware[name] !== 'false') {
-                    app.use(middleware[name]({
-                        port: this,
-                        swaggerDocument,
-                        options: Object.assign({}, this.config.middleware[name])
-                    }));
+            if (this.config.middleware) {
+                let i = 0;
+                let n = middleware.length;
+                for (; i < n; i += 1) {
+                    let {name, factory} = middleware[i];
+                    let options = this.config.middleware[name];
+                    if (options !== false && options !== 'false') {
+                        app.use(await factory({
+                            port: this,
+                            swaggerDocument,
+                            options: Object.assign({}, options)
+                        }));
+                    }
                 }
-            });
+            }
             this.server = app.listen(this.config.server);
             this.log.info && this.log.info({
                 message: 'Swagger port started',

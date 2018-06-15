@@ -30,6 +30,7 @@
     "ut-tools": "^5.32.10"
   },
   "dependencies": {
+    "ajv": "^6.5.1",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.1",
     "koa-compose": "^4.1.0",
