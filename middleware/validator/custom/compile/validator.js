@@ -13,8 +13,18 @@ ajv.addKeyword('file', {
     }
 });
 const getValidationHandler = schema => {
+    // schema.$schema = 'http://json-schema.org/draft-04/schema#';
     schema.$async = true;
-    return ajv.compile(schema);
+    const validate = ajv.compile(schema);
+    return async value => {
+        let error;
+        try {
+            await validate(value);
+        } catch (e) {
+            error = e;
+        }
+        return error;
+    };
 };
 const collectionFormats = {
     csv: ',',
@@ -25,8 +35,7 @@ const collectionFormats = {
 
 module.exports = {
     empty: () => {
-        const validate = getValidationHandler({
-            // $schema: 'http://json-schema.org/draft-04/schema#',
+        return getValidationHandler({
             oneOf: [
                 {
                     type: 'null'
@@ -42,25 +51,22 @@ module.exports = {
                 }
             ]
         });
-        return async v => await validate(v);
     },
     file: schema => {
-        const validate = getValidationHandler({
+        return getValidationHandler({
             in: schema.in,
             name: schema.name,
             description: schema.description,
             type: 'object',
             file: schema.required
         });
-        return async v => await validate(v);
     },
     json: schema => {
-        const validate = getValidationHandler(schema);
-        return async v => await validate(v);
+        return getValidationHandler(schema);
     },
     primitive: schema => {
         const validate = getValidationHandler(schema);
-        return async value => {
+        return async value => { // normalize value
             if (value === undefined && schema.required) {
                 throw new Error('value is required!');
             }
