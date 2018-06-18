@@ -1,6 +1,9 @@
 const Ajv = require('ajv');
 const ajv = new Ajv({allErrors: true});
-
+const getValidationHandler = schema => {
+    schema.$async = true;
+    return ajv.compile(schema);
+};
 const collectionFormats = {
     csv: ',',
     ssv: ' ',
@@ -10,23 +13,31 @@ const collectionFormats = {
 
 module.exports = {
     empty: () => {
-        return v => {
-            if (v === undefined || v === null || v === '' || Object.keys(v).length === 0) {
-                return Promise.resolve(true);
-            };
-            return Promise.reject(new Error('value not empty'));
-        };
+        const validate = getValidationHandler({
+            // $schema: 'http://json-schema.org/draft-04/schema#',
+            oneOf: [
+                {
+                    type: 'null'
+                },
+                {
+                    type: 'string',
+                    maxLength: 0
+                },
+                {
+                    type: 'object',
+                    additionalProperties: false,
+                    properties: {}
+                }
+            ]
+        });
+        return async v => await validate(v);
     },
     json: schema => {
-        schema.$async = true;
-        const validate = ajv.compile(schema);
-        return async v => {
-            return await validate(v);
-        };
+        const validate = getValidationHandler(schema);
+        return async v => await validate(v);
     },
     primitive: schema => {
-        schema.$async = true;
-        const validate = ajv.compile(schema);
+        const validate = getValidationHandler(schema);
         return async value => {
             if (value === undefined && schema.required) {
                 throw new Error('value is required!');
@@ -35,7 +46,6 @@ module.exports = {
                 case 'number':
                 case 'integer':
                     if (!isNaN(value)) {
-                        // if the value is a number, make sure it's a number
                         value = +value;
                     }
                     break;
