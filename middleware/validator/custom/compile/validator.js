@@ -1,5 +1,17 @@
 const Ajv = require('ajv');
 const ajv = new Ajv({allErrors: true});
+ajv.addKeyword('file', {
+    compile: schema => data => {
+        if (schema) {
+            if (data) {
+                return data.constructor.name === 'File';
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+});
 const getValidationHandler = schema => {
     schema.$async = true;
     return ajv.compile(schema);
@@ -29,6 +41,16 @@ module.exports = {
                     properties: {}
                 }
             ]
+        });
+        return async v => await validate(v);
+    },
+    file: schema => {
+        const validate = getValidationHandler({
+            in: schema.in,
+            name: schema.name,
+            description: schema.description,
+            type: 'object',
+            file: schema.required
         });
         return async v => await validate(v);
     },

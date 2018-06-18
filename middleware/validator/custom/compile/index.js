@@ -54,6 +54,10 @@ module.exports = async function compile(swaggerDocument) {
                                             value = actual ? actual[expected.indexOf(`{${param.name}}`)] : undefined;
                                         }
                                         break;
+                                    case 'formData':
+                                        value = files[param.name];
+                                        hasBody = true;
+                                        break;
                                     case 'body':
                                         value = body;
                                         hasBody = true;

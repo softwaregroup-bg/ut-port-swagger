@@ -9,6 +9,8 @@ module.exports = {
                 const schema = param.schema || param;
                 if (['query', 'header', 'path'].indexOf(param.in) !== -1) {
                     param.validate = validator.primitive(schema);
+                } else if (param.in === 'formData' && param.type === 'file') {
+                    param.validate = validator.file(schema);
                 } else {
                     param.validate = validator.json(schema);
                 }
