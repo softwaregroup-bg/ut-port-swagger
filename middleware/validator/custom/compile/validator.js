@@ -1,19 +1,5 @@
-const Ajv = require('ajv');
+const Ajv = require('./ajv');
 const ajv = new Ajv({allErrors: true});
-ajv.addKeyword('$file', {
-    compile: schema => value => {
-        const isFile = value && value.constructor.name === 'File';
-        return schema === true ? isFile : !isFile;
-    }
-});
-ajv.addKeyword('$required', {
-    compile: schema => value => {
-        return schema === true ? typeof value !== 'undefined' : false;
-        // const isFile = value && value.constructor.name === 'File';
-        // return schema === true ? isFile : !isFile;
-    }
-});
-
 const getValidationHandler = schema => {
     schema.$async = true;
     if (typeof schema.required === 'boolean') {
