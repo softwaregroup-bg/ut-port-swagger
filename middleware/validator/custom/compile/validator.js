@@ -6,34 +6,27 @@ ajv.addKeyword('$file', {
         return schema === true ? isFile : !isFile;
     }
 });
+ajv.addKeyword('$required', {
+    compile: schema => value => {
+        return schema === true ? typeof value !== 'undefined' : false;
+        // const isFile = value && value.constructor.name === 'File';
+        // return schema === true ? isFile : !isFile;
+    }
+});
 
 const getValidationHandler = schema => {
-    // schema.$schema = 'http://json-schema.org/draft-07/schema';
     schema.$async = true;
-    let isRequired = false;
     if (typeof schema.required === 'boolean') {
-        isRequired = schema.required;
+        schema.$required = schema.required; // json schema 4 support
         delete schema.required;
     }
     const validate = ajv.compile(schema);
     return async value => {
         let error;
-        if (isRequired && value === undefined) {
-            error = {
-                keyword: 'required',
-                dataPath: '',
-                schemaPath: '#/required',
-                params: {
-                    missingProperty: schema.name
-                },
-                message: `should have required property '${schema.name}'`
-            };
-        } else {
-            try {
-                await validate(value);
-            } catch (e) {
-                error = e;
-            }
+        try {
+            await validate(value);
+        } catch (e) {
+            error = e;
         }
         return error;
     };
