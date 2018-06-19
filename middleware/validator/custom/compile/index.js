@@ -81,7 +81,7 @@ module.exports = async function compile(swaggerDocument) {
                                         }
                                         break;
                                     case 'formData':
-                                        value = files[param.name];
+                                        value = param.type === 'file' ? files[param.name] : body[param.name];
                                         hasBody = true;
                                         break;
                                     case 'body':
