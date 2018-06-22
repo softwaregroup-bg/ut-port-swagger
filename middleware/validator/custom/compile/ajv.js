@@ -49,9 +49,11 @@ class UtAjv extends Ajv {
                             minimum: 0
                         },
                         max: {
-                            description: 'min',
+                            description: 'max',
                             type: 'integer',
-                            minimum: 0
+                            minimum: {
+                                '$data': '1/min'
+                            }
                         }
                     }
                 }
