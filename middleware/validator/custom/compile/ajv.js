@@ -63,11 +63,18 @@ class UtAjv extends Ajv {
                                     if (typeof record[rule.key] !== 'string') {
                                         errors.push(`The value of ${rule.key} on index ${j} must be a string matching the pattern ${rule.pattern}`);
                                         continue;
-                                    } else if (rule.pattern.test(record[rule.key])) {
-                                        matches.push(j);
                                     }
-                                } else if (record[rule.key] === rule.value) {
-                                    matches.push(j);
+                                    if (rule.pattern.test(record[rule.key])) {
+                                        matches.push(j);
+                                    } else {
+                                        errors.push(`The value ${record[rule.key]} of ${rule.key} on index ${j} must be a string matching the pattern ${rule.pattern}`);
+                                    }
+                                } else {
+                                    if (record[rule.key] === rule.value) {
+                                        matches.push(j);
+                                    } else {
+                                        errors.push(`${rule.key} on index ${j} doesn't match the specified value`);
+                                    }
                                 }
                             }
                             if (matches.length < rule.min) {
