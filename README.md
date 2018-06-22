@@ -7,8 +7,6 @@ Swagger compliant http server
 * `x-bus-method` - specifies the controller (the bus method which will be executed when the respective http route gets called).
 
 ## JSON Schema custom keywords
-* `x-required` - specifies whether a primitive field is required.
-* `x-file` - specifies that a certain field should be a file.
 * `x-occurrences` - specifies that certain field should appear in a way compliant with the provided specification. Example:
  ```json
  {

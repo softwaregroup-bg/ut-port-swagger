@@ -6,24 +6,41 @@ class UtAjv extends Ajv {
             compile: schema => value => {
                 const isFile = value && value.constructor.name === 'File';
                 return schema === true ? isFile : !isFile;
+            },
+            metaSchema: {
+                description: 'x-file',
+                type: 'boolean'
             }
         });
         this.addKeyword('x-required', {
             compile: schema => value => {
-                return schema === true ? typeof value !== 'undefined' : false;
+                return schema === true ? typeof value !== 'undefined' : true;
+            },
+            metaSchema: {
+                description: 'x-required',
+                type: 'boolean'
             }
         });
         this.addKeyword('x-occurrences', {
             type: 'array',
             compile: schema => value => {
+                if (value.length === 0) {
+                    // array should not be empty as long as there are x-occurrences rules
+                    return false;
+                }
                 return schema
                     .map(rule => {
-                        const count = (value || [])
-                            .map(record => {
-                                return record && record[rule.key] === rule.value;
-                            })
-                            .filter(x => x)
-                            .length;
+                        // indices of records which don't have a key equal to rule.key
+                        const indicesWithMissingKey = [];
+                        const count = value.map((record, i) => {
+                            if (!record.hasOwnProperty(rule.key)) {
+                                indicesWithMissingKey.push(i);
+                            }
+                            return record[rule.key] === rule.value;
+                        }).filter(x => x).length;
+                        if (indicesWithMissingKey.length !== 0) {
+                            return false;
+                        }
                         return rule.min <= count && count <= rule.max;
                     })
                     .filter(x => x)
@@ -31,6 +48,7 @@ class UtAjv extends Ajv {
             },
             metaSchema: {
                 type: 'array',
+                minItems: 1,
                 items: {
                     type: 'object',
                     additionalProperties: false,
