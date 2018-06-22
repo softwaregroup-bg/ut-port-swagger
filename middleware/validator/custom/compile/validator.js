@@ -3,7 +3,7 @@ const ajv = new Ajv({allErrors: true});
 const getValidationHandler = schema => {
     schema.$async = true;
     if (typeof schema.required === 'boolean') {
-        schema.$required = schema.required; // json schema 4 support
+        schema['x-required'] = schema.required; // json schema 4 support
         delete schema.required;
     }
     const validate = ajv.compile(schema);
@@ -49,7 +49,7 @@ module.exports = {
             name: schema.name,
             description: schema.description,
             required: schema.required,
-            $file: true
+            'x-file': true
         });
     },
     json: schema => {

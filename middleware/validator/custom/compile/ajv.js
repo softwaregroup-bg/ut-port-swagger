@@ -2,13 +2,13 @@ const Ajv = require('ajv');
 class UtAjv extends Ajv {
     constructor(options) {
         super(options);
-        this.addKeyword('$file', {
+        this.addKeyword('x-file', {
             compile: schema => value => {
                 const isFile = value && value.constructor.name === 'File';
                 return schema === true ? isFile : !isFile;
             }
         });
-        this.addKeyword('$required', {
+        this.addKeyword('x-required', {
             compile: schema => value => {
                 return schema === true ? typeof value !== 'undefined' : false;
             }
@@ -46,12 +46,12 @@ class UtAjv extends Ajv {
                         min: {
                             description: 'min',
                             type: 'integer',
-                            min: 0
+                            minimum: 0
                         },
                         max: {
                             description: 'min',
                             type: 'integer',
-                            min: 0
+                            minimum: 0
                         }
                     }
                 }
