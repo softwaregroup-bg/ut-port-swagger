@@ -23,43 +23,87 @@ class UtAjv extends Ajv {
         });
         this.addKeyword('x-occurrences', {
             type: 'array',
-            compile: schema => value => {
-                if (value.length === 0) {
-                    // array should not be empty as long as there are x-occurrences rules
-                    return false;
-                }
-                return schema
-                    .map(rule => {
-                        // indices of records which don't have a key equal to rule.key
-                        const indicesWithMissingKey = [];
-                        const count = value.map((record, i) => {
-                            if (!record.hasOwnProperty(rule.key)) {
-                                indicesWithMissingKey.push(i);
-                            }
-                            return record[rule.key] === rule.value;
-                        }).filter(x => x).length;
-                        if (indicesWithMissingKey.length !== 0) {
-                            return false;
+            errors: true,
+            compile: originalSchema => {
+                const errors = [];
+                const schema = originalSchema.map(originalRule => {
+                    // don't override rule by reference
+                    const rule = Object.assign({}, originalRule);
+                    if (rule.hasOwnProperty('pattern')) {
+                        try {
+                            rule.pattern = new RegExp(rule.pattern);
+                        } catch (e) {
+                            errors.push({
+                                message: `pattern "${rule.pattern}" must be a valid javascript pattern`
+                            });
                         }
-                        return rule.min <= count && count <= rule.max;
-                    })
-                    .filter(x => x)
-                    .length === schema.length;
+                    }
+                    return rule;
+                });
+                if (errors.length) {
+                    const error = new Error('x-occurrences');
+                    error.errors = errors;
+                    throw error;
+                }
+                return function validate(value) {
+                    const errors = [];
+                    if (value.length === 0) {
+                        errors.push('Array must not be empty');
+                    } else {
+                        for (let i = 0; i < schema.length; i += 1) {
+                            const rule = schema[i];
+                            const matches = [];
+                            for (let j = 0; j < value.length; j += 1) {
+                                const record = value[j];
+                                if (!record.hasOwnProperty(rule.key)) {
+                                    errors.push(`${rule.key} was not provided on index ${j}`);
+                                    continue;
+                                }
+                                if (rule.pattern) {
+                                    if (typeof record[rule.key] !== 'string') {
+                                        errors.push(`The value of ${rule.key} on index ${j} must be a string matching the pattern ${rule.pattern}`);
+                                        continue;
+                                    } else if (rule.pattern.test(record[rule.key])) {
+                                        matches.push(j);
+                                    }
+                                } else if (record[rule.key] === rule.value) {
+                                    matches.push(j);
+                                }
+                            }
+                            if (matches.length < rule.min) {
+                                errors.push(`Rule (min: ${rule.min}) violated! matches: ${matches.length}, key ${rule.key}`);
+                            } else if (matches.length > rule.max) {
+                                errors.push(`Rule (max: ${rule.max}) violated! matches: ${matches.length}, key ${rule.key}`);
+                            }
+                        }
+                    }
+                    if (errors.length !== 0) {
+                        validate.errors = errors.map(message => {
+                            return {
+                                keyword: 'x-occurrences',
+                                message,
+                                params: {
+                                    keyword: 'x-occurrences'
+                                }
+                            };
+                        });
+                        return false;
+                    }
+                    return true;
+                };
             },
             metaSchema: {
                 type: 'array',
                 minItems: 1,
                 items: {
                     type: 'object',
+                    required: ['key', 'min', 'max'],
                     additionalProperties: false,
-                    required: ['key', 'value', 'min', 'max'],
+                    maxProperties: 4,
                     properties: {
                         key: {
                             description: 'key',
                             type: 'string'
-                        },
-                        value: {
-                            description: 'value'
                         },
                         min: {
                             description: 'min',
@@ -72,6 +116,14 @@ class UtAjv extends Ajv {
                             minimum: {
                                 '$data': '1/min'
                             }
+                        },
+                        value: {
+                            description: 'value'
+                        },
+                        pattern: {
+                            description: 'pattern',
+                            minLength: 1,
+                            type: 'string'
                         }
                     }
                 }
