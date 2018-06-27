@@ -107,6 +107,7 @@ class UtAjv extends Ajv {
                     required: ['key', 'min', 'max'],
                     additionalProperties: false,
                     maxProperties: 4,
+                    minProperties: 4,
                     properties: {
                         key: {
                             description: 'key',
