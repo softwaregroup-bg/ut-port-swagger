@@ -1,3 +1,13 @@
+<a name="1.1.3"></a>
+## [1.1.3](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.1.2...v1.1.3) (2018-06-27)
+
+
+### Bug Fixes
+
+* remove koa-cors in favour [@koa](https://github.com/koa)/cors ([38aaf7a](https://github.com/softwaregroup-bg/ut-port-swagger/commit/38aaf7a))
+
+
+
 <a name="1.1.2"></a>
 ## [1.1.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.1.1...v1.1.2) (2018-06-09)
 
