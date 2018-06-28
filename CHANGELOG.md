@@ -1,3 +1,33 @@
+<a name="1.1.3"></a>
+## [1.1.3](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.1.2...v1.1.3) (2018-06-27)
+
+
+### Bug Fixes
+
+* remove koa-cors in favour [@koa](https://github.com/koa)/cors ([38aaf7a](https://github.com/softwaregroup-bg/ut-port-swagger/commit/38aaf7a))
+
+
+
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.1.1...v1.1.2) (2018-06-09)
+
+
+### Bug Fixes
+
+* remove lodash.merge dependency ([285b0d2](https://github.com/softwaregroup-bg/ut-port-swagger/commit/285b0d2))
+
+
+
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.1.0...v1.1.1) (2018-06-08)
+
+
+### Bug Fixes
+
+* make swaggerDocument private ([478916d](https://github.com/softwaregroup-bg/ut-port-swagger/commit/478916d))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.0.0...v1.1.0) (2018-06-08)
 
