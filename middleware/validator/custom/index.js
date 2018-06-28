@@ -9,7 +9,7 @@ module.exports = async ({port, swaggerDocument}) => {
         const validate = compiled.getValidator(ctx.path, ctx.method);
         if (!validate) {
             ctx.status = 404;
-            return;
+            throw port.errors['swagger.requestValidation']();
         }
         let errors = await validate.request({
             query: ctx.request.query,
@@ -20,8 +20,9 @@ module.exports = async ({port, swaggerDocument}) => {
         });
         if (errors.length > 0) {
             ctx.status = 400;
-            ctx.body = port.errors['swagger.requestValidation']({errors});
-            return;
+            let error = port.errors['swagger.requestValidation']({errors});
+            ctx.body = {error};
+            throw error;
         }
         await next();
         errors = await validate.response({
@@ -30,7 +31,9 @@ module.exports = async ({port, swaggerDocument}) => {
         });
         if (errors.length > 0) {
             ctx.status = 500;
-            ctx.body = port.errors['swagger.responseValidation']({errors});
+            let error = port.errors['swagger.responseValidation']({errors});
+            ctx.body = {error};
+            throw error;
         }
     };
 };

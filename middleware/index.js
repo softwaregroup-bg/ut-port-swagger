@@ -1,5 +1,9 @@
 module.exports = [ // middleware order
     {
+        name: 'wrapper',
+        factory: require('./wrapper')
+    },
+    {
         name: 'cors',
         factory: require('./cors')
     },
