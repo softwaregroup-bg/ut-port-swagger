@@ -1,3 +1,32 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.1.3...v1.2.0) (2018-06-28)
+
+
+### Bug Fixes
+
+* add custom keyword ([54ad23a](https://github.com/softwaregroup-bg/ut-port-swagger/commit/54ad23a))
+* add custom keyword x-occurances ([f6b4c62](https://github.com/softwaregroup-bg/ut-port-swagger/commit/f6b4c62))
+* add file upload support in custom validator ([84f7506](https://github.com/softwaregroup-bg/ut-port-swagger/commit/84f7506))
+* add metaschema for x-required and x-file. Improve x-occurrences. Remove x-required and x-file as they are used internally only. ([1449487](https://github.com/softwaregroup-bg/ut-port-swagger/commit/1449487))
+* add minProperties equal to maxProperties so that the can be exactly 4 ([0d9531c](https://github.com/softwaregroup-bg/ut-port-swagger/commit/0d9531c))
+* Ajv wrapping class ([422b939](https://github.com/softwaregroup-bg/ut-port-swagger/commit/422b939))
+* custom required and file validations ([c5f7968](https://github.com/softwaregroup-bg/ut-port-swagger/commit/c5f7968))
+* fix x-occurrences matching algorithm ([30a3a6e](https://github.com/softwaregroup-bg/ut-port-swagger/commit/30a3a6e))
+* fix x-occurrences validation bugs ([f881e09](https://github.com/softwaregroup-bg/ut-port-swagger/commit/f881e09))
+* improve x-occurrences validations. add custom messages ([db288ce](https://github.com/softwaregroup-bg/ut-port-swagger/commit/db288ce))
+* put validation handler into a separate function. create empty validator ([ae5a6cc](https://github.com/softwaregroup-bg/ut-port-swagger/commit/ae5a6cc))
+* refactoring ([3cdb52c](https://github.com/softwaregroup-bg/ut-port-swagger/commit/3cdb52c))
+* refactoring plus wrapper middleware ([a44bdc7](https://github.com/softwaregroup-bg/ut-port-swagger/commit/a44bdc7))
+* use  to support relationships between fields ([440d7d2](https://github.com/softwaregroup-bg/ut-port-swagger/commit/440d7d2))
+* x-occurances min and max values. Add documentation. Rename  to x-required and  to x-file ([ccb48cc](https://github.com/softwaregroup-bg/ut-port-swagger/commit/ccb48cc))
+
+
+### Features
+
+* custom validator ([2b3f9c9](https://github.com/softwaregroup-bg/ut-port-swagger/commit/2b3f9c9))
+
+
+
 <a name="1.1.3"></a>
 ## [1.1.3](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.1.2...v1.1.3) (2018-06-27)
 
