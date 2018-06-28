@@ -53,8 +53,9 @@ module.exports = ({port, swaggerDocument}) => {
         }
         if (errors.length > 0) {
             ctx.status = 400;
-            ctx.body = port.errors['swagger.requestValidation']({errors});
-            return;
+            let error = port.errors['swagger.requestValidation']({errors});
+            ctx.body = {error};
+            throw error;
         }
 
         await next();
@@ -62,7 +63,9 @@ module.exports = ({port, swaggerDocument}) => {
         errors = swagger2.validateResponse(compiledPath, ctx.method, ctx.status, ctx.body);
         if (errors) {
             ctx.status = 500;
-            ctx.body = port.errors['swagger.responseValidation']({errors});
+            let error = port.errors['swagger.responseValidation']({errors});
+            ctx.body = {error};
+            throw error;
         }
     };
 };

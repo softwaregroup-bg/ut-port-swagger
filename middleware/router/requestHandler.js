@@ -7,7 +7,7 @@ module.exports = (port, method) => {
         if (port.log.trace) {
             port.log.trace({ $meta: { mtid: 'request', trace }, body, files, params, query });
         }
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             const msg = Object.assign({}, body, files, params, query);
             const $meta = {
                 trace,
@@ -18,23 +18,21 @@ module.exports = (port, method) => {
                         case 'response':
                             ctx.body = response;
                             ctx.status = 200;
-                            break;
+                            return resolve(next());
                         case 'error':
                             ctx.status = (response.details && response.details.statusCode) || 400;
                             ctx.body = {
                                 error: response
                             };
-                            break;
+                            return reject(response);
                         default:
                             ctx.status = 400;
-                            ctx.body = {
-                                error: port.errors.swagger({
-                                    cause: response
-                                })
-                            };
-                            break;
+                            const error = port.errors.swagger({
+                                cause: response
+                            });
+                            ctx.body = {error};
+                            return reject(error);
                     }
-                    return resolve(next());
                 }
             };
             port.stream.push([msg, $meta]);
