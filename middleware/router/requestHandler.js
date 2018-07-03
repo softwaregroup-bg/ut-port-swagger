@@ -1,5 +1,5 @@
 const uuid = require('uuid');
-module.exports = (port, method) => {
+module.exports = ({port, method, successCode}) => {
     return async (ctx, next) => {
         const { params, query } = ctx;
         const { body, files } = ctx.request;
@@ -17,7 +17,7 @@ module.exports = (port, method) => {
                     switch ($responseMeta.mtid) {
                         case 'response':
                             ctx.body = response;
-                            ctx.status = 200;
+                            ctx.status = successCode;
                             return resolve(next());
                         case 'error':
                             ctx.status = (response.details && response.details.statusCode) || 400;
