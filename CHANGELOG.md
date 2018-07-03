@@ -1,3 +1,13 @@
+<a name="1.2.1"></a>
+## [1.2.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.2.0...v1.2.1) (2018-07-03)
+
+
+### Bug Fixes
+
+* Automatically set successful status code based on the swagger document definition. Improve error handling. ([68ce222](https://github.com/softwaregroup-bg/ut-port-swagger/commit/68ce222))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.1.3...v1.2.0) (2018-06-28)
 
