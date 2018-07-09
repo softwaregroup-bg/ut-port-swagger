@@ -1,3 +1,13 @@
+<a name="1.2.2"></a>
+## [1.2.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.2.1...v1.2.2) (2018-07-09)
+
+
+### Bug Fixes
+
+* pass request headers in ([fbd02fb](https://github.com/softwaregroup-bg/ut-port-swagger/commit/fbd02fb))
+
+
+
 <a name="1.2.1"></a>
 ## [1.2.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.2.0...v1.2.1) (2018-07-03)
 
