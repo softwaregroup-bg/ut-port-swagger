@@ -13,6 +13,7 @@ module.exports = ({port, method, successCode}) => {
                 trace,
                 mtid: 'request',
                 method,
+                requestHeaders: ctx.request.headers,
                 reply: (response, $responseMeta) => {
                     switch ($responseMeta.mtid) {
                         case 'response':
