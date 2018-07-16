@@ -1,5 +1,5 @@
 const swagger2 = require('swagger2');
-module.exports = ({port, swaggerDocument}) => {
+module.exports = ({port, swaggerDocument, options}) => {
     let document = port.merge({}, swaggerDocument);
     let formFiles = {};
     Object.keys(document.paths).forEach(path => {
@@ -32,40 +32,45 @@ module.exports = ({port, swaggerDocument}) => {
             ctx.status = 404;
             return;
         }
-        let errors = swagger2.validateRequest(compiledPath, ctx.method, ctx.request.query, ctx.request.body);
-        if (errors === undefined) {
-            // operation not defined, return 405 (method not allowed)
-            ctx.status = 405;
-            return;
-        }
-        if (errors.length === 0) {
-            let formFilesPath = `${ctx.path}.${ctx.method.toLowerCase()}`;
-            if (formFiles[formFilesPath]) {
-                errors = formFiles[formFilesPath].reduce((all, param) => {
-                    if (!ctx.request.files[param.name]) {
-                        all.push({
-                            expected: param
-                        });
-                    }
-                    return all;
-                }, []);
+        let errors = [];
+        if (options.request) {
+            errors = swagger2.validateRequest(compiledPath, ctx.method, ctx.request.query, ctx.request.body);
+            if (errors === undefined) {
+                // operation not defined, return 405 (method not allowed)
+                ctx.status = 405;
+                return;
             }
-        }
-        if (errors.length > 0) {
-            ctx.status = 400;
-            let error = port.errors['swagger.requestValidation']({errors});
-            ctx.body = {error};
-            throw error;
+            if (errors.length === 0) {
+                let formFilesPath = `${ctx.path}.${ctx.method.toLowerCase()}`;
+                if (formFiles[formFilesPath]) {
+                    errors = formFiles[formFilesPath].reduce((all, param) => {
+                        if (!ctx.request.files[param.name]) {
+                            all.push({
+                                expected: param
+                            });
+                        }
+                        return all;
+                    }, []);
+                }
+            }
+            if (errors.length > 0) {
+                ctx.status = 400;
+                let error = port.errors['swagger.requestValidation']({errors});
+                ctx.body = {error};
+                throw error;
+            }
         }
 
         await next();
 
-        errors = swagger2.validateResponse(compiledPath, ctx.method, ctx.status, ctx.body);
-        if (errors) {
-            ctx.status = 500;
-            let error = port.errors['swagger.responseValidation']({errors});
-            ctx.body = {error};
-            throw error;
+        if (options.response) {
+            errors = swagger2.validateResponse(compiledPath, ctx.method, ctx.status, ctx.body);
+            if (errors) {
+                ctx.status = 500;
+                let error = port.errors['swagger.responseValidation']({errors});
+                ctx.body = {error};
+                throw error;
+            }
         }
     };
 };

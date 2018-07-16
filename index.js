@@ -17,14 +17,19 @@ module.exports = (params = {}) => {
                 document: null, // swagger document, path to swagger document or a function
                 // middleware options
                 middleware: {
+                    wrapper: {},
                     cors: {},
                     formParser: {},
                     bodyParser: {},
-                    validator: {},
+                    validator: {
+                        request: true,
+                        response: true
+                    },
                     swaggerUI: {
                         pathRoot: '/docs',
                         skipPaths: []
                     },
+                    jwt: false,
                     router: {}
                 },
                 // http server connection options
