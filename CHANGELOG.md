@@ -1,3 +1,13 @@
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.2.2...v1.3.0) (2018-07-18)
+
+
+### Features
+
+* add validator configuration, prepare jwt ([5df86ba](https://github.com/softwaregroup-bg/ut-port-swagger/commit/5df86ba))
+
+
+
 <a name="1.2.2"></a>
 ## [1.2.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.2.1...v1.2.2) (2018-07-09)
 
