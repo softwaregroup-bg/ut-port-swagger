@@ -24,6 +24,10 @@ module.exports = [ // middleware order
         factory: require('./swaggerUI')
     },
     {
+        name: 'jwt',
+        factory: require('./jwt')
+    },
+    {
         name: 'router',
         factory: require('./router')
     }

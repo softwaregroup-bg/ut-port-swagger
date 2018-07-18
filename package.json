@@ -30,11 +30,12 @@
     "ut-tools": "^5.32.10"
   },
   "dependencies": {
-    "ajv": "^6.5.1",
     "@koa/cors": "^2.2.1",
+    "ajv": "^6.5.1",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.1",
     "koa-compose": "^4.1.0",
+    "koa-jwt": "^3.3.2",
     "koa-router": "^7.4.0",
     "koa-send": "^4.1.3",
     "koa2-formidable": "^1.0.2",

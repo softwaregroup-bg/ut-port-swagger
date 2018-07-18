@@ -1,4 +1,4 @@
-module.exports = ({port}) => {
+module.exports = () => {
     return async (ctx, next) => {
         // request
         try {
