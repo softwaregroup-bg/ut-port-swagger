@@ -1,3 +1,13 @@
+<a name="1.3.1"></a>
+## [1.3.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.3.0...v1.3.1) (2018-07-20)
+
+
+### Bug Fixes
+
+* refactor middlewares to achieve path params validation ([bf7f7c2](https://github.com/softwaregroup-bg/ut-port-swagger/commit/bf7f7c2))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.2.2...v1.3.0) (2018-07-18)
 
