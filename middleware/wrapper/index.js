@@ -1,6 +1,7 @@
 module.exports = () => {
     return async (ctx, next) => {
         // request
+        ctx.ut = {};
         try {
             await next();
             // response

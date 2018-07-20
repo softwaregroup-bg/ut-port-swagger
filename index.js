@@ -18,19 +18,20 @@ module.exports = (params = {}) => {
                 // middleware options
                 middleware: {
                     wrapper: {},
-                    cors: {},
-                    formParser: {},
-                    bodyParser: {},
-                    validator: {
-                        request: true,
-                        response: true
-                    },
                     swaggerUI: {
                         pathRoot: '/docs',
                         skipPaths: []
                     },
+                    cors: {},
+                    formParser: {},
+                    bodyParser: {},
                     jwt: false,
-                    router: {}
+                    router: {},
+                    validator: {
+                        request: true,
+                        response: true
+                    },
+                    requestHandler: {}
                 },
                 // http server connection options
                 // https://nodejs.org/api/net.html#net_server_listen_options_callback

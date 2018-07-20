@@ -1,8 +1,9 @@
 const uuid = require('uuid');
-module.exports = ({port, method, successCode}) => {
-    return async (ctx, next) => {
+module.exports = ({port}) => {
+    return (ctx, next) => {
         const { params, query } = ctx;
         const { body, files } = ctx.request;
+        const {method, successCode} = ctx.ut;
         const trace = uuid.v4();
         if (port.log.trace) {
             port.log.trace({ $meta: { mtid: 'request', trace }, body, files, params, query });

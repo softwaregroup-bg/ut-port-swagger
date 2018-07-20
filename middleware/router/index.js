@@ -1,10 +1,13 @@
 const koaRouter = require('koa-router');
 const koaCompose = require('koa-compose');
-const requestHandler = require('./requestHandler');
+const sanitize = (path) => {
+    // transform path parameter definitions from swagger 2 to koa 2 standard: /{id} -> /:id
+    return path.replace(/\{([^}]*)\}/g, (placeHolder, label) => `:${label}`);
+};
 module.exports = ({port, options, swaggerDocument}) => {
     const router = koaRouter(options);
     Object.keys(swaggerDocument.paths).forEach(path => {
-        const fullPath = [swaggerDocument.basePath, path].filter(x => x).join('');
+        const fullPath = [swaggerDocument.basePath, sanitize(path)].filter(x => x).join('');
         const collection = swaggerDocument.paths[path];
         Object.keys(collection).forEach(methodName => {
             const method = collection[methodName];
@@ -21,11 +24,11 @@ module.exports = ({port, options, swaggerDocument}) => {
                     responses: method.responses
                 });
             }
-            router[methodName](fullPath, requestHandler({
-                port,
-                method: method['x-bus-method'],
-                successCode: successCodes[0] ? parseInt(successCodes[0]) : 200
-            }));
+            router[methodName](fullPath, (ctx, next) => {
+                ctx.ut.method = method['x-bus-method'];
+                ctx.ut.successCode = successCodes[0] ? parseInt(successCodes[0]) : 200;
+                return next();
+            });
         });
     });
     return koaCompose([

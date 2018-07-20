@@ -18,7 +18,7 @@ module.exports = async ({port, swaggerDocument, options}) => {
                 body: ctx.request.body,
                 files: ctx.request.files,
                 headers: ctx.request.headers,
-                params: ctx.params
+                pathParameters: ctx.params
             });
             if (errors.length > 0) {
                 ctx.status = 400;
