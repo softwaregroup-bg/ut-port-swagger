@@ -4,7 +4,7 @@ Swagger compliant http server
 
 ## OpenAPI Schema extensions
 
-* `x-bus-method` - specifies the controller (the bus method which will be executed when the respective http route gets called).
+* `x-bus-method` - specifies the controller (the bus method which will be executed when the respective http route gets called)
 
 ## JSON Schema custom keywords
 * `x-occurrences` - specifies that certain field should appear in a way compliant with the provided specification. Example:
