@@ -9,11 +9,12 @@ module.exports = async ({port, swaggerDocument, options}) => {
         const validate = compiled.getValidator(ctx.path, ctx.method);
         if (!validate) {
             ctx.status = 404;
-            throw port.errors['swagger.requestValidation']();
+            const error = port.errors['swagger.validationNotFound']();
+            ctx.body = {error};
+            throw error;
         }
-        let errors = [];
         if (options.request) {
-            errors = await validate.request({
+            const errors = await validate.request({
                 query: ctx.request.query,
                 body: ctx.request.body,
                 files: ctx.request.files,
@@ -22,7 +23,7 @@ module.exports = async ({port, swaggerDocument, options}) => {
             });
             if (errors.length > 0) {
                 ctx.status = 400;
-                let error = port.errors['swagger.requestValidation']({errors});
+                const error = port.errors['swagger.requestValidation']({errors});
                 ctx.body = {error};
                 throw error;
             }
@@ -31,13 +32,13 @@ module.exports = async ({port, swaggerDocument, options}) => {
         await next();
 
         if (options.response) {
-            errors = await validate.response({
+            const errors = await validate.response({
                 status: ctx.status,
                 body: ctx.body
             });
             if (errors.length > 0) {
                 ctx.status = 500;
-                let error = port.errors['swagger.responseValidation']({errors});
+                const error = port.errors['swagger.responseValidation']({errors});
                 ctx.body = {error};
                 throw error;
             }

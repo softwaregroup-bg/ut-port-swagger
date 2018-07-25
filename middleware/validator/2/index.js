@@ -1,12 +1,12 @@
 const swagger2 = require('swagger2');
 module.exports = ({port, swaggerDocument, options}) => {
-    let document = port.merge({}, swaggerDocument);
-    let formFiles = {};
+    const document = port.merge({}, swaggerDocument);
+    const formFiles = {};
     Object.keys(document.paths).forEach(path => {
         Object.keys(document.paths[path]).forEach(method => {
-            let spec = document.paths[path][method];
+            const spec = document.paths[path][method];
             if (spec.parameters) {
-                let fileParams = [];
+                const fileParams = [];
                 spec.parameters = spec.parameters.filter(param => {
                     if (param.in === 'formData' && param.type === 'file') {
                         fileParams.push(param);
@@ -15,7 +15,7 @@ module.exports = ({port, swaggerDocument, options}) => {
                     return true;
                 });
                 if (fileParams.length > 0) {
-                    let fullPath = [document.basePath, path].filter(x => x).join('');
+                    const fullPath = [document.basePath, path].filter(x => x).join('');
                     formFiles[`${fullPath}.${method.toLowerCase()}`] = fileParams;
                 }
             }
@@ -26,11 +26,13 @@ module.exports = ({port, swaggerDocument, options}) => {
         if (!ctx.path.startsWith(document.basePath)) {
             return next();
         }
-        let compiledPath = compiled(ctx.path);
+        const compiledPath = compiled(ctx.path);
         if (compiledPath === undefined) {
             // if there is no single matching path, return 404 (not found)
             ctx.status = 404;
-            return;
+            const error = port.errors['swagger.validationNotFound']();
+            ctx.body = {error};
+            throw error;
         }
         let errors = [];
         if (options.request) {
@@ -38,10 +40,12 @@ module.exports = ({port, swaggerDocument, options}) => {
             if (errors === undefined) {
                 // operation not defined, return 405 (method not allowed)
                 ctx.status = 405;
-                return;
+                const error = port.errors['swagger.methodNotAllowed']();
+                ctx.body = {error};
+                throw error;
             }
             if (errors.length === 0) {
-                let formFilesPath = `${ctx.path}.${ctx.method.toLowerCase()}`;
+                const formFilesPath = `${ctx.path}.${ctx.method.toLowerCase()}`;
                 if (formFiles[formFilesPath]) {
                     errors = formFiles[formFilesPath].reduce((all, param) => {
                         if (!ctx.request.files[param.name]) {
@@ -55,7 +59,7 @@ module.exports = ({port, swaggerDocument, options}) => {
             }
             if (errors.length > 0) {
                 ctx.status = 400;
-                let error = port.errors['swagger.requestValidation']({errors});
+                const error = port.errors['swagger.requestValidation']({errors});
                 ctx.body = {error};
                 throw error;
             }
@@ -67,7 +71,7 @@ module.exports = ({port, swaggerDocument, options}) => {
             errors = swagger2.validateResponse(compiledPath, ctx.method, ctx.status, ctx.body);
             if (errors) {
                 ctx.status = 500;
-                let error = port.errors['swagger.responseValidation']({errors});
+                const error = port.errors['swagger.responseValidation']({errors});
                 ctx.body = {error};
                 throw error;
             }
