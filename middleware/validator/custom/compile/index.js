@@ -44,29 +44,24 @@ module.exports = async function compile(swaggerDocument) {
                     }) {
                         const errors = [];
                         if (params.length === 0) {
-                            let error = await validator.empty()(body);
+                            const error = await validator.empty()(body);
                             if (error) {
                                 error.where = 'body';
                                 errors.push(error);
                             }
-                            let queryKeys = Object.keys(query);
-                            if (queryKeys.length > 0) {
-                                queryKeys.forEach(name => {
-                                    errors.push({
-                                        where: 'query',
-                                        name,
-                                        actual: query[name],
-                                        expected: {}
-                                    });
+                            Object.keys(query).forEach(name => {
+                                errors.push({
+                                    where: 'query',
+                                    name,
+                                    actual: query[name],
+                                    expected: undefined
                                 });
-                            }
+                            });
                         } else {
                             let hasBody = false;
-                            let i = 0;
-                            const n = params.length;
-                            for (; i < n; i += 1) {
-                                let param = params[i];
+                            for (let i = 0; i < params.length; i += 1) {
                                 let value;
+                                const param = params[i];
                                 switch (param.in) {
                                     case 'query':
                                         value = query[param.name];
@@ -93,19 +88,19 @@ module.exports = async function compile(swaggerDocument) {
                                         hasBody = true;
                                         break;
                                 }
-                                let error = await param.validate(value);
+                                const error = await param.validate(value);
                                 error && errors.push(error);
                             }
                             if (!hasBody && body !== undefined) {
-                                let error = await validator.empty()(body);
+                                const error = await validator.empty()(body);
                                 error && errors.push(error);
                             }
                         }
                         return errors;
                     },
                     response: async function validateResponse({status, body}) {
-                        let validate = (responses[status] || responses.default).validate;
-                        let error = await validate(body);
+                        const validate = (responses[status] || responses.default).validate;
+                        const error = await validate(body);
                         return error ? [error] : [];
                     }
                 };
@@ -114,11 +109,9 @@ module.exports = async function compile(swaggerDocument) {
     });
     return {
         getValidator(path, method) {
-            let i = 0;
-            let n = validators.length;
             let validator;
             let match;
-            for (; i < n; i += 1) {
+            for (let i = 0; i < validators.length; i += 1) {
                 match = validators[i](path, method);
                 if (match) {
                     if (!validator) {

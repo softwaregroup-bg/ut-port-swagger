@@ -12,7 +12,7 @@ module.exports = ({port, options, swaggerDocument}) => {
         Object.keys(collection).forEach(methodName => {
             const method = collection[methodName];
             if (!method['x-bus-method']) {
-                throw port.errors['swagger.noXBusMethod']({method});
+                throw port.errors['swagger.xBusMethodNotDefined']({method});
             }
             const successCodes = Object.keys(method.responses).filter(code => code >= 200 && code < 300);
             if (successCodes.length > 1) {
@@ -33,6 +33,15 @@ module.exports = ({port, options, swaggerDocument}) => {
     });
     return koaCompose([
         router.routes(),
-        router.allowedMethods()
+        router.allowedMethods(),
+        (ctx, next) => {
+            if (!ctx.ut.method) {
+                ctx.status = 404;
+                const error = port.errors['swagger.routeNotFound']();
+                ctx.body = {error};
+                throw error;
+            }
+            return next();
+        }
     ]);
 };
