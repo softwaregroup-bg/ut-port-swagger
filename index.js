@@ -42,25 +42,25 @@ module.exports = (params = {}) => {
         }
 
         async init() {
-            await super.init();
+            const result = await super.init();
+            switch (typeof this.config.document) {
+                case 'function':
+                    this.swaggerDocument = this.config.document.call(this);
+                    break;
+                case 'string':
+                    this.swaggerDocument = await swaggerParser.bundle(this.config.document);
+                    break;
+                default:
+                    this.swaggerDocument = this.config.document;
+            }
+            await swaggerParser.validate(this.swaggerDocument);
+            return result;
         }
 
         async start() {
             // this.bus.importMethods(this.config, this.config.imports, {request: true, response: true}, this);
             this.stream = this.pull(false, { requests: {} });
-            await super.start();
-            let swaggerDocument;
-            switch (typeof this.config.document) {
-                case 'function':
-                    swaggerDocument = this.config.document.call(this);
-                    break;
-                case 'string':
-                    swaggerDocument = await swaggerParser.bundle(this.config.document);
-                    break;
-                default:
-                    swaggerDocument = this.config.document;
-            }
-            await swaggerParser.validate(swaggerDocument);
+            const result = await super.start();
             const app = new Koa();
             if (this.config.middleware) {
                 let i = 0;
@@ -71,7 +71,6 @@ module.exports = (params = {}) => {
                     if (options !== false && options !== 'false') {
                         app.use(await factory({
                             port: this,
-                            swaggerDocument,
                             options: Object.assign({}, options)
                         }));
                     }
@@ -86,11 +85,12 @@ module.exports = (params = {}) => {
                     opcode: 'port.started'
                 }
             });
+            return result;
         }
 
         async stop() {
             this.server.close();
-            await super.stop();
+            return await super.stop();
         }
     }
 

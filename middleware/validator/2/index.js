@@ -1,6 +1,6 @@
 const swagger2 = require('swagger2');
-module.exports = ({port, swaggerDocument, options}) => {
-    const document = port.merge({}, swaggerDocument);
+module.exports = ({port, options}) => {
+    const document = port.merge({}, port.swaggerDocument);
     const formFiles = {};
     Object.keys(document.paths).forEach(path => {
         Object.keys(document.paths[path]).forEach(method => {
