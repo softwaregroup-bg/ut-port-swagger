@@ -1,10 +1,10 @@
 const send = require('koa-send');
 const root = require('swagger-ui-dist').getAbsoluteFSPath();
 const html = require('./html');
-module.exports = ({options, swaggerDocument}) => {
+module.exports = ({port, options}) => {
     const {pathRoot, skipPaths} = options;
     const pathPrefix = pathRoot.endsWith('/') ? pathRoot : pathRoot + '/';
-    const htmlBody = html(swaggerDocument, pathPrefix);
+    const htmlBody = html(port.swaggerDocument, pathPrefix);
     return async (ctx, next) => {
         if (ctx.method === 'GET' && ctx.path.startsWith(pathRoot)) {
             if (ctx.path === pathRoot) {
@@ -15,7 +15,7 @@ module.exports = ({options, swaggerDocument}) => {
             }
             if (ctx.path === (pathPrefix + 'api-docs')) {
                 ctx.type = 'application/json; charset=utf-8';
-                ctx.body = swaggerDocument;
+                ctx.body = port.swaggerDocument;
                 ctx.status = 200;
                 return;
             }

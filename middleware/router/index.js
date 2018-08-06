@@ -4,11 +4,11 @@ const sanitize = (path) => {
     // transform path parameter definitions from swagger 2 to koa 2 standard: /{id} -> /:id
     return path.replace(/\{([^}]*)\}/g, (placeHolder, label) => `:${label}`);
 };
-module.exports = ({port, options, swaggerDocument}) => {
+module.exports = ({port, options}) => {
     const router = koaRouter(options);
-    Object.keys(swaggerDocument.paths).forEach(path => {
-        const fullPath = [swaggerDocument.basePath, sanitize(path)].filter(x => x).join('');
-        const collection = swaggerDocument.paths[path];
+    Object.keys(port.swaggerDocument.paths).forEach(path => {
+        const fullPath = [port.swaggerDocument.basePath, sanitize(path)].filter(x => x).join('');
+        const collection = port.swaggerDocument.paths[path];
         Object.keys(collection).forEach(methodName => {
             const method = collection[methodName];
             if (!method['x-bus-method']) {

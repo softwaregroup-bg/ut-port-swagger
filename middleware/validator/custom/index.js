@@ -1,9 +1,9 @@
 
 const compile = require('./compile');
-module.exports = async ({port, swaggerDocument, options}) => {
-    const compiled = await compile(swaggerDocument);
+module.exports = async ({port, options}) => {
+    const compiled = await compile(port.swaggerDocument);
     return async (ctx, next) => {
-        if (!ctx.path.startsWith(swaggerDocument.basePath)) {
+        if (!ctx.path.startsWith(port.swaggerDocument.basePath)) {
             return next();
         }
         const validate = compiled.getValidator(ctx.path, ctx.method);
