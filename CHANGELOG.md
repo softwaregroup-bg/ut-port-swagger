@@ -1,3 +1,13 @@
+<a name="1.3.3"></a>
+## [1.3.3](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.3.2...v1.3.3) (2018-08-06)
+
+
+### Bug Fixes
+
+* set swaggerDocument as an instance property in swagger port class ([e44f5b9](https://github.com/softwaregroup-bg/ut-port-swagger/commit/e44f5b9))
+
+
+
 <a name="1.3.2"></a>
 ## [1.3.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.3.1...v1.3.2) (2018-07-25)
 
