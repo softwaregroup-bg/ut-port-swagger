@@ -1,3 +1,13 @@
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.3.3...v1.4.0) (2018-08-15)
+
+
+### Features
+
+* allow additional processing of the swaggerDocument on imlpementation level ([e7d2c9c](https://github.com/softwaregroup-bg/ut-port-swagger/commit/e7d2c9c))
+
+
+
 <a name="1.3.3"></a>
 ## [1.3.3](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.3.2...v1.3.3) (2018-08-06)
 
