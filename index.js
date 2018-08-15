@@ -53,14 +53,17 @@ module.exports = (params = {}) => {
                 default:
                     this.swaggerDocument = this.config.document;
             }
-            await swaggerParser.validate(this.swaggerDocument);
+            if (!this.swaggerDocument) {
+                throw this.errors['swagger.documentNotProvided']();
+            }
             return result;
         }
 
         async start() {
             // this.bus.importMethods(this.config, this.config.imports, {request: true, response: true}, this);
-            this.stream = this.pull(false, { requests: {} });
             const result = await super.start();
+            await swaggerParser.validate(this.swaggerDocument);
+            this.stream = this.pull(false, { requests: {} });
             const app = new Koa();
             if (this.config.middleware) {
                 let i = 0;

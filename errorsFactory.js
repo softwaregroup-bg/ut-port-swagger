@@ -2,6 +2,7 @@ module.exports = (bus) => {
     let {defineError, getError, fetchErrors} = bus.errors;
     if (!getError('swagger')) {
         const Swagger = defineError('swagger', null, 'Swagger error', 'error');
+        defineError('documentNotProvided', Swagger, 'Swagger document must be provided', 'error');
         defineError('successCodesCount', Swagger, 'Too many successful HTTP status codes have been defined. Expected: {expected}, actual: {actual}', 'error');
         defineError('xBusMethodNotDefined', Swagger, 'x-bus-method must be defined', 'error');
         defineError('routeNotFound', Swagger, 'Route not found', 'error');
