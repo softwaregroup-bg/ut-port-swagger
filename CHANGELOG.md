@@ -1,3 +1,13 @@
+<a name="1.4.1"></a>
+## [1.4.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.4.0...v1.4.1) (2018-09-10)
+
+
+### Bug Fixes
+
+* more descriptive path errors ([889a484](https://github.com/softwaregroup-bg/ut-port-swagger/commit/889a484))
+
+
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.3.3...v1.4.0) (2018-08-15)
 
