@@ -89,7 +89,11 @@ module.exports = async function compile(swaggerDocument) {
                                         break;
                                 }
                                 const error = await param.validate(value);
-                                error && errors.push(error);
+                                if (error) {
+                                    error.where = param.in;
+                                    error.name = param.name;
+                                    errors.push(error);
+                                }
                             }
                             if (!hasBody && body !== undefined) {
                                 const error = await validator.empty()(body);
