@@ -1,5 +1,5 @@
 const Ajv = require('./ajv');
-const ajv = new Ajv({allErrors: true, $data: true});
+const ajv = new Ajv({allErrors: true, $data: true, useDefaults: true});
 const getValidationHandler = schema => {
     schema.$async = true;
     if (typeof schema.required === 'boolean') {
