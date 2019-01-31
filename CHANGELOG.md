@@ -1,3 +1,13 @@
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.4.2...v1.5.0) (2019-01-31)
+
+
+### Features
+
+* add possibility to set response headers ([dfc949b](https://github.com/softwaregroup-bg/ut-port-swagger/commit/dfc949b))
+
+
+
 <a name="1.4.2"></a>
 ## [1.4.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.4.1...v1.4.2) (2018-12-19)
 
