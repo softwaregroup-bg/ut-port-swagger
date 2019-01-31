@@ -15,8 +15,13 @@ module.exports = ({port}) => {
                 mtid: 'request',
                 method,
                 requestHeaders: ctx.request.headers,
-                reply: (response, $responseMeta) => {
-                    switch ($responseMeta.mtid) {
+                reply: (response, {responseHeaders, mtid}) => {
+                    if (responseHeaders) {
+                        Object.keys(responseHeaders).forEach(header => {
+                            ctx.set(header, responseHeaders[header]);
+                        });
+                    }
+                    switch (mtid) {
                         case 'response':
                             ctx.body = response;
                             ctx.status = successCode;
