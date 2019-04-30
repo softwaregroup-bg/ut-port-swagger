@@ -6,7 +6,7 @@ module.exports = ({options}) => {
             ctx.body = handlers[method]();
             ctx.status = successCode;
         } else {
-            next();
+            return next();
         }
     };
 };
