@@ -27,24 +27,24 @@
     "swagger"
   ],
   "devDependencies": {
-    "ut-tools": "^6.15.0",
+    "ut-tools": "^6.16.2",
     "tap": "^12.6.2"
   },
   "dependencies": {
-    "@koa/cors": "^3.0.0",
-    "ajv": "^6.10.0",
-    "koa": "^2.7.0",
-    "koa-bodyparser": "^4.2.1",
-    "koa-compose": "^4.1.0",
-    "koa-jwt": "^3.5.1",
-    "koa-router": "^7.4.0",
-    "koa-send": "^5.0.0",
-    "koa2-formidable": "^1.0.2",
-    "swagger-parser": "^6.0.5",
-    "swagger-ui-dist": "^3.22.1",
-    "swagger2": "^1.0.4",
+    "@koa/cors": "3.0.0",
+    "ajv": "6.10.0",
+    "koa": "2.7.0",
+    "koa-bodyparser": "4.2.1",
+    "koa-compose": "4.1.0",
+    "koa-jwt": "3.5.1",
+    "koa-router": "7.4.0",
+    "koa-send": "5.0.0",
+    "koa2-formidable": "1.0.2",
+    "swagger-parser": "6.0.5",
+    "swagger-ui-dist": "3.22.1",
+    "swagger2": "1.0.4",
     "generate-schema": "2.6.0",
-    "uuid": "^3.3.2"
+    "uuid": "3.3.2"
   },
   "repository": {
     "type": "git",

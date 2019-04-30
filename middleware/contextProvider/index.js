@@ -7,7 +7,10 @@ module.exports = ({port, options}) => {
             const { body } = ctx.request;
             const { method } = ctx.ut;
             port.log.trace && port.log.trace({
-                body, params, query, path,
+                body,
+                params,
+                query,
+                path,
                 $meta: { mtid: 'request', method }
             });
             try {
@@ -18,7 +21,8 @@ module.exports = ({port, options}) => {
                 ctx.body = response;
                 ctx.status = status;
                 port.log.trace && port.log.trace({
-                    response, status,
+                    response,
+                    status,
                     $meta: { mtid: 'response', method }
                 });
             } catch (e) {
@@ -26,12 +30,12 @@ module.exports = ({port, options}) => {
                 ctx.status = 400;
                 ctx.body = {error};
                 port.log.error && port.log.error({
-                    error, status: ctx.status,
+                    error,
+                    status: ctx.status,
                     $meta: { mtid: 'error', method }
                 });
                 throw error;
             }
-
         } else {
             return next();
         }

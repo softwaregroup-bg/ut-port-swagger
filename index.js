@@ -40,7 +40,6 @@ module.exports = ({utPort, registerErrors}) => {
             };
         }
         async init(...params) {
-
             Object.assign(this.errors, registerErrors(errors));
 
             let document;
@@ -78,7 +77,7 @@ module.exports = ({utPort, registerErrors}) => {
                         options
                     }));
                 }
-            })
+            });
 
             return super.init(...params);
         }

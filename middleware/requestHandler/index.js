@@ -7,7 +7,11 @@ module.exports = ({port}) => {
         const trace = uuid.v4();
         if (port.log.trace) {
             port.log.trace({
-                body, files, params, query, path,
+                body,
+                files,
+                params,
+                query,
+                path,
                 $meta: { mtid: 'request', trace, method }
             });
         }

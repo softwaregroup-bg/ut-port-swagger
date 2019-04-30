@@ -5,7 +5,7 @@ module.exports = ({port, options}) => {
     const {pathRoot, skipPaths} = options;
     const pathPrefix = pathRoot.endsWith('/') ? pathRoot : pathRoot + '/';
     const htmlBody = html(port.swaggerDocument, pathPrefix);
-    return async (ctx, next) => {
+    return async(ctx, next) => {
         if (ctx.method === 'GET' && ctx.path.startsWith(pathRoot)) {
             if (ctx.path === pathRoot) {
                 ctx.type = 'text/html; charset=utf-8';

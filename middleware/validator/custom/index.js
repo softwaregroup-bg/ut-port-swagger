@@ -1,8 +1,8 @@
 
 const compile = require('./compile');
-module.exports = async ({port, options}) => {
+module.exports = async({port, options}) => {
     const compiled = await compile(port.swaggerDocument);
-    return async (ctx, next) => {
+    return async(ctx, next) => {
         if (!ctx.path.startsWith(port.swaggerDocument.basePath)) {
             return next();
         }

@@ -1,5 +1,5 @@
 module.exports = () => {
-    return async (ctx, next) => {
+    return async(ctx, next) => {
         // request
         ctx.ut = {};
         try {

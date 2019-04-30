@@ -57,7 +57,7 @@ module.exports = {
     },
     primitive: schema => {
         const validate = getValidationHandler(schema);
-        return async value => { // normalize value
+        return value => { // normalize value
             if (typeof value !== 'undefined') {
                 switch (schema.type) {
                     case 'number':
@@ -94,7 +94,7 @@ module.exports = {
                         break;
                 }
             }
-            return await validate(value);
+            return validate(value);
         };
     }
 };

@@ -1,4 +1,3 @@
-const crud = require('./crud');
 const definitions = require('./definitions');
 const generateSchema = require('generate-schema');
 const interpolationRegex = /^\$\{[\w]+(\.[\w]+)*\}$/g;

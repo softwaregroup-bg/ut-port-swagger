@@ -3,6 +3,7 @@
 Swagger comp
 
 ## Configuration
+
 ```js
 {
   // UT specific configuration
@@ -91,10 +92,15 @@ Swagger comp
 ## Headers
 
 ### Request headers
+
 Access the request headers from `$meta.requestHeaders`
 
 ### Response headers
-In order to set response headers just attach a responseHeaders object in $meta from the bus method that has been called. E.g
+
+In order to set response headers
+just attach a responseHeaders object in $meta
+from the bus method that has been called. E.g
+
 ```js
   function(incomingMessage, $meta) {
     $meta.responseHeaders = {
@@ -109,11 +115,16 @@ In order to set response headers just attach a responseHeaders object in $meta f
 
 ## OpenAPI Schema extensions
 
-* `x-bus-method` - specifies the controller (the bus method which will be executed when the respective http route gets called)
+* `x-bus-method` - specifies the controller
+(the bus method which will be executed when the respective http route gets called)
 
 ## JSON Schema custom keywords
-* `x-occurrences` - specifies that certain field should appear in a way compliant with the provided specification. Example:
- ```json
+
+* `x-occurrences` - specifies that certain field
+should appear in a way compliant with the provided specification.
+Example:
+
+```json
  {
     "type": "object",
     "additionalProperties": false,
@@ -176,4 +187,4 @@ In order to set response headers just attach a responseHeaders object in $meta f
     }
   }
 
- ```
+```
