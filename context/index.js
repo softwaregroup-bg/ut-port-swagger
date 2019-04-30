@@ -51,7 +51,7 @@ module.exports = (port, {
         // delete $schema property as it is in conflict with swagger 2 specification
         delete schema.$schema;
 
-        handlers[method] = () => data;
+        handlers[method] = () => ({response: data});
         paths[getPath(path)] = {
             get: {
                 operationId: method,
@@ -77,10 +77,12 @@ module.exports = (port, {
 
     function schemasInventoryRoute() {
         const method = `${namespace}.schemas`;
-        handlers[method] = () => (Object.keys(schemas).reduce((all, key) => {
-            all[key] = getPath(`/schemas/${key}`);
-            return all;
-        }, {}));
+        handlers[method] = () => ({
+            response: Object.keys(schemas).reduce((all, key) => {
+                all[key] = getPath(`/schemas/${key}`);
+                return all;
+            }, {})
+        });
         paths[getPath('/schemas')] = {
             get: {
                 operationId: method,
@@ -111,7 +113,7 @@ module.exports = (port, {
             const schemaSchema = generateSchema.json(`schema ${key}`, schema);
             // delete $schema property as it is in conflict with swagger 2 specification
             delete schemaSchema.$schema;
-            handlers[method] = () => schema;
+            handlers[method] = () => ({response: schema});
             paths[getPath(`/schemas/${key}`)] = {
                 get: {
                     operationId: method,
@@ -135,12 +137,13 @@ module.exports = (port, {
 
     function healthRoute() {
         const method = `${namespace}.health`;
-        // handlers[method] = () => {
-        //     const code = port.isReady ? 200 : 202;
-        //     return h.response({state: this.state}).code(code);
-        // };
-        handlers[method] = () => ({});
-        paths[getPath('/health')] = {
+        handlers[method] = () => ({
+            status: port.isReady ? 200 : 503,
+            response: {
+                state: port.state
+            }
+        });
+        paths[getPath('/healthz')] = {
             get: {
                 operationId: method,
                 tags: ['metadata'],
@@ -152,10 +155,26 @@ module.exports = (port, {
                         schema: definitions.error
                     },
                     200: {
-                        description: 'Health status ok',
+                        description: 'Service is ready',
                         schema: {
                             type: 'object',
-                            properties: {},
+                            properties: {
+                                state: {
+                                    type: 'string'
+                                }
+                            },
+                            additionalProperties: false
+                        }
+                    },
+                    503: {
+                        description: 'Service is started but it is not ready yet',
+                        schema: {
+                            type: 'object',
+                            properties: {
+                                state: {
+                                    type: 'string'
+                                }
+                            },
                             additionalProperties: false
                         }
                     }

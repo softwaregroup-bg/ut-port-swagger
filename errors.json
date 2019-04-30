@@ -7,5 +7,6 @@
     "swagger.methodNotAllowed": "Method not allowed",
     "swagger.validationNotFound": "Validation not found",
     "swagger.requestValidation": "Request validation error",
-    "swagger.responseValidation": "Response validation error"
+    "swagger.responseValidation": "Response validation error",
+    "swagger.contextProviderError": "Context provider error"
 }
