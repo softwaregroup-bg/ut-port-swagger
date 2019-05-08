@@ -32,6 +32,10 @@ module.exports = [ // middleware order
         factory: require('./validator')
     },
     {
+        name: 'contextProvider',
+        factory: require('./contextProvider')
+    },
+    {
         name: 'requestHandler',
         factory: require('./requestHandler')
     }

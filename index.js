@@ -1,20 +1,20 @@
 'use strict';
-const errorsFactory = require('./errorsFactory');
 const swaggerParser = require('swagger-parser');
 const Koa = require('koa');
 const middleware = require('./middleware');
-
-module.exports = (params = {}) => {
-    const Port = params.parent;
-    class SwaggerPort extends Port {
-        constructor(params = {}) {
-            super(params);
-            this.config = this.merge({
+const errors = require('./errors.json');
+const swaggerContext = require('./context');
+module.exports = ({utPort, registerErrors}) => {
+    return class SwaggerPort extends utPort {
+        get defaults() {
+            return {
                 // UT specific configuration
                 id: 'swagger',
                 type: 'swagger',
-                logLevel: 'debug',
+                namespace: 'swagger',
                 document: null, // swagger document, path to swagger document or a function
+                schemas: {}, // json schema schemas
+                content: {}, // static content
                 // middleware options
                 middleware: {
                     wrapper: {},
@@ -37,65 +37,59 @@ module.exports = (params = {}) => {
                 // https://nodejs.org/api/net.html#net_server_listen_options_callback
                 // {port, host, path, backlog, exclusive, readableAll, writableAll}
                 server: {}
-            }, params.config);
-            Object.assign(this.errors, errorsFactory(this.bus));
+            };
         }
+        async init(...params) {
+            Object.assign(this.errors, registerErrors(errors));
 
-        async init() {
-            const result = await super.init();
+            let document;
             switch (typeof this.config.document) {
                 case 'function':
-                    this.swaggerDocument = this.config.document.call(this);
+                    document = this.config.document.call(this);
                     break;
                 case 'string':
-                    this.swaggerDocument = await swaggerParser.bundle(this.config.document);
+                    document = await swaggerParser.bundle(this.config.document);
                     break;
                 default:
-                    this.swaggerDocument = this.config.document;
+                    document = this.config.document;
             }
-            if (!this.swaggerDocument) {
-                throw this.errors['swagger.documentNotProvided']();
-            }
-            return result;
-        }
 
-        async start() {
-            // this.bus.importMethods(this.config, this.config.imports, {request: true, response: true}, this);
-            const result = await super.start();
-            await swaggerParser.validate(this.swaggerDocument);
-            this.stream = this.pull(false, { requests: {} });
-            const app = new Koa();
-            if (this.config.middleware) {
-                let i = 0;
-                let n = middleware.length;
-                for (; i < n; i += 1) {
-                    let {name, factory} = middleware[i];
-                    let options = this.config.middleware[name];
-                    if (options !== false && options !== 'false') {
-                        app.use(await factory({
-                            port: this,
-                            options: Object.assign({}, options)
-                        }));
-                    }
-                }
-            }
-            this.server = app.listen(this.config.server);
-            this.log.info && this.log.info({
-                message: 'Swagger port started',
-                address: this.server.address(),
-                $meta: {
-                    mtid: 'event',
-                    opcode: 'port.started'
+            if (!document) throw this.errors['swagger.documentNotProvided']();
+
+            const {namespace, content, schemas} = this.config;
+
+            const {swaggerDocument, handlers} = swaggerContext(this, {document, namespace, schemas, content});
+
+            await swaggerParser.validate(swaggerDocument);
+
+            this.swaggerDocument = swaggerDocument;
+
+            this.app = new Koa();
+
+            if (!this.config.middleware) this.config.middleware = {};
+            this.config.middleware.contextProvider = {handlers};
+
+            middleware.forEach(async({name, factory}) => {
+                const options = this.config.middleware[name];
+                if (typeof options === 'object') {
+                    this.app.use(await factory({
+                        port: this,
+                        options
+                    }));
                 }
             });
-            return result;
-        }
 
-        async stop() {
-            this.server.close();
-            return await super.stop();
+            return super.init(...params);
         }
-    }
-
-    return SwaggerPort;
+        async start(...params) {
+            const startResult = await super.start(...params);
+            this.stream = this.pull(false, { requests: {} });
+            this.server = this.app.listen(this.config.server);
+            return startResult;
+        }
+        stop() {
+            this.server && this.server.close();
+            return super.stop();
+        }
+    };
 };

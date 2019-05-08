@@ -22,7 +22,7 @@ module.exports = ({port, options}) => {
         });
     });
     const compiled = swagger2.compileDocument(document);
-    return async (ctx, next) => {
+    return async(ctx, next) => {
         if (!ctx.path.startsWith(document.basePath)) {
             return next();
         }
