@@ -1,3 +1,7 @@
+# [2.0.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.0.0-next.0...v2.0.0) (2019-05-08)
+
+
+
 <a name="1.5.0"></a>
 # [1.5.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v1.4.2...v1.5.0) (2019-01-31)
 
