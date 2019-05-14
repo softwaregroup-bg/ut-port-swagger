@@ -1,3 +1,12 @@
+## [2.0.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.0.0...v2.0.1) (2019-05-14)
+
+
+### Bug Fixes
+
+* async loop ([db02829](https://github.com/softwaregroup-bg/ut-port-swagger/commit/db02829))
+
+
+
 # [2.0.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.0.0-next.0...v2.0.0) (2019-05-08)
 
 
