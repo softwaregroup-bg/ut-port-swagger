@@ -69,15 +69,16 @@ module.exports = ({utPort, registerErrors}) => {
             if (!this.config.middleware) this.config.middleware = {};
             this.config.middleware.contextProvider = {handlers};
 
-            middleware.forEach(async({name, factory}) => {
-                const options = this.config.middleware[name];
+            for (let i = 0, n = middleware.length; i < n; i += 1) {
+                let {name, factory} = middleware[i];
+                let options = this.config.middleware[name];
                 if (typeof options === 'object') {
                     this.app.use(await factory({
                         port: this,
                         options
                     }));
                 }
-            });
+            }
 
             return super.init(...params);
         }
