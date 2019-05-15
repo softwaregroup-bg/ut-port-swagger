@@ -14,7 +14,8 @@ module.exports = ({utPort, registerErrors}) => {
                 namespace: 'swagger',
                 document: null, // swagger document, path to swagger document or a function
                 schemas: {}, // json schema schemas
-                content: {}, // static content
+                context: {}, // static context
+                staticRoutesPrefix: '', // prefix for auto generated static routes. e.g: '/meta'
                 // middleware options
                 middleware: {
                     wrapper: {},
@@ -56,9 +57,15 @@ module.exports = ({utPort, registerErrors}) => {
 
             if (!document) throw this.errors['swagger.documentNotProvided']();
 
-            const {namespace, content, schemas} = this.config;
+            const {staticRoutesPrefix, namespace, context, schemas} = this.config;
 
-            const {swaggerDocument, handlers} = swaggerContext(this, {document, namespace, schemas, content});
+            const {swaggerDocument, handlers} = swaggerContext(this, {
+                document,
+                staticRoutesPrefix,
+                namespace,
+                schemas,
+                context
+            });
 
             await swaggerParser.validate(swaggerDocument);
 

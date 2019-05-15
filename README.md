@@ -17,16 +17,16 @@ Swagger comp
     and the value is the schema itself.
   */
   schemas: {},
-  // static content
+  // static context
   /*
     static contet that will be automatically served by the server.
     e.g. {
       status: ['pending', 'approved']
     }
     then the following route will be exposed:
-    GET /meta/content/status
+    GET /context/status
     which will return the payload: ['pending', 'approved']
-    The content properties are tokenized and can be used
+    The context properties are tokenized and can be used
     within the schemas and swagger document via interpolation.
     I.e.
     {
@@ -38,7 +38,10 @@ Swagger comp
       }
     }
   */
-  content: {},
+  context: {},
+  // prefix for auto generated static routes. e.g: '/meta'
+  // if set then static routes like /context/status for example will become /meta/context/status
+  staticRoutesPrefix: '',
   // middleware options
   /*
     These below are the default options.
