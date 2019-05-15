@@ -1,3 +1,12 @@
+## [2.0.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.0.1...v2.0.2) (2019-05-15)
+
+
+### Bug Fixes
+
+* change naming from content to context ([9978685](https://github.com/softwaregroup-bg/ut-port-swagger/commit/9978685))
+
+
+
 ## [2.0.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.0.0...v2.0.1) (2019-05-14)
 
 
