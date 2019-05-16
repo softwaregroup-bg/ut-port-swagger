@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.0.2...v2.1.0) (2019-05-16)
+
+
+### Features
+
+* array payloads are now acceptd. They are put in message key called 'list' ([676bcec](https://github.com/softwaregroup-bg/ut-port-swagger/commit/676bcec))
+
+
+
 ## [2.0.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.0.1...v2.0.2) (2019-05-15)
 
 

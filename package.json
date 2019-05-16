@@ -1,6 +1,6 @@
 {
   "name": "ut-port-swagger",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "UT Port Swagger",
   "main": "index.js",
   "scripts": {
