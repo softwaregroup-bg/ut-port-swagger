@@ -1,3 +1,12 @@
+## [2.1.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.1.0...v2.1.1) (2019-05-17)
+
+
+### Bug Fixes
+
+* don't validate undefined primitives that are not required ([5602479](https://github.com/softwaregroup-bg/ut-port-swagger/commit/5602479))
+
+
+
 # [2.1.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.0.2...v2.1.0) (2019-05-16)
 
 
