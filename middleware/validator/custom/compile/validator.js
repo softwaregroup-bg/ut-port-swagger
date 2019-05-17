@@ -93,6 +93,8 @@ module.exports = {
                     default:
                         break;
                 }
+            } else if (!schema['x-required']) {
+                return;
             }
             return validate(value);
         };
