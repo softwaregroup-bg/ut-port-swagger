@@ -24,6 +24,8 @@ module.exports = ({utPort, registerErrors}) => {
                         skipPaths: []
                     },
                     cors: {},
+                    conditionalGet: {},
+                    etag: {},
                     formParser: {},
                     bodyParser: {},
                     jwt: false,
