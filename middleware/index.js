@@ -12,6 +12,14 @@ module.exports = [ // middleware order
         factory: require('./cors')
     },
     {
+        name: 'conditionalGet',
+        factory: require('./conditionalGet')
+    },
+    {
+        name: 'etag',
+        factory: require('./etag')
+    },
+    {
         name: 'formParser',
         factory: require('./formParser')
     },
