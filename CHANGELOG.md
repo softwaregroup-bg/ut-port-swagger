@@ -1,3 +1,17 @@
+# [2.2.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.1.1...v2.2.0) (2019-05-30)
+
+
+### Bug Fixes
+
+* update ut-tools ([3a0021e](https://github.com/softwaregroup-bg/ut-port-swagger/commit/3a0021e))
+
+
+### Features
+
+* add conditional-get and etag middlewares ([6fd3133](https://github.com/softwaregroup-bg/ut-port-swagger/commit/6fd3133))
+
+
+
 ## [2.1.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.1.0...v2.1.1) (2019-05-17)
 
 
