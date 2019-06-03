@@ -1,7 +1,7 @@
 const Ajv = require('./ajv');
 const ajv = new Ajv({allErrors: true, $data: true, useDefaults: true});
-const getValidationHandler = schema => {
-    schema.$async = true;
+const getValidationHandler = originalSchema => {
+    const schema = {...originalSchema, $async: true}; // don't override by reference
     if (typeof schema.required === 'boolean') {
         schema['x-required'] = schema.required; // json schema 4 support
         delete schema.required;
