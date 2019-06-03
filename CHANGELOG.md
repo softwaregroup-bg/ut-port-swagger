@@ -1,3 +1,12 @@
+## [2.2.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.2.0...v2.2.1) (2019-06-03)
+
+
+### Bug Fixes
+
+* fix hot reload. Don't override schema by reference ([6ee9c33](https://github.com/softwaregroup-bg/ut-port-swagger/commit/6ee9c33))
+
+
+
 # [2.2.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.1.1...v2.2.0) (2019-05-30)
 
 
