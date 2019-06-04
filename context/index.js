@@ -76,12 +76,15 @@ module.exports = (port, {
 
     function schemasInventoryRoute() {
         const method = `${namespace}.schemas`;
-        handlers[method] = () => ({
-            response: Object.keys(schemas).reduce((all, key) => {
-                all[key] = getPath(`/schemas/${key}`);
-                return all;
-            }, {})
-        });
+        const {basePath = ''} = document;
+        handlers[method] = () => {
+            return {
+                response: Object.keys(schemas).reduce((all, key) => {
+                    all[key] = basePath + getPath(`/schemas/${key}`);
+                    return all;
+                }, {})
+            };
+        };
         paths[getPath('/schemas')] = {
             get: {
                 operationId: method,
