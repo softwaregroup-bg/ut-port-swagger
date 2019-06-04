@@ -1,3 +1,12 @@
+## [2.2.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.2.1...v2.2.2) (2019-06-04)
+
+
+### Bug Fixes
+
+* add debug error info, fix schemas route payload ([c15c1ef](https://github.com/softwaregroup-bg/ut-port-swagger/commit/c15c1ef))
+
+
+
 ## [2.2.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.2.0...v2.2.1) (2019-06-03)
 
 
