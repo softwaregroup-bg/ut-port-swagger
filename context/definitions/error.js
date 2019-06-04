@@ -9,6 +9,15 @@ module.exports = {
                 },
                 message: {
                     type: 'string'
+                },
+                debug: {
+                    type: 'object',
+                    required: ['stack'],
+                    properties: {
+                        stack: {
+                            type: 'array'
+                        }
+                    }
                 }
             },
             required: ['type', 'message'],

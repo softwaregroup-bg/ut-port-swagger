@@ -1,4 +1,4 @@
-module.exports = () => {
+module.exports = ({port}) => {
     return async(ctx, next) => {
         // request
         ctx.ut = {};
@@ -7,6 +7,8 @@ module.exports = () => {
             // response
         } catch (e) {
             // error
+            if (!ctx.body.error) ctx.body.error = e;
+            if (port.config.debug) ctx.body.error.debug = {stack: e.stack.split('\n')};
             ctx.app.emit('error', e, ctx);
         }
     };
