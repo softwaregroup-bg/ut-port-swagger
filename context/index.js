@@ -160,9 +160,11 @@ module.exports = (port, {
                         description: 'Service is ready',
                         schema: {
                             type: 'object',
+                            required: ['state'],
                             properties: {
                                 state: {
-                                    type: 'string'
+                                    type: 'string',
+                                    title: 'state'
                                 }
                             },
                             additionalProperties: false

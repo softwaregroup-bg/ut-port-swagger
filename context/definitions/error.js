@@ -15,7 +15,10 @@ module.exports = {
                     required: ['stack'],
                     properties: {
                         stack: {
-                            type: 'array'
+                            type: 'array',
+                            items: {
+                                type: 'string'
+                            }
                         }
                     }
                 }
