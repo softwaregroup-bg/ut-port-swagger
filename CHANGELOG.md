@@ -1,3 +1,12 @@
+## [2.2.3](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.2.2...v2.2.3) (2019-06-05)
+
+
+### Bug Fixes
+
+* validations ([919dd98](https://github.com/softwaregroup-bg/ut-port-swagger/commit/919dd98))
+
+
+
 ## [2.2.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.2.1...v2.2.2) (2019-06-04)
 
 
