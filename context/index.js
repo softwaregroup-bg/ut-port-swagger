@@ -29,6 +29,26 @@ const interpolate = (schema, context) => {
     }
 };
 
+const responseSchemaFormatter = {};
+responseSchemaFormatter['2.0'] = (description, schema) => {
+    return {
+        description,
+        schema
+    };
+};
+
+responseSchemaFormatter['3.0.0'] =
+responseSchemaFormatter['3.0.1'] = (description, schema) => {
+    return {
+        description,
+        content: {
+            'application/json': {
+                schema
+            }
+        }
+    };
+};
+
 module.exports = (port, {
     document,
     staticRoutesPrefix,
@@ -38,6 +58,8 @@ module.exports = (port, {
 }) => {
     const paths = {};
     const handlers = {};
+
+    const getResponseSchema = responseSchemaFormatter[document.swagger || document.openapi];
 
     function getPath(path) {
         return staticRoutesPrefix ? `${staticRoutesPrefix}${path}` : path;
@@ -58,14 +80,8 @@ module.exports = (port, {
                 description: method,
                 'x-bus-method': method,
                 responses: {
-                    default: {
-                        description: 'Invalid request.',
-                        schema: definitions.error
-                    },
-                    200: {
-                        description: 'Record successfully obtained',
-                        schema
-                    }
+                    default: getResponseSchema('Invalid request', definitions.error),
+                    200: getResponseSchema('Record successfully obtained', schema)
                 }
             }
         };
@@ -92,18 +108,12 @@ module.exports = (port, {
                 description: method,
                 'x-bus-method': method,
                 responses: {
-                    default: {
-                        description: 'Invalid request.',
-                        schema: definitions.error
-                    },
-                    200: {
-                        description: 'schemas definitions',
-                        schema: {
-                            type: 'object',
-                            properties: {},
-                            additionalProperties: true
-                        }
-                    }
+                    default: getResponseSchema('Invalid request', definitions.error),
+                    200: getResponseSchema('schemas definitions', {
+                        type: 'object',
+                        properties: {},
+                        additionalProperties: true
+                    })
                 }
             }
         };
@@ -123,14 +133,8 @@ module.exports = (port, {
                     description: method,
                     'x-bus-method': method,
                     responses: {
-                        default: {
-                            description: 'Invalid request.',
-                            schema: definitions.error
-                        },
-                        200: {
-                            description: `${key} schema`,
-                            schema: schemaSchema
-                        }
+                        default: getResponseSchema('Invalid request', definitions.error),
+                        200: getResponseSchema(`${key} schema`, schemaSchema)
                     }
                 }
             };
@@ -152,36 +156,27 @@ module.exports = (port, {
                 description: method,
                 'x-bus-method': method,
                 responses: {
-                    default: {
-                        description: 'Invalid request.',
-                        schema: definitions.error
-                    },
-                    200: {
-                        description: 'Service is ready',
-                        schema: {
-                            type: 'object',
-                            required: ['state'],
-                            properties: {
-                                state: {
-                                    type: 'string',
-                                    title: 'state'
-                                }
-                            },
-                            additionalProperties: false
-                        }
-                    },
-                    503: {
-                        description: 'Service is started but it is not ready yet',
-                        schema: {
-                            type: 'object',
-                            properties: {
-                                state: {
-                                    type: 'string'
-                                }
-                            },
-                            additionalProperties: false
-                        }
-                    }
+                    default: getResponseSchema('Invalid request', definitions.error),
+                    200: getResponseSchema('Service is ready', {
+                        type: 'object',
+                        required: ['state'],
+                        properties: {
+                            state: {
+                                type: 'string',
+                                title: 'state'
+                            }
+                        },
+                        additionalProperties: false
+                    }),
+                    503: getResponseSchema('Service is started but it is not ready yet', {
+                        type: 'object',
+                        properties: {
+                            state: {
+                                type: 'string'
+                            }
+                        },
+                        additionalProperties: false
+                    })
                 }
             }
         };
