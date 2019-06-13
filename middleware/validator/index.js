@@ -1,7 +1,8 @@
-const parsers = {};
-parsers['2.0'] = require('./custom');
-// parsers['2.0'] = require('./2');
-parsers['3.0.0'] = parsers['3.0.1'] = require('./3');
+const parsers = {
+    '2.0': require('./2.0'),
+    '3.0.0': require('./3.0.0'),
+    '3.0.1': require('./3.0.1')
+};
 module.exports = async({port, options}) => {
     const {swaggerDocument} = port;
     const version = swaggerDocument.swagger || swaggerDocument.openapi;

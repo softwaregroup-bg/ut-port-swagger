@@ -2,7 +2,7 @@
     "swagger": "Swagger error",
     "swagger.documentNotProvided": "Swagger document must be provided",
     "swagger.successCodesCount": "Too many successful HTTP status codes have been defined. Expected: {expected}, actual: {actual}",
-    "swagger.xBusMethodNotDefined": "x-bus-method must be defined",
+    "swagger.operationIdNotDefined": "operationId must be defined",
     "swagger.routeNotFound": "Route not found",
     "swagger.methodNotAllowed": "Method not allowed",
     "swagger.validationNotFound": "Validation not found",
