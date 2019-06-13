@@ -1,3 +1,15 @@
+## [2.2.4](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.2.3...v2.2.4) (2019-06-13)
+
+
+### Bug Fixes
+
+* add forgotten files ([9216bbd](https://github.com/softwaregroup-bg/ut-port-swagger/commit/9216bbd))
+* fix static context routes ([28e7a92](https://github.com/softwaregroup-bg/ut-port-swagger/commit/28e7a92))
+* naminng ([3823ec1](https://github.com/softwaregroup-bg/ut-port-swagger/commit/3823ec1))
+* restructuring ([3309009](https://github.com/softwaregroup-bg/ut-port-swagger/commit/3309009))
+
+
+
 ## [2.2.3](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.2.2...v2.2.3) (2019-06-05)
 
 
