@@ -59,7 +59,7 @@ module.exports = (port, {
     const paths = {};
     const handlers = {};
 
-    const getResponseSchema = responseSchemaFormatter[document.swagger || document.openapi];
+    const formatResponse = responseSchemaFormatter[document.swagger || document.openapi];
 
     function getPath(path) {
         return staticRoutesPrefix ? `${staticRoutesPrefix}${path}` : path;
@@ -80,8 +80,8 @@ module.exports = (port, {
                 description: method,
                 'x-bus-method': method,
                 responses: {
-                    default: getResponseSchema('Invalid request', definitions.error),
-                    200: getResponseSchema('Record successfully obtained', schema)
+                    default: formatResponse('Invalid request', definitions.error),
+                    200: formatResponse('Record successfully obtained', schema)
                 }
             }
         };
@@ -108,8 +108,8 @@ module.exports = (port, {
                 description: method,
                 'x-bus-method': method,
                 responses: {
-                    default: getResponseSchema('Invalid request', definitions.error),
-                    200: getResponseSchema('schemas definitions', {
+                    default: formatResponse('Invalid request', definitions.error),
+                    200: formatResponse('schemas definitions', {
                         type: 'object',
                         properties: {},
                         additionalProperties: true
@@ -133,8 +133,8 @@ module.exports = (port, {
                     description: method,
                     'x-bus-method': method,
                     responses: {
-                        default: getResponseSchema('Invalid request', definitions.error),
-                        200: getResponseSchema(`${key} schema`, schemaSchema)
+                        default: formatResponse('Invalid request', definitions.error),
+                        200: formatResponse(`${key} schema`, schemaSchema)
                     }
                 }
             };
@@ -156,8 +156,8 @@ module.exports = (port, {
                 description: method,
                 'x-bus-method': method,
                 responses: {
-                    default: getResponseSchema('Invalid request', definitions.error),
-                    200: getResponseSchema('Service is ready', {
+                    default: formatResponse('Invalid request', definitions.error),
+                    200: formatResponse('Service is ready', {
                         type: 'object',
                         required: ['state'],
                         properties: {
@@ -168,7 +168,7 @@ module.exports = (port, {
                         },
                         additionalProperties: false
                     }),
-                    503: getResponseSchema('Service is started but it is not ready yet', {
+                    503: formatResponse('Service is started but it is not ready yet', {
                         type: 'object',
                         properties: {
                             state: {
