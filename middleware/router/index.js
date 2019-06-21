@@ -11,8 +11,8 @@ module.exports = ({port, options}) => {
         const collection = port.swaggerDocument.paths[path];
         Object.keys(collection).forEach(methodName => {
             const method = collection[methodName];
-            if (!method['x-bus-method']) {
-                throw port.errors['swagger.xBusMethodNotDefined']({method});
+            if (!method.operationId) {
+                throw port.errors['swagger.operationIdNotDefined']({method});
             }
             const successCodes = Object.keys(method.responses).filter(code => code >= 200 && code < 300);
             if (successCodes.length > 1) {
@@ -25,7 +25,7 @@ module.exports = ({port, options}) => {
                 });
             }
             router[methodName](fullPath, (ctx, next) => {
-                ctx.ut.method = method['x-bus-method'];
+                ctx.ut.method = method.operationId;
                 ctx.ut.successCode = successCodes[0] ? parseInt(successCodes[0]) : 200;
                 return next();
             });

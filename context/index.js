@@ -78,7 +78,6 @@ module.exports = (port, {
                 operationId: method,
                 tags: ['metadata'],
                 description: method,
-                'x-bus-method': method,
                 responses: {
                     default: formatResponse('Invalid request', definitions.error),
                     200: formatResponse('Record successfully obtained', schema)
@@ -106,7 +105,6 @@ module.exports = (port, {
                 operationId: method,
                 tags: ['metadata'],
                 description: method,
-                'x-bus-method': method,
                 responses: {
                     default: formatResponse('Invalid request', definitions.error),
                     200: formatResponse('schemas definitions', {
@@ -131,7 +129,6 @@ module.exports = (port, {
                     operationId: method,
                     tags: ['metadata'],
                     description: method,
-                    'x-bus-method': method,
                     responses: {
                         default: formatResponse('Invalid request', definitions.error),
                         200: formatResponse(`${key} schema`, schemaSchema)
@@ -154,7 +151,6 @@ module.exports = (port, {
                 operationId: method,
                 tags: ['metadata'],
                 description: method,
-                'x-bus-method': method,
                 responses: {
                     default: formatResponse('Invalid request', definitions.error),
                     200: formatResponse('Service is ready', {

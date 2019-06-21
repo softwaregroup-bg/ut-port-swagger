@@ -6,8 +6,8 @@ module.exports = ({port}) => {
         const { method, successCode } = ctx.ut;
         const mtid = 'request';
         const trace = uuid.v4();
-        const message = Object.assign({}, Array.isArray(body) ? {list: body} : body, files, params, query);
-        const $meta = { mtid, trace, method, headers };
+        const message = ctx.ut.msg = Object.assign({}, Array.isArray(body) ? {list: body} : body, files, params, query);
+        const $meta = ctx.ut.$meta = { mtid, trace, method, headers };
         if (port.log.trace) {
             port.log.trace({
                 details: {
