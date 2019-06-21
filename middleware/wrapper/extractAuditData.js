@@ -2,12 +2,13 @@ const os = require('os');
 const serverMachineName = os.hostname();
 const serverOsVersion = [os.type(), os.platform(), os.release()].join(':');
 module.exports = (port, ctx) => {
+    const error = ctx.body && ctx.body.error;
     return {
         auditEntryId: null,
         dateAndTime: null,
-        success: !(ctx.body && ctx.body.error),
-        failureReason: null,
-        failureCode: null,
+        success: !error,
+        failureReason: error ? error.message : null,
+        failureCode: error ? (error.type || error.code) : null,
         relatedObjects: [
             {
                 objectId: null,
