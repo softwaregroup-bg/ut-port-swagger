@@ -1,6 +1,7 @@
 
 const extractAuditData = require('./extractAuditData');
-module.exports = ({port}) => {
+module.exports = ({port, options}) => {
+    const {audit} = options;
     return async(ctx, next) => {
         // request
         ctx.ut = {};
@@ -13,8 +14,6 @@ module.exports = ({port}) => {
             if (port.config.debug) ctx.body.error.debug = {stack: e.stack.split('\n')};
             ctx.app.emit('error', e, ctx);
         }
-        if (ctx.ut.method && typeof port.methods.audit === 'function') {
-            port.methods.audit(extractAuditData(ctx));
-        }
+        if (audit && ctx.ut.method) ctx.app.emit('audit', extractAuditData(ctx));
     };
 };
