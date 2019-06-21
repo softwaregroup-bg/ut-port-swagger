@@ -8,7 +8,7 @@ module.exports = (port, ctx) => {
         dateAndTime: null,
         success: !error,
         failureReason: error ? error.message : null,
-        failureCode: error ? (error.type || error.code) : null,
+        failureCode: error ? (error.type || error.code || error.name) : null,
         relatedObjects: [
             {
                 objectId: null,
