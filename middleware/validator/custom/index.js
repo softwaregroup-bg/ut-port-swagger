@@ -38,7 +38,8 @@ module.exports = async swaggerDocument => {
                     body = {},
                     files = {},
                     pathParameters = {},
-                    headers = {}
+                    headers = {},
+                    path = ''
                 }) {
                     const errors = [];
                     if (params.length === 0) {
@@ -65,12 +66,11 @@ module.exports = async swaggerDocument => {
                                     value = query[param.name];
                                     break;
                                 case 'path':
-                                    if (pathParameters) {
-                                        value = pathParameters[param.name];
-                                    } else {
-                                        const requestPath = basePath ? path.substring(basePath.length) : path;
-                                        const actual = requestPath.match(/[^/]+/g);
+                                    if (path) {
+                                        const actual = path.substring(basePath.length).match(/[^/]+/g);
                                         value = actual ? actual[expected.indexOf(`{${param.name}}`)] : undefined;
+                                    } else {
+                                        value = pathParameters[param.name];
                                     }
                                     break;
                                 case 'formData':

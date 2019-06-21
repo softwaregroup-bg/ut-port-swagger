@@ -1,10 +1,10 @@
 const os = require('os');
 const serverMachineName = os.hostname();
 const serverOsVersion = [os.type(), os.platform(), os.release()].join(':');
-module.exports = ctx => {
+module.exports = (port, ctx) => {
     return {
         auditEntryId: null,
-        dateAndTime: Date.now(),
+        dateAndTime: null,
         success: !(ctx.body && ctx.body.error),
         failureReason: null,
         failureCode: null,
@@ -17,19 +17,19 @@ module.exports = ctx => {
         callParams: ctx.ut.msg,
         eventGUID: ctx.ut.$meta.trace,
         eventGUIDDateTime: Date.now(),
-        eventClass: ctx.ut.method,
+        eventClass: port.config.id,
         eventCode: ctx.ut.method,
         eventURI: ctx.url,
-        eventDescription: 'Get loan product', // TODO
+        eventDescription: ctx.ut.method,
         controllerName: ctx.ut.method.split('.')[0],
-        controllerVersion: '0.0.1', // TODO
+        controllerVersion: '0.0.1',
         channel: 'web',
         userId: null,
         userName: 'anonymousUser',
         businessUnitName: null,
         businessUnitId: null,
         severityLevel: null,
-        sessionId: '', // TODO 7345ECE6E5F47260E439D8CFD27EAD75
+        sessionId: null,
         sourceIpAddress: '0:0:0:0:0:0:0:1',
         destinationIpAddress: '0:0:0:0:0:0:0:1',
         destinationPort: ctx.req.socket.localPort,
