@@ -28,7 +28,7 @@
   ],
   "devDependencies": {
     "tap": "^12.6.2",
-    "ut-tools": "^6.19.1"
+    "ut-tools": "^6.20.2"
   },
   "dependencies": {
     "@koa/cors": "3.0.0",
