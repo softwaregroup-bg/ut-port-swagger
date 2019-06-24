@@ -1,5 +1,5 @@
 const parsers = {};
-parsers['2.0'] = require('./custom');
+parsers['2.0'] = require('ut-swagger2-validator');
 // parsers['2.0'] = require('./2');
 parsers['3.0.0'] = parsers['3.0.1'] = require('./3');
 module.exports = async({port, options}) => {
@@ -9,9 +9,9 @@ module.exports = async({port, options}) => {
     if (!parse) {
         throw new Error(`Open api version ${version} not supported`);
     }
-    const validator = await parse(swaggerDocument);
+    const validators = await parse(swaggerDocument);
     return async(ctx, next) => {
-        const validate = validator(ctx.path, ctx.method);
+        const validate = validators[ctx.ut.method];
         if (!validate) {
             ctx.status = 404;
             const error = port.errors['swagger.validationNotFound']();

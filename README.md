@@ -116,9 +116,9 @@ from the bus method that has been called. E.g
   }
 ```
 
-## OpenAPI Schema extensions
+## OpenAPI Schema specifics
 
-* `x-bus-method` - specifies the controller
+* `operationId` - specifies the controller
 (the bus method which will be executed when the respective http route gets called)
 
 ## JSON Schema custom keywords

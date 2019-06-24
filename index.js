@@ -18,7 +18,9 @@ module.exports = ({utPort, registerErrors}) => {
                 staticRoutesPrefix: '', // prefix for auto generated static routes. e.g: '/meta'
                 // middleware options
                 middleware: {
-                    wrapper: {},
+                    wrapper: {
+                        audit: true
+                    },
                     swaggerUI: {
                         pathRoot: '/docs',
                         skipPaths: []
