@@ -1,26 +1,6 @@
-const uuid = require('uuid');
 module.exports = ({port}) => {
     return (ctx, next) => {
-        const { params, query, path } = ctx;
-        const { body, files, headers } = ctx.request;
-        const { method, successCode } = ctx.ut;
-        const mtid = 'request';
-        const trace = uuid.v4();
-        const message = ctx.ut.msg = Object.assign({}, Array.isArray(body) ? {list: body} : body, files, params, query);
-        const $meta = ctx.ut.$meta = { mtid, trace, method, headers };
-        if (port.log.trace) {
-            port.log.trace({
-                details: {
-                    body,
-                    files,
-                    params,
-                    query,
-                    path
-                },
-                message,
-                $meta
-            });
-        }
+        const {msg, $meta, successCode} = ctx.ut;
         return new Promise((resolve, reject) => {
             $meta.reply = (response, {responseHeaders, mtid}) => {
                 if (responseHeaders) {
@@ -48,7 +28,7 @@ module.exports = ({port}) => {
                         return reject(error);
                 }
             };
-            port.stream.push([message, $meta]);
+            port.stream.push([msg, $meta]);
         });
     };
 };

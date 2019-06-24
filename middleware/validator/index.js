@@ -1,5 +1,5 @@
 const parsers = {};
-parsers['2.0'] = require('./custom');
+parsers['2.0'] = require('ut-swagger2-validator');
 // parsers['2.0'] = require('./2');
 parsers['3.0.0'] = parsers['3.0.1'] = require('./3');
 module.exports = async({port, options}) => {
