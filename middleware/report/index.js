@@ -35,7 +35,7 @@ const getReportHandler = (port, { methods = true, exchange = '', namespace = '' 
                     messageAddedDate: new Date()
                 });
             } catch (e) {
-                this.log.error && this.log.error(e);
+                if (port.log.error) port.log.error(e);
             }
         };
         return handler;
