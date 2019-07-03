@@ -129,14 +129,14 @@ to a message queue (Rabbit MQ).
     "swagger": {
       "middleware": {
         "audit": {
-          "method": "audit.a.b.c",
+          "namespace": "audit",
+          "exchange": "asdfasdf",
+          "routingKey": "gfgfd",
           "options": {
             "headers": {
               "__TypeId__": "com.softwaregroup.audit.dto.AuditDto"
             }
-          },
-          "exchange": "asdfasdf",
-          "routingKey": "gfgfd"
+          }
         }
       }
     }
