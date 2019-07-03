@@ -45,7 +45,7 @@ const getReportHandler = (port, { methods = true, exchange = '', namespace = '' 
         if (Array.isArray(methods)) {
             methods.forEach(setHandler);
         } else {
-            Object.entries(methods).forEach(setHandler.apply.bind(null));
+            Object.entries(methods).forEach(([method, data]) => setHandler(method, data));
         }
     }
 
