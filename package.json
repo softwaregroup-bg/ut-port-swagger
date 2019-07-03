@@ -28,11 +28,11 @@
   ],
   "devDependencies": {
     "tap": "^12.6.2",
-    "ut-tools": "^6.20.2"
+    "ut-tools": "^6.21.0"
   },
   "dependencies": {
     "@koa/cors": "3.0.0",
-    "dot-prop": "^4.2.0",
+    "dot-prop": "4.2.0",
     "generate-schema": "2.6.0",
     "koa": "2.7.0",
     "koa-bodyparser": "4.2.1",

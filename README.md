@@ -103,34 +103,40 @@ Swagger comp
 ## Middleware
 
 ### wrapper
+
 TO DO: `wrapper` middleware description
 
 ### audit
-This middleware is responsible for sending audit data events to a message queue (Rabbit MQ).
+
+This middleware is responsible for sending audit data events
+to a message queue (Rabbit MQ).
+
 * configuration options
   * `namespace` (required) - Rabbit MQ producer port namespace
   * `exchange` (required) - Rabbit MQ exchange
   * `routingKey` (required) - Rabbit MQ routing key
-  * `options` (optional) - Rabbit MQ options. May include `headers`, `type`, `appId`, etc...
+  * `options` (optional) - Rabbit MQ options.
+  May include `headers`, `type`, `appId`, etc...
   [see amqplib channel publish options](http://www.squaremobius.net/amqp.node/channel_api.html#channel_publish)
 
   For more info about `options`, `exchange` and `routingKey`
   check `ut-port-amqp` [docs](https://github.com/softwaregroup-bg/ut-port-amqp#producer-port)
 
   Example:
-  ```
+
+  ```json
   {
-    swagger: {
-      middleware: {
-        audit: {
-          method: 'audit.a.b.c',
-          options: {
-            headers: {
-              __TypeId__: 'com.softwaregroup.audit.dto.AuditDto'
+    "swagger": {
+      "middleware": {
+        "audit": {
+          "method": "audit.a.b.c",
+          "options": {
+            "headers": {
+              "__TypeId__": "com.softwaregroup.audit.dto.AuditDto"
             }
           },
-          exchange: 'asdfasdf',
-          routingKey: 'gfgfd'
+          "exchange": "asdfasdf",
+          "routingKey": "gfgfd"
         }
       }
     }
@@ -138,7 +144,10 @@ This middleware is responsible for sending audit data events to a message queue 
   ```
 
 ### report
-This middleware is responsible for sending reporting data events to a message queue (Rabbit MQ).
+
+This middleware is responsible for sending reporting data events
+to a message queue (Rabbit MQ).
+
 * configuration options
   * `namespace` (required) - Rabbit MQ producer port namespace
   * `exchange` (required) - Rabbit MQ exchange
@@ -152,33 +161,33 @@ This middleware is responsible for sending reporting data events to a message qu
 
   Examples:
 
-  1) Report all methods:
+  * Report all methods:
 
-  ```
+  ```json
   {
-    swagger: {
-      middleware: {
-        report: {
-          namespace: 'audit'
-          exchange: 'exchange'
+    "swagger": {
+      "middleware": {
+        "report": {
+          "namespace": "audit",
+          "exchange": "exchange"
         }
       }
     }
   }
   ```
 
-  2) Report certain methods only
+  * Report certain methods only
 
-  ```
+  ```json
   {
-    swagger: {
-      middleware: {
-        report: {
-          namespace: 'audit'
-          exchange: 'exchange',
-          methods: [
-            'a.b.c',
-            'd.e.f'
+    "swagger": {
+      "middleware": {
+        "report": {
+          "namespace": "audit",
+          "exchange": "exchange",
+          "methods": [
+            "a.b.c",
+            "d.e.f"
           ]
         }
       }
@@ -186,26 +195,26 @@ This middleware is responsible for sending reporting data events to a message qu
   }
   ```
 
-  3) Report certain methods with overrides
+  * Report certain methods with overrides
 
-  ```
+  ```json
   {
-    swagger: {
-      middleware: {
-        report: {
-          namespace: 'audit'
-          exchange: 'exchange',
-          methods: {
-            'a.b.c': {},
-            'd.e.f': {
-              objectType: 'test'
+    "swagger": {
+      "middleware": {
+        "report": {
+          "namespace": "audit",
+          "exchange": "exchange",
+          "methods": {
+            "a.b.c": {},
+            "d.e.f": {
+              "objectType": "test"
             },
-            'g.h.i': {
-              objectType: 'test',
-              eventType: 'edit'
+            "g.h.i": {
+              "objectType": "test",
+              "eventType": "edit"
             },
-            'j.k.l': {
-              objectId: 'request.msg.id'
+            "j.k.l": {
+              "objectId": "request.msg.id"
             }
           }
         }
@@ -218,42 +227,52 @@ This middleware is responsible for sending reporting data events to a message qu
   If set then the respective objectId will be automatically extracted.
   the `dot-prop` object is formed as follows: ```{request: {msg, $meta}, response}```.
   So the possible paths would be:
-    * request.msg.*
-    * request.$meta.*
-    * response.*
-
+  * request.msg.*
+  * request.$meta.*
+  * response.*
 
 ### swaggerUI
+
 TO DO: `swaggerUI` middleware description
 
 ### cors
+
 TO DO: `cors` middleware description
 
 ### conditionalGet
+
 TO DO: `conditionalGet` middleware description
 
 ### etag
+
 TO DO: `etag` middleware description
 
 ### formParser
+
 TO DO: `formParser` middleware description
 
 ### bodyParser
+
 TO DO: `bodyParser` middleware description
 
 ### jwt
+
 TO DO: `jwt` middleware description
 
 ### router
+
 TO DO: `router` middleware description
 
 ### validator
+
 TO DO: `validator` middleware description
 
 ### contextProvider
+
 TO DO: `contextProvider` middleware description
 
 ### requestHandler
+
 TO DO: `requestHandler` middleware description
 
 ## Headers
