@@ -1,3 +1,7 @@
+# [3.0.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.0.0-audit.5...v3.0.0) (2019-06-24)
+
+
+
 ## [2.2.4](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v2.2.3...v2.2.4) (2019-06-13)
 
 
