@@ -4,6 +4,10 @@ module.exports = [ // middleware order
         factory: require('./wrapper')
     },
     {
+        name: 'audit',
+        factory: require('./audit')
+    },
+    {
         name: 'swaggerUI',
         factory: require('./swaggerUI')
     },
