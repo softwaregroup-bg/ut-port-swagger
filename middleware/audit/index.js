@@ -2,12 +2,24 @@ const os = require('os');
 const serverMachineName = os.hostname();
 const serverOsVersion = [os.type(), os.platform(), os.release()].join(':');
 
-const getAuditHandler = (port, { method, options, exchange, routingKey }) => {
-    if (!method) throw new Error('audit method is required');
+const getAuditHandler = (port, { namespace, exchange, routingKey, options }) => {
+    if (!namespace) throw new Error('audit namespace is required');
 
-    if (typeof method !== 'string') throw new Error('audit method must be a string');
+    if (typeof namespace !== 'string') throw new Error('audit namespace must be a string');
+
+    if (!exchange) throw new Error('audit exchange is required');
+
+    if (typeof exchange !== 'string') throw new Error('audit exchange must be a string');
+
+    if (!routingKey) throw new Error('audit routingKey is required');
+
+    if (typeof routingKey !== 'string') throw new Error('audit routingKey must be a string');
+
+    const method = `${namespace}.${exchange}.${routingKey}`;
 
     return async(ctx, error) => {
+        if (!ctx.ut.method) return; // audit bus methods only
+
         const payload = {
             auditEntryId: null,
             dateAndTime: null,
@@ -72,7 +84,7 @@ module.exports = ({port, options}) => {
             error = e;
         }
 
-        if (ctx.ut.method) audit(ctx, error);
+        audit(ctx, error);
 
         if (error) throw error;
     };

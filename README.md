@@ -54,6 +54,7 @@ Swagger comp
     [
       'wrapper',
       'audit',
+      'report',
       'swaggerUI',
       'cors',
       'conditionalGet',
@@ -74,6 +75,7 @@ Swagger comp
   middleware: {
       wrapper: {},
       audit: false,
+      report: false,
       swaggerUI: {
           pathRoot: '/docs',
           skipPaths: []
@@ -104,13 +106,13 @@ Swagger comp
 TO DO: `wrapper` middleware description
 
 ### audit
-This middleware is responsible for sending audit events to a message queue (Rabbit MQ).
+This middleware is responsible for sending audit data events to a message queue (Rabbit MQ).
 * configuration options
-  * `method` (required) - what bus method to be called with the generated audit message
+  * `namespace` (required) - Rabbit MQ producer port namespace
+  * `exchange` (required) - Rabbit MQ exchange
+  * `routingKey` (required) - Rabbit MQ routing key
   * `options` (optional) - Rabbit MQ options. May include `headers`, `type`, `appId`, etc...
   [see amqplib channel publish options](http://www.squaremobius.net/amqp.node/channel_api.html#channel_publish)
-  * `exchange` (optional) - Rabbit MQ exchange
-  * `routingKey` (optional) - Rabbit MQ routing key
 
   For more info about `options`, `exchange` and `routingKey`
   check `ut-port-amqp` [docs](https://github.com/softwaregroup-bg/ut-port-amqp#producer-port)
@@ -121,19 +123,105 @@ This middleware is responsible for sending audit events to a message queue (Rabb
     swagger: {
       middleware: {
         audit: {
-          method: 'audit.a.b.c' // required
-          options: { // optional
+          method: 'audit.a.b.c',
+          options: {
             headers: {
               __TypeId__: 'com.softwaregroup.audit.dto.AuditDto'
             }
           },
-          exchange: 'asdfasdf', // optional
-          routingKey: 'gfgfd' // optional
+          exchange: 'asdfasdf',
+          routingKey: 'gfgfd'
         }
       }
     }
   }
   ```
+
+### report
+This middleware is responsible for sending reporting data events to a message queue (Rabbit MQ).
+* configuration options
+  * `namespace` (required) - Rabbit MQ producer port namespace
+  * `exchange` (required) - Rabbit MQ exchange
+  * `methods` (optional) - Which bus methods to be reported
+    * if omitted then all methods will be reported
+    * if an array of strings (each record representing a method name).
+    Then the respective methods will be reported
+    * if an object (each key representing a method name)
+    Then the respective methods will be reported.
+    The value can be used to override the reported `objectId`, `eventType` and `objectType`
+
+  Examples:
+
+  1) Report all methods:
+
+  ```
+  {
+    swagger: {
+      middleware: {
+        report: {
+          namespace: 'audit'
+          exchange: 'exchange'
+        }
+      }
+    }
+  }
+  ```
+
+  2) Report certain methods only
+
+  ```
+  {
+    swagger: {
+      middleware: {
+        report: {
+          namespace: 'audit'
+          exchange: 'exchange',
+          methods: [
+            'a.b.c',
+            'd.e.f'
+          ]
+        }
+      }
+    }
+  }
+  ```
+
+  3) Report certain methods with overrides
+
+  ```
+  {
+    swagger: {
+      middleware: {
+        report: {
+          namespace: 'audit'
+          exchange: 'exchange',
+          methods: {
+            'a.b.c': {},
+            'd.e.f': {
+              objectType: 'test'
+            },
+            'g.h.i': {
+              objectType: 'test',
+              eventType: 'edit'
+            },
+            'j.k.l': {
+              objectId: 'request.msg.id'
+            }
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  **NOTE**: objectId must be in `dot-prop` format. Check [docs](https://github.com/sindresorhus/dot-prop#getobject-path-defaultvalue).
+  If set then the respective objectId will be automatically extracted.
+  the `dot-prop` object is formed as follows: ```{request: {msg, $meta}, response}```.
+  So the possible paths would be:
+    * request.msg.*
+    * request.$meta.*
+    * response.*
+
 
 ### swaggerUI
 TO DO: `swaggerUI` middleware description

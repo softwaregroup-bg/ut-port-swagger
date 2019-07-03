@@ -20,6 +20,7 @@ module.exports = ({utPort, registerErrors}) => {
                 middleware: {
                     wrapper: {},
                     audit: false,
+                    report: false,
                     swaggerUI: {
                         pathRoot: '/docs',
                         skipPaths: []
