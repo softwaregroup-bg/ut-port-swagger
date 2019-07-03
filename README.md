@@ -53,8 +53,11 @@ Swagger comp
     The middleware chain order is as follows:
     [
       'wrapper',
+      'audit',
       'swaggerUI',
       'cors',
+      'conditionalGet',
+      'etag',
       'formParser',
       'bodyParser',
       'jwt',
@@ -70,12 +73,15 @@ Swagger comp
 
   middleware: {
       wrapper: {},
+      audit: false,
       swaggerUI: {
           pathRoot: '/docs',
           skipPaths: []
       },
       cors: {},
-      formParser: {},
+      conditionalGet: {},
+      etag: {},
+      formParser: false,
       bodyParser: {},
       jwt: false,
       router: {},
@@ -91,6 +97,76 @@ Swagger comp
   server: {}
 }
 ```
+
+## Middleware
+
+### wrapper
+TO DO: `wrapper` middleware description
+
+### audit
+This middleware is responsible for sending audit events to a message queue (Rabbit MQ).
+* configuration options
+  * `method` (required) - what bus method to be called with the generated audit message
+  * `options` (optional) - Rabbit MQ options. May include `headers`, `type`, `appId`, etc...
+  [see amqplib channel publish options](http://www.squaremobius.net/amqp.node/channel_api.html#channel_publish)
+  * `exchange` (optional) - Rabbit MQ exchange
+  * `routingKey` (optional) - Rabbit MQ routing key
+
+  For more info about `options`, `exchange` and `routingKey`
+  check `ut-port-amqp` [docs](https://github.com/softwaregroup-bg/ut-port-amqp#producer-port)
+
+  Example:
+  ```
+  {
+    swagger: {
+      middleware: {
+        audit: {
+          method: 'audit.a.b.c' // required
+          options: { // optional
+            headers: {
+              __TypeId__: 'com.softwaregroup.audit.dto.AuditDto'
+            }
+          },
+          exchange: 'asdfasdf', // optional
+          routingKey: 'gfgfd' // optional
+        }
+      }
+    }
+  }
+  ```
+
+### swaggerUI
+TO DO: `swaggerUI` middleware description
+
+### cors
+TO DO: `cors` middleware description
+
+### conditionalGet
+TO DO: `conditionalGet` middleware description
+
+### etag
+TO DO: `etag` middleware description
+
+### formParser
+TO DO: `formParser` middleware description
+
+### bodyParser
+TO DO: `bodyParser` middleware description
+
+### jwt
+TO DO: `jwt` middleware description
+
+### router
+TO DO: `router` middleware description
+
+### validator
+TO DO: `validator` middleware description
+
+### contextProvider
+TO DO: `contextProvider` middleware description
+
+### requestHandler
+TO DO: `requestHandler` middleware description
 
 ## Headers
 

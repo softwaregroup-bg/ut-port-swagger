@@ -27,7 +27,7 @@ module.exports = ({utPort, registerErrors}) => {
                     cors: {},
                     conditionalGet: {},
                     etag: {},
-                    formParser: {},
+                    formParser: false,
                     bodyParser: {},
                     jwt: false,
                     router: {},
