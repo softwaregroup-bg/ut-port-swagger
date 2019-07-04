@@ -28,7 +28,6 @@ module.exports = ({port, options}) => {
             } catch (e) {
                 const error = port.errors['swagger.contextProviderError'](e);
                 ctx.status = 400;
-                ctx.body = {error};
                 port.log.error && port.log.error({
                     error,
                     status: ctx.status,

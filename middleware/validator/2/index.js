@@ -30,9 +30,7 @@ module.exports = ({port, options}) => {
         if (compiledPath === undefined) {
             // if there is no single matching path, return 404 (not found)
             ctx.status = 404;
-            const error = port.errors['swagger.validationNotFound']();
-            ctx.body = {error};
-            throw error;
+            throw port.errors['swagger.validationNotFound']();
         }
         let errors = [];
         if (options.request) {
@@ -40,9 +38,7 @@ module.exports = ({port, options}) => {
             if (errors === undefined) {
                 // operation not defined, return 405 (method not allowed)
                 ctx.status = 405;
-                const error = port.errors['swagger.methodNotAllowed']();
-                ctx.body = {error};
-                throw error;
+                throw port.errors['swagger.methodNotAllowed']();
             }
             if (errors.length === 0) {
                 const formFilesPath = `${ctx.path}.${ctx.method.toLowerCase()}`;
@@ -59,9 +55,7 @@ module.exports = ({port, options}) => {
             }
             if (errors.length > 0) {
                 ctx.status = 400;
-                const error = port.errors['swagger.requestValidation']({errors});
-                ctx.body = {error};
-                throw error;
+                throw port.errors['swagger.requestValidation']({errors});
             }
         }
 
@@ -71,9 +65,7 @@ module.exports = ({port, options}) => {
             errors = swagger2.validateResponse(compiledPath, ctx.method, ctx.status, ctx.body);
             if (errors) {
                 ctx.status = 500;
-                const error = port.errors['swagger.responseValidation']({errors});
-                ctx.body = {error};
-                throw error;
+                throw port.errors['swagger.responseValidation']({errors});
             }
         }
     };

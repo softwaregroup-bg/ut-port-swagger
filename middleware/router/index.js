@@ -60,9 +60,7 @@ module.exports = ({port, options}) => {
         (ctx, next) => {
             if (!ctx.ut.method) {
                 ctx.status = 404;
-                const error = port.errors['swagger.routeNotFound']();
-                ctx.body = {error};
-                throw error;
+                throw port.errors['swagger.routeNotFound']();
             }
             return next();
         }
