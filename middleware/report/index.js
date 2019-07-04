@@ -1,13 +1,17 @@
 const dotProp = require('dot-prop');
 
-const getReportHandler = (port, { methods = true, exchange = '', namespace = '' }) => {
-    if (!namespace) throw new Error('report namespace is required');
+const getReportHandler = (port, { namespace, exchange, routingKey, options, service, methods = true }) => {
+    const assertString = (key, value) => {
+        if (!value || typeof value !== 'string') {
+            throw new Error(`${port.config.id}.middleware.report.${key} must be a string`);
+        }
+    };
+    assertString('namespace', namespace);
+    assertString('exchange', exchange);
+    assertString('routingKey', routingKey);
+    assertString('service', service);
 
-    if (typeof namespace !== 'string') throw new Error('report namespace must be a string');
-
-    if (!exchange) throw new Error('report exchange is required');
-
-    if (typeof exchange !== 'string') throw new Error('report exchange must be a string');
+    const sendToQueue = port.bus.importMethod(`${namespace}.${exchange}.${routingKey}`);
 
     const handlers = {};
 
@@ -26,13 +30,20 @@ const getReportHandler = (port, { methods = true, exchange = '', namespace = '' 
             objectId = 'request.msg.id'
         } = data;
         const handler = handlers[method] = async ctx => {
+            const payload = {
+                objectId: dotProp.get({request: ctx.ut, response: ctx.body}, objectId),
+                service,
+                eventType,
+                objectType,
+                data: ctx.ut.msg,
+                messageAddedDate: new Date()
+            };
             try {
-                await port.bus.importMethod(`${namespace}.${exchange}.${objectType}`)({
-                    objectId: dotProp.get({request: ctx.ut, response: ctx.body}, objectId),
-                    eventType,
-                    objectType,
-                    data: ctx.ut.msg,
-                    messageAddedDate: new Date()
+                await sendToQueue({
+                    payload,
+                    options,
+                    exchange,
+                    routingKey
                 });
             } catch (e) {
                 if (port.log.error) port.log.error(e);

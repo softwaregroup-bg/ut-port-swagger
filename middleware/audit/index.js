@@ -3,19 +3,16 @@ const serverMachineName = os.hostname();
 const serverOsVersion = [os.type(), os.platform(), os.release()].join(':');
 
 const getAuditHandler = (port, { namespace, exchange, routingKey, options }) => {
-    if (!namespace) throw new Error('audit namespace is required');
+    const assertString = (key, value) => {
+        if (!value || typeof value !== 'string') {
+            throw new Error(`${port.config.id}.middleware.report.${key} must be a string`);
+        }
+    };
+    assertString('namespace', namespace);
+    assertString('exchange', exchange);
+    assertString('routingKey', routingKey);
 
-    if (typeof namespace !== 'string') throw new Error('audit namespace must be a string');
-
-    if (!exchange) throw new Error('audit exchange is required');
-
-    if (typeof exchange !== 'string') throw new Error('audit exchange must be a string');
-
-    if (!routingKey) throw new Error('audit routingKey is required');
-
-    if (typeof routingKey !== 'string') throw new Error('audit routingKey must be a string');
-
-    const method = `${namespace}.${exchange}.${routingKey}`;
+    const sendToQueue = port.bus.importMethod(`${namespace}.${exchange}.${routingKey}`);
 
     return async(ctx, error) => {
         if (!ctx.ut.method) return; // audit bus methods only
@@ -61,7 +58,7 @@ const getAuditHandler = (port, { namespace, exchange, routingKey, options }) => 
         };
 
         try {
-            await port.bus.importMethod(method)({
+            await sendToQueue({
                 payload,
                 options,
                 exchange,

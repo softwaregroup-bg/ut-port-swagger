@@ -151,6 +151,14 @@ to a message queue (Rabbit MQ).
 * configuration options
   * `namespace` (required) - Rabbit MQ producer port namespace
   * `exchange` (required) - Rabbit MQ exchange
+  * `routingKey` (required) - Rabbit MQ routing key
+  * `options` (optional) - Rabbit MQ options.
+  May include `headers`, `type`, `appId`, etc...
+  [see amqplib channel publish options](http://www.squaremobius.net/amqp.node/channel_api.html#channel_publish)
+
+  For more info about `options`, `exchange` and `routingKey`
+  check `ut-port-amqp` [docs](https://github.com/softwaregroup-bg/ut-port-amqp#producer-port)
+  * `service` (required) - mandatory field to be included in the payload
   * `methods` (optional) - Which bus methods to be reported
     * if omitted then all methods will be reported
     * if an array of strings (each record representing a method name).
@@ -169,7 +177,9 @@ to a message queue (Rabbit MQ).
       "middleware": {
         "report": {
           "namespace": "audit",
-          "exchange": "exchange"
+          "exchange": "exchange",
+          "routingKey": "reporting",
+          "service": "serviceName"
         }
       }
     }
@@ -185,6 +195,8 @@ to a message queue (Rabbit MQ).
         "report": {
           "namespace": "audit",
           "exchange": "exchange",
+          "routingKey": "reporting",
+          "service": "serviceName",
           "methods": [
             "a.b.c",
             "d.e.f"
@@ -204,6 +216,8 @@ to a message queue (Rabbit MQ).
         "report": {
           "namespace": "audit",
           "exchange": "exchange",
+          "routingKey": "reporting",
+          "service": "serviceName",
           "methods": {
             "a.b.c": {},
             "d.e.f": {
