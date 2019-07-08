@@ -14,9 +14,7 @@ module.exports = async({port, options}) => {
         const validate = validators[ctx.ut.method];
         if (!validate) {
             ctx.status = 404;
-            const error = port.errors['swagger.validationNotFound']();
-            ctx.body = {error};
-            throw error;
+            throw port.errors['swagger.validationNotFound']();
         }
         if (options.request) {
             const errors = await validate.request({
@@ -28,9 +26,7 @@ module.exports = async({port, options}) => {
             });
             if (errors.length > 0) {
                 ctx.status = 400;
-                const error = port.errors['swagger.requestValidation']({errors});
-                ctx.body = {error};
-                throw error;
+                throw port.errors['swagger.requestValidation']({errors});
             }
         }
 
@@ -43,9 +39,7 @@ module.exports = async({port, options}) => {
             });
             if (errors.length > 0) {
                 ctx.status = 500;
-                const error = port.errors['swagger.responseValidation']({errors});
-                ctx.body = {error};
-                throw error;
+                throw port.errors['swagger.responseValidation']({errors});
             }
         }
     };
