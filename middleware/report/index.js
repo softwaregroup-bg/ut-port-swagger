@@ -31,12 +31,13 @@ const getReportHandler = (port, { namespace, exchange, routingKey, options, serv
         } = data;
         const handler = handlers[method] = async ctx => {
             const payload = {
+                tenantId: service, // TODO: send correct tenantId when ready
                 objectId: dotProp.get({request: ctx.ut, response: ctx.body}, objectId),
                 service,
                 eventType,
                 objectType,
                 data: ctx.ut.msg,
-                messageAddedDate: new Date()
+                messageAddedDate: Date.now() / 1000 | 0 // unix timestamp
             };
             try {
                 await sendToQueue({
