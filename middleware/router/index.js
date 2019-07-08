@@ -26,30 +26,14 @@ module.exports = ({port, options}) => {
                 });
             }
             router[methodName](fullPath, (ctx, next) => {
-                const { params, query, path } = ctx;
-                const { body, files, headers } = ctx.request;
                 ctx.ut.method = method.operationId;
                 ctx.ut.successCode = successCodes[0] ? parseInt(successCodes[0]) : 200;
-                const message = ctx.ut.msg = Object.assign({}, Array.isArray(body) ? {list: body} : body, files, params, query);
-                const $meta = ctx.ut.$meta = {
+                ctx.ut.$meta = {
                     mtid: 'request',
                     trace: uuid.v4(),
                     method: ctx.ut.method,
-                    headers
+                    headers: ctx.request.headers
                 };
-                if (port.log.trace) {
-                    port.log.trace({
-                        details: {
-                            body,
-                            files,
-                            params,
-                            query,
-                            path
-                        },
-                        message,
-                        $meta
-                    });
-                }
                 return next();
             });
         });
