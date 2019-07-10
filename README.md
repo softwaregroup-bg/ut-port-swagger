@@ -1,7 +1,5 @@
 # UT Port Swagger
 
-Swagger comp
-
 ## Configuration
 
 ```js
@@ -273,6 +271,14 @@ TO DO: `bodyParser` middleware description
 
 This middleware lets you authenticate HTTP requests
 using JSON Web Tokens in your application.
+
+If the token gets successfully validated
+then the payload will be accessible
+through the `$meta.auth` property.
+
+If the token is not valid then an error will be thrown.
+
+#### configuration examples
 
 Using a symetric key:
 
