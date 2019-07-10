@@ -271,7 +271,102 @@ TO DO: `bodyParser` middleware description
 
 ### jwt
 
-TO DO: `jwt` middleware description
+This middleware lets you authenticate HTTP requests
+using JSON Web Tokens in your application.
+
+Using a symetric key:
+
+```json
+  {
+    "swagger": {
+      "middleware": {
+        "jwt": {
+          "secret": "secret"
+        }
+      }
+    }
+  }
+```
+
+You can specify audience and/or issuer as well:
+
+```json
+  {
+    "swagger": {
+      "middleware": {
+        "jwt": {
+          "secret": "secret",
+          "audience": "http://myapi/protected",
+          "issuer": "http://issuer"
+        }
+      }
+    }
+  }
+```
+
+You can also specify an array of secrets.
+
+```json
+  {
+    "swagger": {
+      "middleware": {
+        "jwt": {
+          "secret": ["oldSecret", "newSecret"]
+        }
+      }
+    }
+  }
+```
+
+The token will be considered valid if it validates
+successfully against any of the supplied secrets.
+This allows for rolling shared secrets.
+
+This middleware also supports verification via public keys
+
+```js
+  const publicKey = fs.readFileSync('/path/to/public.pub');
+  return {
+    swagger: {
+      middleware: {
+        jwt: {
+          secret: publicKey
+        }
+      }
+    }
+  };
+```
+
+The secret option can also be a function.
+If the secret option is a function,
+this function is called for each JWT received
+in order to determine which secret is used to verify the JWT.
+The signature of this function should be
+`(header, payload) => [Promise(secret)]`,
+where header is the token header
+and payload is the token payload.
+
+JWKS (JSON Web Key Set) support is also provided.
+For example:
+
+```json
+{
+  "swagger": {
+    "middleware": {
+      "jwt": {
+        "jwks": {
+          "jwksUri": "http://host:port/auth/realms/Test/protocol/openid-connect/certs",
+          "cache": true,
+          "cacheMaxEntries": 5,
+          "cacheMaxAge": 86400000
+        },
+        "audience": "some-audience",
+        "issuer": "http://host:port/auth/realms/Test"
+      }
+    }
+  }
+}
+```
 
 ### router
 
