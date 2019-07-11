@@ -4,6 +4,14 @@ module.exports = [ // middleware order
         factory: require('./wrapper')
     },
     {
+        name: 'audit',
+        factory: require('./audit')
+    },
+    {
+        name: 'report',
+        factory: require('./report')
+    },
+    {
         name: 'swaggerUI',
         factory: require('./swaggerUI')
     },
@@ -28,12 +36,12 @@ module.exports = [ // middleware order
         factory: require('./bodyParser')
     },
     {
-        name: 'jwt',
-        factory: require('./jwt')
-    },
-    {
         name: 'router',
         factory: require('./router')
+    },
+    {
+        name: 'jwt',
+        factory: require('./jwt')
     },
     {
         name: 'validator',

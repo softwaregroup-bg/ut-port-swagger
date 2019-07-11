@@ -8,5 +8,6 @@
     "swagger.validationNotFound": "Validation not found",
     "swagger.requestValidation": "Request validation error",
     "swagger.responseValidation": "Response validation error",
-    "swagger.contextProviderError": "Context provider error"
+    "swagger.contextProviderError": "Context provider error",
+    "swagger.jwtFormatError": "JWT format error"
 }

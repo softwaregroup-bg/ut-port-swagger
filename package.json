@@ -1,6 +1,6 @@
 {
   "name": "ut-port-swagger",
-  "version": "3.0.0",
+  "version": "3.1.0-auditAndReport.6",
   "description": "UT Port Swagger",
   "main": "index.js",
   "scripts": {
@@ -28,12 +28,13 @@
   ],
   "devDependencies": {
     "tap": "^12.6.2",
-    "ut-tools": "^6.20.2"
+    "ut-tools": "^6.21.0"
   },
   "dependencies": {
     "@koa/cors": "3.0.0",
-    "ut-swagger2-validator": "^0.1.1",
+    "dot-prop": "4.2.0",
     "generate-schema": "2.6.0",
+    "jwks-rsa": "1.4.0",
     "koa": "2.7.0",
     "koa-bodyparser": "4.2.1",
     "koa-compose": "4.1.0",
@@ -46,6 +47,7 @@
     "swagger-parser": "6.0.5",
     "swagger-ui-dist": "3.22.1",
     "swagger2": "1.0.4",
+    "ut-swagger2-validator": "^0.2.0",
     "uuid": "3.3.2"
   },
   "repository": {

@@ -1,7 +1,5 @@
 # UT Port Swagger
 
-Swagger comp
-
 ## Configuration
 
 ```js
@@ -53,8 +51,12 @@ Swagger comp
     The middleware chain order is as follows:
     [
       'wrapper',
+      'audit',
+      'report',
       'swaggerUI',
       'cors',
+      'conditionalGet',
+      'etag',
       'formParser',
       'bodyParser',
       'jwt',
@@ -70,12 +72,16 @@ Swagger comp
 
   middleware: {
       wrapper: {},
+      audit: false,
+      report: false,
       swaggerUI: {
           pathRoot: '/docs',
           skipPaths: []
       },
       cors: {},
-      formParser: {},
+      conditionalGet: {},
+      etag: {},
+      formParser: false,
       bodyParser: {},
       jwt: false,
       router: {},
@@ -91,6 +97,332 @@ Swagger comp
   server: {}
 }
 ```
+
+## Middleware
+
+### wrapper
+
+TO DO: `wrapper` middleware description
+
+### audit
+
+This middleware is responsible for sending audit data events
+to a message queue (Rabbit MQ).
+
+* configuration options
+  * `namespace` (required) - Rabbit MQ producer port namespace
+  * `exchange` (required) - Rabbit MQ exchange
+  * `routingKey` (required) - Rabbit MQ routing key
+  * `options` (optional) - Rabbit MQ options.
+  May include `headers`, `type`, `appId`, etc...
+  [see amqplib channel publish options](http://www.squaremobius.net/amqp.node/channel_api.html#channel_publish)
+
+  For more info about `options`, `exchange` and `routingKey`
+  check `ut-port-amqp` [docs](https://github.com/softwaregroup-bg/ut-port-amqp#producer-port)
+
+  Example:
+
+  ```json
+  {
+    "swagger": {
+      "middleware": {
+        "audit": {
+          "namespace": "audit",
+          "exchange": "asdfasdf",
+          "routingKey": "gfgfd",
+          "options": {
+            "headers": {
+              "__TypeId__": "com.softwaregroup.audit.dto.AuditDto"
+            }
+          }
+        }
+      }
+    }
+  }
+  ```
+
+### report
+
+This middleware is responsible for sending reporting data events
+to a message queue (Rabbit MQ).
+
+* configuration options
+  * `namespace` (required) - Rabbit MQ producer port namespace
+  * `exchange` (required) - Rabbit MQ exchange
+  * `routingKey` (required) - Rabbit MQ routing key
+  * `options` (optional) - Rabbit MQ options.
+  May include `headers`, `type`, `appId`, etc...
+  [see amqplib channel publish options](http://www.squaremobius.net/amqp.node/channel_api.html#channel_publish)
+
+  For more info about `options`, `exchange` and `routingKey`
+  check `ut-port-amqp` [docs](https://github.com/softwaregroup-bg/ut-port-amqp#producer-port)
+  * `service` (required) - mandatory field to be included in the payload
+  * `methods` (optional) - Which bus methods to be reported
+    * if omitted then all methods will be reported
+    * if an array of strings (each record representing a method name).
+    Then the respective methods will be reported
+    * if an object (each key representing a method name)
+    Then the respective methods will be reported.
+    The value can be used to override the reported `objectId`, `eventType` and `objectType`
+
+  Examples:
+
+  * Report all methods:
+
+  ```json
+  {
+    "swagger": {
+      "middleware": {
+        "report": {
+          "namespace": "audit",
+          "exchange": "exchange",
+          "routingKey": "reporting",
+          "service": "serviceName"
+        }
+      }
+    }
+  }
+  ```
+
+  * Report certain methods only
+
+  ```json
+  {
+    "swagger": {
+      "middleware": {
+        "report": {
+          "namespace": "audit",
+          "exchange": "exchange",
+          "routingKey": "reporting",
+          "service": "serviceName",
+          "methods": [
+            "a.b.c",
+            "d.e.f"
+          ]
+        }
+      }
+    }
+  }
+  ```
+
+  * Report certain methods with overrides
+
+  ```json
+  {
+    "swagger": {
+      "middleware": {
+        "report": {
+          "namespace": "audit",
+          "exchange": "exchange",
+          "routingKey": "reporting",
+          "service": "serviceName",
+          "methods": {
+            "a.b.c": {},
+            "d.e.f": {
+              "objectType": "test"
+            },
+            "g.h.i": {
+              "objectType": "test",
+              "eventType": "edit"
+            },
+            "j.k.l": {
+              "objectId": "request.msg.id"
+            }
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  **NOTE**: objectId must be in `dot-prop` format. Check [docs](https://github.com/sindresorhus/dot-prop#getobject-path-defaultvalue).
+  If set then the respective objectId will be automatically extracted.
+  the `dot-prop` object is formed as follows: ```{request: {msg, $meta}, response}```.
+  So the possible paths would be:
+  * request.msg.*
+  * request.$meta.*
+  * response.*
+
+### swaggerUI
+
+TO DO: `swaggerUI` middleware description
+
+### cors
+
+TO DO: `cors` middleware description
+
+### conditionalGet
+
+TO DO: `conditionalGet` middleware description
+
+### etag
+
+TO DO: `etag` middleware description
+
+### formParser
+
+TO DO: `formParser` middleware description
+
+### bodyParser
+
+TO DO: `bodyParser` middleware description
+
+### jwt
+
+This middleware lets you authenticate HTTP requests
+using JSON Web Tokens in your application.
+
+If the token is not valid then an error will be thrown.
+
+If the token gets successfully validated
+then the `$meta.auth` property will be populated
+with fields extracted from token's payload.
+
+`$meta.auth` is represented by a normalized
+data structure no matter what identity provider
+had generated the token.
+This is achieved by the concept of `formatters`.
+Currently only `keycloak` format is supported
+but more formats can be added in the long term
+in case any need for that arises. The formatter
+is set via the `format` property
+(see the examples below). It should be either
+a string or a function. If a string then a
+predefined formatter will be used (an error will
+be thrown if no matching formatter is found). If
+a custom function is provided then it will be
+called with jwt's body for each incoming HTTP request.
+The standard `$meta.auth` content format is:
+
+```js
+{
+    businessUnitId: 'businessUnitId', // null if no info
+    businessUnitName: 'businessUnitName', // null if no info
+    tenantId: 'tenantId', // null if no info
+    tenantName: 'tenantName', // null if no info
+    userId: 'userId', // null if no info
+    username: 'username', // null if no info
+    roles: ['role1', 'role2'] // empty array if no info
+}
+
+```
+
+#### configuration examples
+
+Using a symetric key:
+
+```json
+  {
+    "swagger": {
+      "middleware": {
+        "jwt": {
+          "secret": "secret",
+          "format": "keycloak"
+        }
+      }
+    }
+  }
+```
+
+You can specify audience and/or issuer as well:
+
+```json
+  {
+    "swagger": {
+      "middleware": {
+        "jwt": {
+          "secret": "secret",
+          "audience": "http://myapi/protected",
+          "issuer": "http://issuer",
+          "format": "keycloak"
+        }
+      }
+    }
+  }
+```
+
+You can also specify an array of secrets.
+
+```json
+  {
+    "swagger": {
+      "middleware": {
+        "jwt": {
+          "secret": ["oldSecret", "newSecret"],
+          "format": "keycloak"
+        }
+      }
+    }
+  }
+```
+
+The token will be considered valid if it validates
+successfully against any of the supplied secrets.
+This allows for rolling shared secrets.
+
+This middleware also supports verification via public keys
+
+```js
+  const publicKey = fs.readFileSync('/path/to/public.pub');
+  return {
+    swagger: {
+      middleware: {
+        jwt: {
+          secret: publicKey,
+          format: 'keycloak'
+        }
+      }
+    }
+  };
+```
+
+The secret option can also be a function.
+If the secret option is a function,
+this function is called for each JWT received
+in order to determine which secret is used to verify the JWT.
+The signature of this function should be
+`(header, payload) => [Promise(secret)]`,
+where header is the token header
+and payload is the token payload.
+
+JWKS (JSON Web Key Set) support is also provided.
+For example:
+
+```json
+{
+  "swagger": {
+    "middleware": {
+      "jwt": {
+        "jwks": {
+          "jwksUri": "http://host:port/auth/realms/Test/protocol/openid-connect/certs",
+          "cache": true,
+          "cacheMaxEntries": 5,
+          "cacheMaxAge": 86400000
+        },
+        "audience": "some-audience",
+        "issuer": "http://host:port/auth/realms/Test",
+        "format": "keycloak"
+      }
+    }
+  }
+}
+```
+
+### router
+
+TO DO: `router` middleware description
+
+### validator
+
+TO DO: `validator` middleware description
+
+### contextProvider
+
+TO DO: `contextProvider` middleware description
+
+### requestHandler
+
+TO DO: `requestHandler` middleware description
 
 ## Headers
 
