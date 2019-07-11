@@ -17,6 +17,13 @@ const getAuditHandler = (port, { namespace, exchange, routingKey, options }) => 
     return async(ctx, error) => {
         if (!ctx.ut.method) return; // audit bus methods only
 
+        const {
+            username: userName = null,
+            userId = null,
+            businessUnitId = null,
+            businessUnitName = null
+        } = ctx.ut.$meta.auth || {};
+
         const payload = {
             auditEntryId: null,
             dateAndTime: null,
@@ -39,10 +46,10 @@ const getAuditHandler = (port, { namespace, exchange, routingKey, options }) => 
             controllerName: ctx.ut.method.split('.')[0],
             controllerVersion: '0.0.1',
             channel: 'web',
-            userId: null,
-            userName: 'anonymousUser',
-            businessUnitName: null,
-            businessUnitId: null,
+            userId,
+            userName,
+            businessUnitName,
+            businessUnitId,
             severityLevel: null,
             sessionId: null,
             sourceIpAddress: '0:0:0:0:0:0:0:1',

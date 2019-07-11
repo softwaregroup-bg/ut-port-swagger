@@ -30,8 +30,9 @@ const getReportHandler = (port, { namespace, exchange, routingKey, options, serv
             objectId = 'request.msg.id'
         } = data;
         const handler = handlers[method] = async ctx => {
+            const { tenantId = null } = ctx.ut.$meta.auth || {};
             const payload = {
-                tenantId: service, // TODO: send correct tenantId when ready
+                tenantId,
                 objectId: dotProp.get({request: ctx.ut, response: ctx.body}, objectId),
                 service,
                 eventType,

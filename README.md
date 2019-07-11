@@ -272,11 +272,40 @@ TO DO: `bodyParser` middleware description
 This middleware lets you authenticate HTTP requests
 using JSON Web Tokens in your application.
 
-If the token gets successfully validated
-then the payload will be accessible
-through the `$meta.auth` property.
-
 If the token is not valid then an error will be thrown.
+
+If the token gets successfully validated
+then the `$meta.auth` property will be populated
+with fields extracted from token's payload.
+
+`$meta.auth` is represented by a normalized
+data structure no matter what identity provider
+had generated the token.
+This is achieved by the concept of `formatters`.
+Currently only `keycloak` format is supported
+but more formats can be added in the long term
+in case any need for that arises. The formatter
+is set via the `format` property
+(see the examples below). It should be either
+a string or a function. If a string then a
+predefined formatter will be used (an error will
+be thrown if no matching formatter is found). If
+a custom function is provided then it will be
+called with jwt's body for each incoming HTTP request.
+The standard `$meta.auth` content format is:
+
+```js
+{
+    businessUnitId: 'businessUnitId', // null if no info
+    businessUnitName: 'businessUnitName', // null if no info
+    tenantId: 'tenantId', // null if no info
+    tenantName: 'tenantName', // null if no info
+    userId: 'userId', // null if no info
+    username: 'username', // null if no info
+    roles: ['role1', 'role2'] // empty array if no info
+}
+
+```
 
 #### configuration examples
 
@@ -287,7 +316,8 @@ Using a symetric key:
     "swagger": {
       "middleware": {
         "jwt": {
-          "secret": "secret"
+          "secret": "secret",
+          "format": "keycloak"
         }
       }
     }
@@ -303,7 +333,8 @@ You can specify audience and/or issuer as well:
         "jwt": {
           "secret": "secret",
           "audience": "http://myapi/protected",
-          "issuer": "http://issuer"
+          "issuer": "http://issuer",
+          "format": "keycloak"
         }
       }
     }
@@ -317,7 +348,8 @@ You can also specify an array of secrets.
     "swagger": {
       "middleware": {
         "jwt": {
-          "secret": ["oldSecret", "newSecret"]
+          "secret": ["oldSecret", "newSecret"],
+          "format": "keycloak"
         }
       }
     }
@@ -336,7 +368,8 @@ This middleware also supports verification via public keys
     swagger: {
       middleware: {
         jwt: {
-          secret: publicKey
+          secret: publicKey,
+          format: 'keycloak'
         }
       }
     }
@@ -367,7 +400,8 @@ For example:
           "cacheMaxAge": 86400000
         },
         "audience": "some-audience",
-        "issuer": "http://host:port/auth/realms/Test"
+        "issuer": "http://host:port/auth/realms/Test",
+        "format": "keycloak"
       }
     }
   }
