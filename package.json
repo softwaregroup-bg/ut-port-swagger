@@ -1,6 +1,6 @@
 {
   "name": "ut-port-swagger",
-  "version": "3.1.0-auditAndReport.5",
+  "version": "3.1.0-auditAndReport.6",
   "description": "UT Port Swagger",
   "main": "index.js",
   "scripts": {
