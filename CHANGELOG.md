@@ -1,3 +1,12 @@
+## [3.1.3](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.1.2...v3.1.3) (2019-07-12)
+
+
+### Bug Fixes
+
+* remove report 'service' config property. Use implementation name as such ([4d4710e](https://github.com/softwaregroup-bg/ut-port-swagger/commit/4d4710e))
+
+
+
 ## [3.1.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.1.1...v3.1.2) (2019-07-12)
 
 
