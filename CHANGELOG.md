@@ -1,3 +1,12 @@
+## [3.1.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.1.0...v3.1.1) (2019-07-12)
+
+
+### Bug Fixes
+
+* extract status code from error if available ([2866b50](https://github.com/softwaregroup-bg/ut-port-swagger/commit/2866b50))
+
+
+
 # [3.1.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.1.0-auditAndReport.6...v3.1.0) (2019-07-11)
 
 
