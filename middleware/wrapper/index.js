@@ -17,6 +17,10 @@ module.exports = ({port, options}) => {
             }
             if (debug) error.debug = {stack: error.stack.split('\n')};
             ctx.body = { error };
+
+            if (typeof e.status === 'number') ctx.status = e.status;
+            else if (typeof e.statusCode === 'number') ctx.status = e.statusCode;
+
             if (!ctx.status || (ctx.status >= 200 && ctx.status < 300)) ctx.status = 400;
             ctx.app.emit('error', error, ctx);
         }
