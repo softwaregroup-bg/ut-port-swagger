@@ -156,7 +156,6 @@ to a message queue (Rabbit MQ).
 
   For more info about `options`, `exchange` and `routingKey`
   check `ut-port-amqp` [docs](https://github.com/softwaregroup-bg/ut-port-amqp#producer-port)
-  * `service` (required) - mandatory field to be included in the payload
   * `methods` (optional) - Which bus methods to be reported
     * if omitted then all methods will be reported
     * if an array of strings (each record representing a method name).
@@ -176,8 +175,7 @@ to a message queue (Rabbit MQ).
         "report": {
           "namespace": "audit",
           "exchange": "exchange",
-          "routingKey": "reporting",
-          "service": "serviceName"
+          "routingKey": "reporting"
         }
       }
     }
@@ -194,7 +192,6 @@ to a message queue (Rabbit MQ).
           "namespace": "audit",
           "exchange": "exchange",
           "routingKey": "reporting",
-          "service": "serviceName",
           "methods": [
             "a.b.c",
             "d.e.f"
@@ -215,7 +212,6 @@ to a message queue (Rabbit MQ).
           "namespace": "audit",
           "exchange": "exchange",
           "routingKey": "reporting",
-          "service": "serviceName",
           "methods": {
             "a.b.c": {},
             "d.e.f": {
