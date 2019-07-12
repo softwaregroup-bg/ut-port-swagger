@@ -42,17 +42,19 @@
 }
 */
 module.exports = ({
-    realm_access: {
-        roles = []
-    },
+    session_state: sessionId = null,
     businessUnitId = null,
     businessUnitName = null,
     tenantId = null,
     tenantName = null,
+    sub: userId = null,
     preferred_username: username = null,
-    sub: userId = null
+    realm_access: {
+        roles = []
+    }
 }) => {
     return {
+        sessionId,
         businessUnitId,
         businessUnitName,
         tenantId,

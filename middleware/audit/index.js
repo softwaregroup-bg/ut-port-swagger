@@ -18,10 +18,11 @@ const getAuditHandler = (port, { namespace, exchange, routingKey, options }) => 
         if (!ctx.ut.method) return; // audit bus methods only
 
         const {
-            username: userName = null,
-            userId = null,
+            sessionId = null,
             businessUnitId = null,
-            businessUnitName = null
+            businessUnitName = null,
+            userId = null,
+            username: userName = null
         } = ctx.ut.$meta.auth || {};
 
         const payload = {
@@ -38,22 +39,22 @@ const getAuditHandler = (port, { namespace, exchange, routingKey, options }) => 
             ],
             callParams: ctx.ut.msg,
             eventGUID: ctx.ut.$meta.trace,
-            eventGUIDDateTime: Date.now(),
+            eventGUIDDateTime: Date.now() / 1000 | 0, // unix timestamp
             eventClass: port.config.id,
             eventCode: ctx.ut.method,
             eventURI: ctx.url,
             eventDescription: ctx.ut.method,
             controllerName: ctx.ut.method.split('.')[0],
-            controllerVersion: '0.0.1',
+            controllerVersion: port.bus.config.version,
             channel: 'web',
             userId,
             userName,
             businessUnitName,
             businessUnitId,
             severityLevel: null,
-            sessionId: null,
-            sourceIpAddress: '0:0:0:0:0:0:0:1',
-            destinationIpAddress: '0:0:0:0:0:0:0:1',
+            sessionId,
+            sourceIpAddress: ctx.req.socket.remoteAddress,
+            destinationIpAddress: ctx.req.socket.localAddress,
             destinationPort: ctx.req.socket.localPort,
             geolocation: null,
             serverOsVersion,
