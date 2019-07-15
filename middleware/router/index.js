@@ -12,22 +12,32 @@ module.exports = ({port, options}) => {
         const collection = port.swaggerDocument.paths[path];
         Object.keys(collection).forEach(methodName => {
             const method = collection[methodName];
-            if (!method.operationId) {
+            const {operationId, security, responses} = method;
+            if (!operationId) {
                 throw port.errors['swagger.operationIdNotDefined']({method});
             }
-            const successCodes = Object.keys(method.responses).filter(code => code >= 200 && code < 300);
+            const successCodes = Object.keys(responses).filter(code => code >= 200 && code < 300);
             if (successCodes.length > 1) {
                 throw port.errors['swagger.successCodesCount']({
                     params: {
                         expected: 1,
                         actual: successCodes.length
                     },
-                    responses: method.responses
+                    responses
                 });
             }
+            // build once upon initialization
+            const ut = {
+                successCode: successCodes[0] ? parseInt(successCodes[0]) : 200,
+                security: {
+                    jwt: Array.isArray(security) && security.length > 0
+                },
+                method: operationId
+            };
             router[methodName](fullPath, (ctx, next) => {
-                ctx.ut.method = method.operationId;
-                ctx.ut.successCode = successCodes[0] ? parseInt(successCodes[0]) : 200;
+                ctx.ut.successCode = ut.successCode;
+                ctx.ut.security = ut.security;
+                ctx.ut.method = ut.method;
                 ctx.ut.$meta = {
                     mtid: 'request',
                     trace: uuid.v4(),

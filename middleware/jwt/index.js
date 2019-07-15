@@ -26,13 +26,19 @@ module.exports = ({port, options}) => {
 
     return koaCompose([
         jwt(options).unless({
-            custom: ctx => typeof ctx.ut.method === 'undefined'
+            custom: ctx => {
+                return !ctx.ut.security || ctx.ut.security.jwt === false;
+            }
         }),
         (ctx, next) => {
-            try {
-                ctx.ut.$meta.auth = normalize(ctx.state[key]);
-            } catch (e) {
-                throw port.errors['swagger.jwtFormatError'](e);
+            if (ctx.state[key]) {
+                try {
+                    ctx.ut.$meta.auth = normalize(ctx.state[key]);
+                } catch (e) {
+                    throw port.errors['swagger.jwtFormatError'](e);
+                }
+            } else {
+                ctx.ut.$meta.auth = false;
             }
             return next();
         }

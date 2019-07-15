@@ -51,7 +51,7 @@ module.exports = ({
     preferred_username: username = null,
     realm_access: {
         roles = []
-    }
+    } = {}
 }) => {
     return {
         sessionId,

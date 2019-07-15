@@ -15,7 +15,7 @@ const getAuditHandler = (port, { namespace, exchange, routingKey, options }) => 
     const sendToQueue = port.bus.importMethod(`${namespace}.${exchange}.${routingKey}`);
 
     return async(ctx, error) => {
-        if (!ctx.ut.method) return; // audit bus methods only
+        if (!ctx.ut.method || !ctx.ut.$meta.auth) return; // audit bus methods only
 
         const {
             sessionId = null,
@@ -23,7 +23,7 @@ const getAuditHandler = (port, { namespace, exchange, routingKey, options }) => 
             businessUnitName = null,
             userId = null,
             username: userName = null
-        } = ctx.ut.$meta.auth || {};
+        } = ctx.ut.$meta.auth;
 
         const payload = {
             auditEntryId: null,
