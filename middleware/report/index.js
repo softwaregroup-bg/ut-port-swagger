@@ -1,6 +1,6 @@
 const dotProp = require('dot-prop');
 
-const getReportHandler = (port, { namespace, exchange, routingKey, options, methods = true }) => {
+const getReportHandler = (port, { namespace, exchange, routingKey, options, service, methods = true }) => {
     const assertString = (key, value) => {
         if (!value || typeof value !== 'string') {
             throw new Error(`${port.config.id}.middleware.report.${key} must be a string`);
@@ -9,6 +9,7 @@ const getReportHandler = (port, { namespace, exchange, routingKey, options, meth
     assertString('namespace', namespace);
     assertString('exchange', exchange);
     assertString('routingKey', routingKey);
+    assertString('service', service);
 
     const sendToQueue = port.bus.importMethod(`${namespace}.${exchange}.${routingKey}`);
 
@@ -33,7 +34,7 @@ const getReportHandler = (port, { namespace, exchange, routingKey, options, meth
             const payload = {
                 tenantId,
                 objectId: dotProp.get({request: ctx.ut, response: ctx.body}, objectId),
-                service: port.bus.config.implementation,
+                service,
                 eventType,
                 objectType,
                 data: ctx.ut.msg,
