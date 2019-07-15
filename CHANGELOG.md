@@ -1,3 +1,12 @@
+# [3.2.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.1.3...v3.2.0) (2019-07-15)
+
+
+### Features
+
+* **ALZDFA1-449:** possibility to define public methods ([58cf94f](https://github.com/softwaregroup-bg/ut-port-swagger/commit/58cf94f))
+
+
+
 ## [3.1.3](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.1.2...v3.1.3) (2019-07-12)
 
 
