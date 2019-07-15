@@ -1,3 +1,12 @@
+## [3.2.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.2.0...v3.2.1) (2019-07-15)
+
+
+### Bug Fixes
+
+* put back service in report middleware config ([d75f146](https://github.com/softwaregroup-bg/ut-port-swagger/commit/d75f146))
+
+
+
 # [3.2.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.1.3...v3.2.0) (2019-07-15)
 
 
