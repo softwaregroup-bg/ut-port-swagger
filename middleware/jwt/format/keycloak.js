@@ -49,6 +49,7 @@ module.exports = ({
     tenantName = null,
     sub: userId = null,
     preferred_username: username = null,
+    name = null,
     realm_access: {
         roles = []
     } = {}
@@ -61,6 +62,7 @@ module.exports = ({
         tenantName,
         userId,
         username,
+        name,
         roles
     };
 };
