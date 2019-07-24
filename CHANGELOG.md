@@ -1,3 +1,12 @@
+# [3.3.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.2.1...v3.3.0) (2019-07-24)
+
+
+### Features
+
+* **ALZDFA1-519:** add user info in report message payload ([c3e7dac](https://github.com/softwaregroup-bg/ut-port-swagger/commit/c3e7dac))
+
+
+
 ## [3.2.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.2.0...v3.2.1) (2019-07-15)
 
 
