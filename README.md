@@ -107,7 +107,7 @@ TO DO: `wrapper` middleware description
 ### audit
 
 This middleware is responsible for sending audit data events
-to a message queue (Rabbit MQ).
+to a message queue (Rabbit MQ)
 
 * configuration options
   * `namespace` (required) - Rabbit MQ producer port namespace
