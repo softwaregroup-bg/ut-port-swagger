@@ -296,13 +296,15 @@ The standard `$meta.auth` content format is:
 
 ```js
 {
-    businessUnitId: 'businessUnitId', // null if no info
-    businessUnitName: 'businessUnitName', // null if no info
-    tenantId: 'tenantId', // null if no info
-    tenantName: 'tenantName', // null if no info
-    userId: 'userId', // null if no info
-    username: 'username', // null if no info
-    roles: ['role1', 'role2'] // empty array if no info
+    sessionId: 'sessionId', // user's session id (null if no info)
+    businessUnitId: 'businessUnitId', // user's business unit id (null if no info)
+    businessUnitName: 'businessUnitName', // user's business unit name (null if no info)
+    tenantId: 'tenantId', // user's tenant id (null if no info)
+    tenantName: 'tenantName', // user's tenant name (null if no info)
+    userId: 'userId', // user's id (null if no info)
+    username: 'username', // user's username (null if no info)
+    name: 'name', // user's full name (null if no info)
+    roles: ['role1', 'role2'] // user's roles (empty array if no info)
 }
 
 ```
