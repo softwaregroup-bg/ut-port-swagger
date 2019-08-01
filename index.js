@@ -91,6 +91,19 @@ module.exports = ({utPort, registerErrors}) => {
                 }
             }
 
+            if (this.config.server.host) {
+                this.config.k8s = {
+                    ports: [{
+                        name: 'http-swagger',
+                        service: true,
+                        ingress: {
+                            host: this.config.server.host
+                        },
+                        containerPort: this.config.server.port
+                    }]
+                };
+            }
+
             return super.init(...params);
         }
         async start(...params) {
