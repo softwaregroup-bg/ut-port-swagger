@@ -1,3 +1,12 @@
+# [3.4.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.3.1...v3.4.0) (2019-08-01)
+
+
+### Features
+
+* k8s configuration ([bd0dae7](https://github.com/softwaregroup-bg/ut-port-swagger/commit/bd0dae7))
+
+
+
 ## [3.3.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.3.0...v3.3.1) (2019-07-24)
 
 
