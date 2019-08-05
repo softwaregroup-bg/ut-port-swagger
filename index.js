@@ -4,6 +4,34 @@ const Koa = require('koa');
 const middleware = require('./middleware');
 const errors = require('./errors.json');
 const swaggerContext = require('./context');
+const interpolationRegex = /^\$\{[\w]+(\.[\w]+)*\}$/g;
+const interpolate = (schema, context) => {
+    switch (typeof schema) {
+        case 'string':
+            if (interpolationRegex.test(schema)) {
+                const tokens = schema.slice(2, -1).split('.');
+                while (tokens.length) {
+                    context = context[tokens.shift()];
+                    if (!context) {
+                        return schema;
+                    }
+                }
+                return context;
+            }
+            return schema;
+        case 'object':
+            if (Array.isArray(schema)) {
+                return schema.map(item => interpolate(item, context));
+            } else {
+                return Object.keys(schema).reduce((all, key) => {
+                    all[key] = interpolate(schema[key], context);
+                    return all;
+                }, {});
+            }
+        default:
+            return schema;
+    }
+};
 module.exports = ({utPort, registerErrors}) => {
     return class SwaggerPort extends utPort {
         get defaults() {
@@ -61,15 +89,20 @@ module.exports = ({utPort, registerErrors}) => {
 
             if (!document) throw this.errors['swagger.documentNotProvided']();
 
-            const {staticRoutesPrefix, namespace, context, schemas} = this.config;
+            const {staticRoutesPrefix, namespace, context} = this.config;
 
-            const {swaggerDocument, handlers} = swaggerContext(this, {
-                document,
+            const schemas = interpolate(this.config.schemas, context);
+            const swaggerDocument = interpolate(document, {context, schemas});
+
+            const {handlers, paths} = swaggerContext(this, {
+                swaggerDocument,
                 staticRoutesPrefix,
                 namespace,
                 schemas,
                 context
             });
+
+            Object.assign(swaggerDocument.paths, paths);
 
             await swaggerParser.validate(swaggerDocument);
 
