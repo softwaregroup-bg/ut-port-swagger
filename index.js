@@ -92,7 +92,7 @@ module.exports = ({utPort, registerErrors}) => {
             const {staticRoutesPrefix, namespace, context} = this.config;
 
             const schemas = interpolate(this.config.schemas, context);
-            const swaggerDocument = interpolate(document, {...context, schemas});
+            const swaggerDocument = interpolate(document, {context, schemas});
 
             const {handlers, paths} = swaggerContext(this, {
                 swaggerDocument,
