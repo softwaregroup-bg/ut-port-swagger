@@ -1,3 +1,17 @@
+# [3.5.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.4.0...v3.5.0) (2019-08-05)
+
+
+### Bug Fixes
+
+* enrich docs ([d9a4bc2](https://github.com/softwaregroup-bg/ut-port-swagger/commit/d9a4bc2))
+
+
+### Features
+
+* **COREADM-132:** interpolate ut-port-swagger schemas ([b84886e](https://github.com/softwaregroup-bg/ut-port-swagger/commit/b84886e))
+
+
+
 # [3.4.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.3.1...v3.4.0) (2019-08-01)
 
 
