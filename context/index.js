@@ -1,56 +1,29 @@
 const definitions = require('./definitions');
 const generateSchema = require('generate-schema');
-const interpolationRegex = /^\$\{[\w]+(\.[\w]+)*\}$/g;
-const interpolate = (schema, context) => {
-    switch (typeof schema) {
-        case 'string':
-            if (interpolationRegex.test(schema)) {
-                const tokens = schema.slice(2, -1).split('.');
-                while (tokens.length) {
-                    context = context[tokens.shift()];
-                    if (!context) {
-                        return schema;
-                    }
+
+const responseSchemaFormatter = {
+    '2.0': (description, schema) => {
+        return {
+            description,
+            schema
+        };
+    },
+    '3.0.0': (description, schema) => {
+        return {
+            description,
+            content: {
+                'application/json': {
+                    schema
                 }
-                return context;
             }
-            return schema;
-        case 'object':
-            if (Array.isArray(schema)) {
-                return schema.map(item => interpolate(item, context));
-            } else {
-                return Object.keys(schema).reduce((all, key) => {
-                    all[key] = interpolate(schema[key], context);
-                    return all;
-                }, {});
-            }
-        default:
-            return schema;
+        };
     }
 };
 
-const responseSchemaFormatter = {};
-responseSchemaFormatter['2.0'] = (description, schema) => {
-    return {
-        description,
-        schema
-    };
-};
-
-responseSchemaFormatter['3.0.0'] =
-responseSchemaFormatter['3.0.1'] = (description, schema) => {
-    return {
-        description,
-        content: {
-            'application/json': {
-                schema
-            }
-        }
-    };
-};
+responseSchemaFormatter['3.0.1'] = responseSchemaFormatter['3.0.0'];
 
 module.exports = (port, {
-    document,
+    swaggerDocument,
     staticRoutesPrefix,
     namespace,
     schemas,
@@ -59,7 +32,7 @@ module.exports = (port, {
     const paths = {};
     const handlers = {};
 
-    const formatResponse = responseSchemaFormatter[document.swagger || document.openapi];
+    const formatResponse = responseSchemaFormatter[swaggerDocument.swagger || swaggerDocument.openapi];
 
     function getPath(path) {
         return staticRoutesPrefix ? `${staticRoutesPrefix}${path}` : path;
@@ -91,7 +64,7 @@ module.exports = (port, {
 
     function schemasInventoryRoute() {
         const method = `${namespace}.schemas`;
-        const {basePath = ''} = document;
+        const {basePath = ''} = swaggerDocument;
         handlers[method] = () => {
             return {
                 response: Object.keys(schemas).reduce((all, key) => {
@@ -183,8 +156,5 @@ module.exports = (port, {
     schemasRoutes();
     healthRoute();
 
-    const swaggerDocument = interpolate(document, context);
-    Object.assign(swaggerDocument.paths, paths);
-
-    return {swaggerDocument, handlers};
+    return {handlers, paths};
 };
