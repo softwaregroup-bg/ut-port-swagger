@@ -4,7 +4,7 @@ const Koa = require('koa');
 const middleware = require('./middleware');
 const errors = require('./errors.json');
 const swaggerContext = require('./context');
-const interpolationRegex = /^\$\{[\w]+(\.[\w]+)*\}$/g;
+const interpolationRegex = /^\$\{[\w]+(\.[\w]+)*\}$/i;
 const interpolate = (schema, context) => {
     switch (typeof schema) {
         case 'string':
@@ -75,13 +75,29 @@ module.exports = ({utPort, registerErrors}) => {
         async init(...params) {
             Object.assign(this.errors, registerErrors(errors));
 
+            const {context} = this.config;
+
+            const schemas = interpolate(this.config.schemas, context);
+
             let document;
             switch (typeof this.config.document) {
                 case 'function':
                     document = this.config.document.call(this);
                     break;
                 case 'string':
-                    document = await swaggerParser.bundle(this.config.document);
+                    const regExp = /\$(%7B|{)(.*)(}|%7D)$/i;
+                    document = await swaggerParser.bundle(this.config.document, {
+                        resolve: {
+                            schemas: {
+                                order: 1,
+                                canRead: regExp,
+                                read({url}, cb) {
+                                    const selector = regExp.exec(url)[2];
+                                    cb(null, interpolate(`\${${selector}}`, {schemas}));
+                                }
+                            }
+                        }
+                    });
                     break;
                 default:
                     document = this.config.document;
@@ -89,10 +105,9 @@ module.exports = ({utPort, registerErrors}) => {
 
             if (!document) throw this.errors['swagger.documentNotProvided']();
 
-            const {staticRoutesPrefix, namespace, context} = this.config;
+            const {staticRoutesPrefix, namespace} = this.config;
 
-            const schemas = interpolate(this.config.schemas, context);
-            const swaggerDocument = interpolate(document, {context, schemas});
+            const swaggerDocument = interpolate(document, context);
 
             const {handlers, paths} = swaggerContext(this, {
                 swaggerDocument,
