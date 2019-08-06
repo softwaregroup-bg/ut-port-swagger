@@ -1,3 +1,12 @@
+## [3.5.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.5.0...v3.5.1) (2019-08-06)
+
+
+### Bug Fixes
+
+* resolve schema refs properly ([d962189](https://github.com/softwaregroup-bg/ut-port-swagger/commit/d962189))
+
+
+
 # [3.5.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.4.0...v3.5.0) (2019-08-05)
 
 
