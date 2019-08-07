@@ -28,7 +28,7 @@
   ],
   "devDependencies": {
     "tap": "^12.6.2",
-    "ut-tools": "^6.21.0"
+    "ut-tools": "^6.23.0"
   },
   "dependencies": {
     "@koa/cors": "3.0.0",
@@ -47,7 +47,7 @@
     "swagger-parser": "6.0.5",
     "swagger-ui-dist": "3.22.1",
     "swagger2": "1.0.4",
-    "ut-swagger2-validator": "^0.2.0",
+    "ut-swagger2-validator": "^0.3.0",
     "uuid": "3.3.2"
   },
   "repository": {
