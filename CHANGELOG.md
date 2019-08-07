@@ -1,3 +1,12 @@
+# [3.6.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.5.1...v3.6.0) (2019-08-07)
+
+
+### Features
+
+* x-nullable support ([bb37149](https://github.com/softwaregroup-bg/ut-port-swagger/commit/bb37149))
+
+
+
 ## [3.5.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.5.0...v3.5.1) (2019-08-06)
 
 
