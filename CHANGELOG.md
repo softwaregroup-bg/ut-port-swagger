@@ -1,3 +1,12 @@
+## [3.6.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.6.0...v3.6.1) (2019-08-08)
+
+
+### Bug Fixes
+
+* update swagger validator ([a2470da](https://github.com/softwaregroup-bg/ut-port-swagger/commit/a2470da))
+
+
+
 # [3.6.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.5.1...v3.6.0) (2019-08-07)
 
 
