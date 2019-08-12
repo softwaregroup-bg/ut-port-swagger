@@ -346,6 +346,26 @@ Using a symetric key:
   }
 ```
 
+The token is normally provided in a HTTP header (Authorization)
+but it can also be provided in a cookie.
+Specify that by setting the 'cookie' option.
+In the example below the middleware will expect the token
+to be found at `Cookie: "ut5-cookie=encryptedJwtToken"`
+
+```json
+  {
+    "swagger": {
+      "middleware": {
+        "jwt": {
+            "cookie": "ut5-cookie",
+            "secret": "ut5-secret",
+            "format": "ut5"
+        }
+      }
+    }
+  }
+```
+
 You can specify audience and/or issuer as well:
 
 ```json
