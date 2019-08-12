@@ -2,7 +2,8 @@ const jwt = require('koa-jwt');
 const koaCompose = require('koa-compose');
 const { koaJwtSecret } = require('jwks-rsa');
 const formats = {
-    keycloak: require('./format/keycloak')
+    keycloak: require('./format/keycloak'),
+    ut5: require('./format/ut5')
 };
 module.exports = ({port, options}) => {
     const { key = 'user' } = options;
