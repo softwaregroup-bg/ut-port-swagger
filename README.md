@@ -316,15 +316,24 @@ The standard `$meta.auth` content format is:
 
 ```js
 {
-    sessionId: 'sessionId', // user's session id (null if no info)
-    businessUnitId: 'businessUnitId', // user's business unit id (null if no info)
-    businessUnitName: 'businessUnitName', // user's business unit name (null if no info)
-    tenantId: 'tenantId', // user's tenant id (null if no info)
-    tenantName: 'tenantName', // user's tenant name (null if no info)
-    userId: 'userId', // user's id (null if no info)
-    username: 'username', // user's username (null if no info)
-    name: 'name', // user's full name (null if no info)
-    roles: ['role1', 'role2'] // user's roles (empty array if no info)
+    // user's session id (null if no info)
+    sessionId: 'sessionId',
+    // user's business unit id (null if no info)
+    businessUnitId: 'businessUnitId',
+    // user's business unit name(null if no info)
+    businessUnitName: 'businessUnitName',
+    // user's tenant id (null if no info)
+    tenantId: 'tenantId',
+    // user's tenant name (null if no info)
+    tenantName: 'tenantName',
+    // user's id (null if no info)
+    userId: 'userId',
+    // user's username (null if no info)
+    username: 'username',
+    // user's full name (null if no info)
+    name: 'name',
+    // user's roles (empty array if no info)
+    roles: ['role1', 'role2']
 }
 
 ```
@@ -340,6 +349,26 @@ Using a symetric key:
         "jwt": {
           "secret": "secret",
           "format": "keycloak"
+        }
+      }
+    }
+  }
+```
+
+The token is normally provided in a HTTP header (Authorization)
+but it can also be provided in a cookie.
+Specify that by setting the 'cookie' option.
+In the example below the middleware will expect the token
+to be found at `Cookie: "ut5-cookie=encryptedJwtToken"`
+
+```json
+  {
+    "swagger": {
+      "middleware": {
+        "jwt": {
+            "cookie": "ut5-cookie",
+            "secret": "ut5-secret",
+            "format": "ut5"
         }
       }
     }
