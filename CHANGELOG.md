@@ -1,3 +1,17 @@
+# [3.7.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.6.1...v3.7.0) (2019-08-12)
+
+
+### Bug Fixes
+
+* linting ([c8fe5f3](https://github.com/softwaregroup-bg/ut-port-swagger/commit/c8fe5f3))
+
+
+### Features
+
+* provide jwt ut5 formatter ([38a76d6](https://github.com/softwaregroup-bg/ut-port-swagger/commit/38a76d6))
+
+
+
 ## [3.6.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.6.0...v3.6.1) (2019-08-08)
 
 
