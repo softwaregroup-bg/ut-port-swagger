@@ -1,6 +1,16 @@
-const dotProp = require('dot-prop');
+const formats = {
+    dw: require('./format/dw')
+};
 
-const getReportHandler = (port, { namespace, exchange, routingKey, options, service, methods = true }) => {
+const getReportHandler = (port, {
+    namespace,
+    exchange,
+    routingKey,
+    options,
+    service,
+    methods = true,
+    format = 'dw'
+}) => {
     const assertString = (key, value) => {
         if (!value || typeof value !== 'string') {
             throw new Error(`${port.config.id}.middleware.report.${key} must be a string`);
@@ -10,6 +20,10 @@ const getReportHandler = (port, { namespace, exchange, routingKey, options, serv
     assertString('exchange', exchange);
     assertString('routingKey', routingKey);
     assertString('service', service);
+
+    const formatPayload = typeof format === 'function' ? format : formats[format];
+
+    if (typeof formatPayload !== 'function') throw new Error(`Unsupported audit format: ${format}`);
 
     const sendToQueue = port.bus.importMethod(`${namespace}.${exchange}.${routingKey}`);
 
@@ -22,42 +36,24 @@ const getReportHandler = (port, { namespace, exchange, routingKey, options, serv
         return handler;
     };
 
-    const setHandler = (method, data = {}) => {
+    const setHandler = (method, config = {}) => {
         const tokens = method.split('.').slice(-2);
         const {
             objectType = tokens[0],
             eventType = tokens[1],
             objectId = 'request.msg.id'
-        } = data;
-        const handler = handlers[method] = async ctx => {
-            const {
-                userId = null,
-                name = null,
-                username = null,
-                businessUnitId = null,
-                businessUnitName = null,
-                tenantId = null
-            } = ctx.ut.$meta.auth || {};
+        } = config;
 
-            const payload = {
-                tenantId,
-                objectId: dotProp.get({request: ctx.ut, response: ctx.body}, objectId),
-                service,
-                eventType,
-                objectType,
-                user: {
-                    userId,
-                    name,
-                    username,
-                    businessUnitId,
-                    businessUnitName
-                },
-                data: ctx.ut.msg,
-                messageAddedDate: Date.now() / 1000 | 0 // unix timestamp
-            };
+        const handler = handlers[method] = async ctx => {
             try {
                 await sendToQueue({
-                    payload,
+                    payload: formatPayload(ctx, {
+                        objectType,
+                        eventType,
+                        objectId,
+                        service,
+                        method
+                    }),
                     options,
                     exchange,
                     routingKey
@@ -73,7 +69,7 @@ const getReportHandler = (port, { namespace, exchange, routingKey, options, serv
         if (Array.isArray(methods)) {
             methods.forEach(setHandler);
         } else {
-            Object.entries(methods).forEach(([method, data]) => setHandler(method, data));
+            Object.entries(methods).forEach(([method, config]) => setHandler(method, config));
         }
     }
 

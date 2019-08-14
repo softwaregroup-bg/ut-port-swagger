@@ -130,10 +130,12 @@ This middleware is responsible for sending audit data events
 to a message queue (Rabbit MQ)
 
 * configuration options
-  * `namespace` (required) - Rabbit MQ producer port namespace
-  * `exchange` (required) - Rabbit MQ exchange
-  * `routingKey` (required) - Rabbit MQ routing key
-  * `options` (optional) - Rabbit MQ options.
+  * `namespace` (required) [ string ] - Rabbit MQ producer port namespace
+  * `exchange` (required) [ string ] - Rabbit MQ exchange
+  * `routingKey` (required) [ string ] - Rabbit MQ routing key
+  * `format` (optional) [ string | function ] - Payload formatter.
+  By default it is the `dw` formatter.
+  * `options` (optional) [ object ] - Rabbit MQ options.
   May include `headers`, `type`, `appId`, etc...
   [see amqplib channel publish options](http://www.squaremobius.net/amqp.node/channel_api.html#channel_publish)
 
@@ -167,17 +169,19 @@ This middleware is responsible for sending reporting data events
 to a message queue (Rabbit MQ).
 
 * configuration options
-  * `namespace` (required) - Rabbit MQ producer port namespace
-  * `exchange` (required) - Rabbit MQ exchange
-  * `routingKey` (required) - Rabbit MQ routing key
-  * `options` (optional) - Rabbit MQ options.
+  * `namespace` (required) [ string ] - Rabbit MQ producer port namespace
+  * `exchange` (required) [ string ] - Rabbit MQ exchange
+  * `routingKey` (required) [ string ] - Rabbit MQ routing key
+  * `format` (optional) [ string | function ] - Payload formatter.
+  By default it is the `dw` formatter.
+  * `options` (optional) [ object ] - Rabbit MQ options.
   May include `headers`, `type`, `appId`, etc...
   [see amqplib channel publish options](http://www.squaremobius.net/amqp.node/channel_api.html#channel_publish)
 
   For more info about `options`, `exchange` and `routingKey`
   check `ut-port-amqp` [docs](https://github.com/softwaregroup-bg/ut-port-amqp#producer-port)
-  * `service` (required) - mandatory field to be included in the payload
-  * `methods` (optional) - Which bus methods to be reported
+  * `service` (required) [ string ] - mandatory field to be included in the payload
+  * `methods` (optional) [ object | array ] - Which bus methods to be reported
     * if omitted then all methods will be reported
     * if an array of strings (each record representing a method name).
     Then the respective methods will be reported

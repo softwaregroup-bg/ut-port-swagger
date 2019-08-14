@@ -1,73 +1,34 @@
-const os = require('os');
-const serverMachineName = os.hostname();
-const serverOsVersion = [os.type(), os.platform(), os.release()].join(':');
+const formats = {
+    dw: require('./format/dw')
+};
 
-const getAuditHandler = (port, { namespace, exchange, routingKey, options }) => {
+const getAuditHandler = (port, {
+    namespace,
+    exchange,
+    routingKey,
+    options,
+    format = 'dw'
+}) => {
     const assertString = (key, value) => {
         if (!value || typeof value !== 'string') {
-            throw new Error(`${port.config.id}.middleware.report.${key} must be a string`);
+            throw new Error(`${port.config.id}.middleware.audit.${key} must be a string`);
         }
     };
     assertString('namespace', namespace);
     assertString('exchange', exchange);
     assertString('routingKey', routingKey);
 
+    const formatPayload = typeof format === 'function' ? format : formats[format];
+
+    if (typeof formatPayload !== 'function') throw new Error(`Unsupported audit format: ${format}`);
+
     const sendToQueue = port.bus.importMethod(`${namespace}.${exchange}.${routingKey}`);
 
     return async(ctx, error) => {
         if (!ctx.ut.method || !ctx.ut.$meta.auth) return; // audit bus methods only
-
-        const {
-            sessionId = null,
-            businessUnitId = null,
-            businessUnitName = null,
-            userId = null,
-            username: userName = null
-        } = ctx.ut.$meta.auth;
-
-        const payload = {
-            auditEntryId: null,
-            dateAndTime: null,
-            success: !error,
-            failureReason: error ? error.message : null,
-            failureCode: error ? (error.type || error.code || error.name) : null,
-            relatedObjects: [
-                {
-                    objectId: null,
-                    objectType: null
-                }
-            ],
-            callParams: ctx.ut.msg,
-            eventGUID: ctx.ut.$meta.trace,
-            eventGUIDDateTime: Date.now() / 1000 | 0, // unix timestamp
-            eventClass: port.config.id,
-            eventCode: ctx.ut.method,
-            eventURI: ctx.url,
-            eventDescription: ctx.ut.method,
-            controllerName: ctx.ut.method.split('.')[0],
-            controllerVersion: port.bus.config.version,
-            channel: 'web',
-            userId,
-            userName,
-            businessUnitName,
-            businessUnitId,
-            severityLevel: null,
-            sessionId,
-            sourceIpAddress: ctx.req.socket.remoteAddress,
-            destinationIpAddress: ctx.req.socket.localAddress,
-            destinationPort: ctx.req.socket.localPort,
-            geolocation: null,
-            serverOsVersion,
-            domainName: ctx.headers['x-forwarded-host']
-                ? ctx.headers['x-forwarded-host'].split(',')[0]
-                : ctx.hostname,
-            serverMachineName,
-            deviceId: null
-        };
-
         try {
             await sendToQueue({
-                payload,
+                payload: formatPayload(port, ctx, error),
                 options,
                 exchange,
                 routingKey
