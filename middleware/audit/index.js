@@ -27,8 +27,10 @@ const getAuditHandler = (port, {
     return async(ctx, error) => {
         if (!ctx.ut.method || !ctx.ut.$meta.auth) return; // audit bus methods only
         try {
+            const payload = formatPayload(port, ctx, error);
+
             await sendToQueue({
-                payload: formatPayload(port, ctx, error),
+                payload,
                 options,
                 exchange,
                 routingKey
