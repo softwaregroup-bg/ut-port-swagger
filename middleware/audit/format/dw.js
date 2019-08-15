@@ -9,7 +9,7 @@ module.exports = (port, ctx, error) => {
         businessUnitName = null,
         userId = null,
         username: userName = null,
-        tenantId: tenantUUID = null,
+        tenantId = null,
         tenantName = null
     } = ctx.ut.$meta.auth;
 
@@ -50,7 +50,7 @@ module.exports = (port, ctx, error) => {
             : ctx.hostname,
         destinationMachineName,
         userDeviceId: null,
-        tenantUUID,
+        tenantId,
         tenantName,
         eventMappingPath: null,
         eventMappingVia: null

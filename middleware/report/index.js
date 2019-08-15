@@ -53,7 +53,7 @@ const getReportHandler = (port, {
                     service,
                     method
                 });
-                
+
                 await sendToQueue({
                     payload,
                     options,
