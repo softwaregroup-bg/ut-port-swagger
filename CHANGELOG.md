@@ -1,3 +1,19 @@
+# [3.8.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.7.0...v3.8.0) (2019-08-16)
+
+
+### Bug Fixes
+
+* get trace from request headers if present ([5848f8b](https://github.com/softwaregroup-bg/ut-port-swagger/commit/5848f8b))
+* refactor dw format ([45580ed](https://github.com/softwaregroup-bg/ut-port-swagger/commit/45580ed))
+* tenantUUID->tenantId ([48076e8](https://github.com/softwaregroup-bg/ut-port-swagger/commit/48076e8))
+
+
+### Features
+
+* add possibility for custom audit and report formatters ([a4b1fc3](https://github.com/softwaregroup-bg/ut-port-swagger/commit/a4b1fc3))
+
+
+
 # [3.7.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.6.1...v3.7.0) (2019-08-12)
 
 
