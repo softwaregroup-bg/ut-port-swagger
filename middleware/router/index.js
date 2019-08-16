@@ -40,7 +40,7 @@ module.exports = ({port, options}) => {
                 ctx.ut.method = ut.method;
                 ctx.ut.$meta = {
                     mtid: 'request',
-                    trace: uuid.v4(),
+                    trace: ctx.request.headers['x-trace'] || uuid.v4(),
                     method: ctx.ut.method,
                     headers: ctx.request.headers
                 };
