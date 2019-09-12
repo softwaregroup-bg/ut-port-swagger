@@ -1,3 +1,12 @@
+## [3.8.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.8.0...v3.8.1) (2019-09-12)
+
+
+### Bug Fixes
+
+* use timestamp in milliseconds instead of unix epoch time ([c95904e](https://github.com/softwaregroup-bg/ut-port-swagger/commit/c95904e))
+
+
+
 # [3.8.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.7.0...v3.8.0) (2019-08-16)
 
 
