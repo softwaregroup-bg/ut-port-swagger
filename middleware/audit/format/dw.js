@@ -29,7 +29,7 @@ module.exports = (port, ctx, error) => {
         eventUUID: uuid(),
         eventKey: ctx.ut.$meta.method,
         eventURI: ctx.url,
-        eventDate: Date.now() / 1000 | 0, // unix timestamp
+        eventDate: Date.now(),
         eventDescription: ctx.ut.method,
         serviceName: ctx.ut.method.split('.')[0], // to do
         serviceVersion: port.bus.config.version, // to do

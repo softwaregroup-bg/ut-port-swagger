@@ -28,6 +28,6 @@ module.exports = (ctx, {
             businessUnitName
         },
         data: ctx.ut.msg,
-        messageAddedDate: Date.now() / 1000 | 0 // unix timestamp
+        messageAddedDate: Date.now()
     };
 };
