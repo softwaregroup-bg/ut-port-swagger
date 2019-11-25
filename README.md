@@ -477,7 +477,66 @@ TO DO: `contextProvider` middleware description
 
 ### requestHandler
 
-TO DO: `requestHandler` middleware description
+This middleware is responsible for dispatching the requests
+to the backend.
+
+* configuration options
+  * `authorize` (optional) [ string | function ] - Authorization handler.
+  The authorization would fail of the handler returns
+  a falsey value or throws an error
+
+  Examples:
+    * Custom handler on port level:
+    ```js
+      module.exports = (...params) => {
+        return class swagger extends require('ut-port-swagger')(...params) {
+          get defaults() {
+            return {
+              middleware: {
+                requestHandler: {
+                  authorize: function({message, $meta}) {
+                    // apply authorization logic
+                    // based on message and $meta
+                    return true; // successful authorization
+                    // return false; // reject unauthoruzed
+                    // throw new Error('xxx') // reject unauthorized with specific error
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
+    ```
+
+    * Custom handler in js config:
+    ```js
+      {
+        swagger: {
+          middleware: {
+            requestHandler: {
+              authorize: function({message, $meta}) {
+                // apply authorization logic
+                // based on message and $meta
+              }
+            }
+          }
+        }
+      }
+    ```
+
+    * Authorization via bus method:
+    ```json
+      {
+        "swagger": {
+          "middleware": {
+            "requestHandler": {
+              "authorize": "custom.authorization.handler"
+            }
+          }
+        }
+      }
+    ```
 
 ## Headers
 

@@ -1,5 +1,6 @@
-module.exports = ({port}) => {
-    return (ctx, next) => {
+module.exports = ({port, options}) => {
+    const { authorize } = options;
+    return async(ctx, next) => {
         const { $meta, successCode } = ctx.ut;
         const { params, query, path } = ctx;
         const { body, files } = ctx.request;
@@ -22,6 +23,46 @@ module.exports = ({port}) => {
                 message,
                 $meta
             });
+        }
+        switch (typeof authorize) {
+            case 'function':
+                try {
+                    const result = await authorize({message, $meta});
+                    if (!result) {
+                        ctx.status = 401;
+                        throw port.errors['swagger.authorizationError']();
+                    }
+                } catch (e) {
+                    ctx.status = 401;
+                    throw port.errors['swagger.authorizationError'](e);
+                }
+                break;
+            case 'string':
+                await new Promise((resolve, reject) => {
+                    port.stream.push([{message, $meta}, {
+                        mtid: 'request',
+                        method: authorize,
+                        reply: (response, {mtid}) => {
+                            switch (mtid) {
+                                case 'response':
+                                    if (!response) {
+                                        ctx.status = 401;
+                                        return reject(port.errors['swagger.authorizationError']());
+                                    }
+                                    return resolve();
+                                case 'error':
+                                    ctx.status = (response.details && response.details.statusCode) || 401;
+                                    return reject(port.errors['swagger.authorizationError'](response));
+                                default:
+                                    ctx.status = 401;
+                                    return reject(port.errors['swagger.authorizationError']({ cause: response }));
+                            }
+                        }
+                    }]);
+                });
+                break;
+            default:
+                break;
         }
         return new Promise((resolve, reject) => {
             $meta.reply = (response, {responseHeaders, mtid}) => {
