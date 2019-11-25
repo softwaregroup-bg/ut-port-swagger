@@ -45,7 +45,7 @@
     "koa-send": "5.0.0",
     "koa2-formidable": "1.0.2",
     "swagger-parser": "6.0.5",
-    "swagger-ui-dist": "3.22.1",
+    "swagger-ui-dist": "3.24.0",
     "swagger2": "1.0.4",
     "ut-swagger2-validator": "^0.3.1",
     "uuid": "3.3.2"

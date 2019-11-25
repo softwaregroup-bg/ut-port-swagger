@@ -486,57 +486,67 @@ to the backend.
   a falsey value or throws an error
 
   Examples:
-    * Custom handler on port level:
-    ```js
-      module.exports = (...params) => {
-        return class swagger extends require('ut-port-swagger')(...params) {
-          get defaults() {
-            return {
-              middleware: {
-                requestHandler: {
-                  authorize: function({message, $meta}) {
-                    // apply authorization logic
-                    // based on message and $meta
-                    return true; // successful authorization
-                    // return false; // reject unauthoruzed
-                    // throw new Error('xxx') // reject unauthorized with specific error
-                  }
+
+  * Custom handler on port level:
+
+  ```js
+    module.exports = (...params) => {
+      return class swagger extends require('ut-port-swagger')(...params) {
+        get defaults() {
+          return {
+            middleware: {
+              requestHandler: {
+                authorize: function({message, $meta}) {
+                  // apply authorization logic
+                  // based on message and $meta
+
+                  // successful authorization
+                  return true;
+
+                  // reject unauthoruzed
+                  // return false;
+
+                  // reject unauthorized with specific error
+                  // throw new Error('xxx')
                 }
               }
             }
           }
         }
-      };
-    ```
+      }
+    };
+  ```
 
-    * Custom handler in js config:
-    ```js
-      {
-        swagger: {
-          middleware: {
-            requestHandler: {
-              authorize: function({message, $meta}) {
-                // apply authorization logic
-                // based on message and $meta
-              }
+  * Custom handler in js config:
+
+  ```js
+    {
+      swagger: {
+        middleware: {
+          requestHandler: {
+            authorize: function({message, $meta}) {
+              // apply authorization logic
+              // based on message and $meta
             }
           }
         }
       }
-    ```
+    }
+  ```
 
-    * Authorization via bus method:
-    ```json
-      {
-        "swagger": {
-          "middleware": {
-            "requestHandler": {
-              "authorize": "custom.authorization.handler"
-            }
+  * Authorization via bus method:
+
+  ```json
+    {
+      "swagger": {
+        "middleware": {
+          "requestHandler": {
+            "authorize": "custom.authorization.handler"
           }
         }
       }
-    ```
+    }
+  ```
 
 ## Headers
 
