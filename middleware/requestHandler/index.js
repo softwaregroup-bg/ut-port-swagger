@@ -51,7 +51,7 @@ module.exports = ({port, options}) => {
                                     }
                                     return resolve();
                                 case 'error':
-                                    ctx.status = (response.details && response.details.statusCode) || 401;
+                                    ctx.status = 401;
                                     return reject(port.errors['swagger.authorizationError'](response));
                                 default:
                                     ctx.status = 401;

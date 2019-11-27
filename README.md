@@ -8,7 +8,7 @@
   namespace: 'swagger',
   // static context
   /*
-    static contet that will be automatically served by the server.
+    static content that will be automatically served by the server.
     e.g. {
       status: ['pending', 'approved']
     }
@@ -344,7 +344,7 @@ The standard `$meta.auth` content format is:
 
 #### configuration examples
 
-Using a symetric key:
+Using a symmetric key:
 
 ```json
   {
@@ -482,12 +482,12 @@ to the backend.
 
 * configuration options
   * `authorize` (optional) [ string | function ] - Authorization handler.
-  The authorization would fail of the handler returns
-  a falsey value or throws an error
+  The authorization would fail if the handler returns
+  a falsy value or throws an error.
 
   Examples:
 
-  * Custom handler on port level:
+  * Custom handler on port level (recommended):
 
   ```js
     module.exports = (...params) => {
@@ -503,7 +503,7 @@ to the backend.
                   // successful authorization
                   return true;
 
-                  // reject unauthoruzed
+                  // reject unauthorized
                   // return false;
 
                   // reject unauthorized with specific error
@@ -618,25 +618,25 @@ Example:
                 },
                 "phoneType": {
                   "type": "string",
-                  "title": "The Phonetype Schema ",
+                  "title": "The phoneType Schema ",
                   "default": "",
                   "example": "home"
                 },
                 "phoneNumber": {
                   "type": "string",
-                  "title": "The Phonenumber Schema ",
+                  "title": "The phoneNumber Schema ",
                   "default": "",
                   "example": "359787666555"
                 },
                 "isPrimary": {
                   "type": "boolean",
-                  "title": "The Isprimary Schema ",
+                  "title": "The isPrimary Schema ",
                   "default": false,
                   "example": true
                 },
                 "isMWallet": {
                   "type": "boolean",
-                  "title": "The Ismwallet Schema ",
+                  "title": "The isMWallet Schema ",
                   "default": false,
                   "example": true
                 }
