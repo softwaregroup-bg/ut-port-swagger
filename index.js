@@ -4,34 +4,10 @@ const Koa = require('koa');
 const middleware = require('./middleware');
 const errors = require('./errors.json');
 const swaggerContext = require('./context');
-const interpolationRegex = /^\$\{[\w]+(\.[\w]+)*\}$/i;
-const interpolate = (schema, context) => {
-    switch (typeof schema) {
-        case 'string':
-            if (interpolationRegex.test(schema)) {
-                const tokens = schema.slice(2, -1).split('.');
-                while (tokens.length) {
-                    context = context[tokens.shift()];
-                    if (!context) {
-                        return schema;
-                    }
-                }
-                return context;
-            }
-            return schema;
-        case 'object':
-            if (Array.isArray(schema)) {
-                return schema.map(item => interpolate(item, context));
-            } else {
-                return Object.keys(schema).reduce((all, key) => {
-                    all[key] = interpolate(schema[key], context);
-                    return all;
-                }, {});
-            }
-        default:
-            return schema;
-    }
-};
+const interpolate = require('ut-function.interpolate');
+const dotProp = require('dot-prop');
+const regExp = /^\$\{([a-z0-9]+(\.[a-z0-9]+)*)\}$/i;
+
 module.exports = ({utPort, registerErrors}) => {
     return class SwaggerPort extends utPort {
         get defaults() {
@@ -77,7 +53,7 @@ module.exports = ({utPort, registerErrors}) => {
 
             const {context} = this.config;
 
-            const schemas = interpolate(this.config.schemas, context);
+            const schemas = interpolate(this.config.schemas, {context}, false, regExp);
 
             let document;
             switch (typeof this.config.document) {
@@ -93,7 +69,7 @@ module.exports = ({utPort, registerErrors}) => {
                                 canRead: regExp,
                                 read({url}, cb) {
                                     const selector = regExp.exec(url)[2];
-                                    cb(null, interpolate(`\${${selector}}`, {schemas}));
+                                    cb(null, dotProp.get({schemas}, selector, selector));
                                 }
                             }
                         }
@@ -107,7 +83,7 @@ module.exports = ({utPort, registerErrors}) => {
 
             const {staticRoutesPrefix, namespace} = this.config;
 
-            const swaggerDocument = interpolate(document, context);
+            const swaggerDocument = interpolate(document, {context}, false, regExp);
 
             const {handlers, paths} = swaggerContext(this, {
                 swaggerDocument,
