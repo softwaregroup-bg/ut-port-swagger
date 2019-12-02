@@ -1,3 +1,7 @@
+# [3.9.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.9.0-authorize.2...v3.9.0) (2019-12-02)
+
+
+
 ## [3.8.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.8.0...v3.8.1) (2019-09-12)
 
 
