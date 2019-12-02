@@ -8,7 +8,7 @@
   namespace: 'swagger',
   // static context
   /*
-    static contet that will be automatically served by the server.
+    static content that will be automatically served by the server.
     e.g. {
       status: ['pending', 'approved']
     }
@@ -344,7 +344,7 @@ The standard `$meta.auth` content format is:
 
 #### configuration examples
 
-Using a symetric key:
+Using a symmetric key:
 
 ```json
   {
@@ -477,7 +477,76 @@ TO DO: `contextProvider` middleware description
 
 ### requestHandler
 
-TO DO: `requestHandler` middleware description
+This middleware is responsible for dispatching the requests
+to the backend.
+
+* configuration options
+  * `authorize` (optional) [ string | function ] - Authorization handler.
+  The authorization would fail if the handler returns
+  a falsy value or throws an error.
+
+  Examples:
+
+  * Custom handler on port level (recommended):
+
+  ```js
+    module.exports = (...params) => {
+      return class swagger extends require('ut-port-swagger')(...params) {
+        get defaults() {
+          return {
+            middleware: {
+              requestHandler: {
+                authorize: function({message, $meta}) {
+                  // apply authorization logic
+                  // based on message and $meta
+
+                  // successful authorization
+                  return true;
+
+                  // reject unauthorized
+                  // return false;
+
+                  // reject unauthorized with specific error
+                  // throw new Error('xxx')
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+  ```
+
+  * Custom handler in js config:
+
+  ```js
+    {
+      swagger: {
+        middleware: {
+          requestHandler: {
+            authorize: function({message, $meta}) {
+              // apply authorization logic
+              // based on message and $meta
+            }
+          }
+        }
+      }
+    }
+  ```
+
+  * Authorization via bus method:
+
+  ```json
+    {
+      "swagger": {
+        "middleware": {
+          "requestHandler": {
+            "authorize": "custom.authorization.handler"
+          }
+        }
+      }
+    }
+  ```
 
 ## Headers
 
@@ -549,25 +618,25 @@ Example:
                 },
                 "phoneType": {
                   "type": "string",
-                  "title": "The Phonetype Schema ",
+                  "title": "The phoneType Schema ",
                   "default": "",
                   "example": "home"
                 },
                 "phoneNumber": {
                   "type": "string",
-                  "title": "The Phonenumber Schema ",
+                  "title": "The phoneNumber Schema ",
                   "default": "",
                   "example": "359787666555"
                 },
                 "isPrimary": {
                   "type": "boolean",
-                  "title": "The Isprimary Schema ",
+                  "title": "The isPrimary Schema ",
                   "default": false,
                   "example": true
                 },
                 "isMWallet": {
                   "type": "boolean",
-                  "title": "The Ismwallet Schema ",
+                  "title": "The isMWallet Schema ",
                   "default": false,
                   "example": true
                 }
