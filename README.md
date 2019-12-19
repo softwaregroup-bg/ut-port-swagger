@@ -572,6 +572,28 @@ from the bus method that has been called. E.g
   }
 ```
 
+## Cookies
+
+In order to set response cookies
+just attach a cookies array in $meta
+from the bus method that has been called. E.g
+
+```js
+  function(incomingMessage, $meta) {
+    $meta.cookies = [
+      ['cookie1Name', 'cookie1Value', {/*cookie 1 options*/}],
+      ['cookie2Name', 'cookie2Value', {/*cookie 2 options*/}]
+    ];
+    const outgoingMessage = {
+      test: 1
+    };
+    return outgoingMessage;
+  }
+```
+
+For more information about how to describe
+cookies check [koa documentation](https://github.com/koajs/koa/blob/master/docs/api/context.md#ctxcookiessetname-value-options)
+
 ## OpenAPI Schema specifics
 
 * `operationId` - specifies the controller
