@@ -187,7 +187,8 @@ to a message queue (Rabbit MQ).
     Then the respective methods will be reported
     * if an object (each key representing a method name)
     Then the respective methods will be reported.
-    The value can be used to override the reported `objectId`, `eventType` and `objectType`
+    The value can be used to override the reported
+    `objectId`, `eventType`, `objectType` and `data`
 
   Examples:
 
@@ -250,7 +251,10 @@ to a message queue (Rabbit MQ).
               "eventType": "edit"
             },
             "j.k.l": {
-              "objectId": "request.msg.id"
+              "objectId": "request.msg.id",
+              "data": {
+                "idCustom": "request.msg.id"
+              }
             }
           }
         }
@@ -259,13 +263,21 @@ to a message queue (Rabbit MQ).
   }
   ```
 
-  **NOTE**: objectId must be in `dot-prop` format. Check [docs](https://github.com/sindresorhus/dot-prop#getobject-path-defaultvalue).
+  **NOTE**: `objectId` and `data` object values can be in `dot-prop` format.
+  Check [docs](https://github.com/sindresorhus/dot-prop#getobject-path-defaultvalue).
   If set then the respective objectId will be automatically extracted.
   the `dot-prop` object is formed as follows: ```{request: {msg, $meta}, response}```.
   So the possible paths would be:
   * request.msg.*
   * request.$meta.*
   * response.*
+
+  If not set in `dot-prop` format or it represents a path that
+  doesn't exist then the value itself will be set as a fallback.
+
+  If provided, the `data` object will be merged with the request message.
+  `data` properties are treated as defaults so if any keys match
+  they will be overridden by the message.
 
 ### swaggerUI
 
