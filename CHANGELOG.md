@@ -1,3 +1,12 @@
+# [3.10.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.9.0...v3.10.0) (2019-12-19)
+
+
+### Features
+
+* possibility to set response cookies ([3231ad8](https://github.com/softwaregroup-bg/ut-port-swagger/commit/3231ad8))
+
+
+
 # [3.9.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.9.0-authorize.2...v3.9.0) (2019-12-02)
 
 
