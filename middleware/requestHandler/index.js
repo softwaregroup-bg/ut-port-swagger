@@ -65,12 +65,15 @@ module.exports = ({port, options}) => {
                 break;
         }
         return new Promise((resolve, reject) => {
-            $meta.reply = (response, {responseHeaders, mtid}) => {
+            $meta.reply = (response, {responseHeaders, cookies, mtid}) => {
                 if (responseHeaders) {
                     Object.keys(responseHeaders).forEach(header => {
                         ctx.set(header, responseHeaders[header]);
                     });
                 }
+
+                if (Array.isArray(cookies)) cookies.forEach(cookie => ctx.cookies.set(...cookie));
+
                 switch (mtid) {
                     case 'response':
                         ctx.body = response;
