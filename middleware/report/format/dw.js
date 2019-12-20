@@ -3,6 +3,7 @@ module.exports = (ctx, {
     objectType,
     eventType,
     objectId,
+    data,
     service
 }) => {
     const {
@@ -13,10 +14,10 @@ module.exports = (ctx, {
         businessUnitName = null,
         tenantId = null
     } = ctx.ut.$meta.auth || {};
-
+    const context = {request: ctx.ut, response: ctx.body};
     return {
         tenantId,
-        objectId: dotProp.get({request: ctx.ut, response: ctx.body}, objectId),
+        objectId: dotProp.get(context, objectId, objectId),
         service,
         eventType,
         objectType,
@@ -27,7 +28,15 @@ module.exports = (ctx, {
             businessUnitId,
             businessUnitName
         },
-        data: ctx.ut.msg,
+        data: {
+            ...data && Object
+                .entries(data)
+                .reduce((props, [key, value]) => {
+                    props[key] = dotProp.get(context, value, value);
+                    return props;
+                }, {}),
+            ...ctx.ut.msg
+        },
         messageAddedDate: Date.now()
     };
 };

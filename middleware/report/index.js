@@ -41,15 +41,16 @@ const getReportHandler = (port, {
         const {
             objectType = tokens[0],
             eventType = tokens[1],
-            objectId = 'request.msg.id'
+            objectId = 'request.msg.id',
+            data
         } = config;
-
         const handler = handlers[method] = async ctx => {
             try {
                 const payload = formatPayload(ctx, {
                     objectType,
                     eventType,
                     objectId,
+                    data,
                     service,
                     method
                 });
