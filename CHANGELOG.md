@@ -1,3 +1,12 @@
+# [3.11.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.10.0...v3.11.0) (2019-12-20)
+
+
+### Features
+
+* add possibility to define additional reporting data ([49968eb](https://github.com/softwaregroup-bg/ut-port-swagger/commit/49968eb))
+
+
+
 # [3.10.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.9.0...v3.10.0) (2019-12-19)
 
 
