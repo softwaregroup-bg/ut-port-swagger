@@ -27,14 +27,16 @@ const getAuditHandler = (port, {
     return async(ctx, error) => {
         if (!ctx.ut.method || !ctx.ut.$meta.auth) return; // audit bus methods only
         try {
-            const payload = formatPayload(port, ctx, error);
+            const payloads = [].concat(formatPayload(port, ctx, error));
 
-            await sendToQueue({
-                payload,
-                options,
-                exchange,
-                routingKey
-            });
+            for (let i = 0, n = payloads.length; i < n; i += 1) {
+                await sendToQueue({
+                    payload: payloads[i],
+                    options,
+                    exchange,
+                    routingKey
+                });
+            }
         } catch (e) {
             if (port.log.error) port.log.error(e);
         }
