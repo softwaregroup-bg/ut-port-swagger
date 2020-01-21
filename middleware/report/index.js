@@ -46,21 +46,23 @@ const getReportHandler = (port, {
         } = config;
         const handler = handlers[method] = async ctx => {
             try {
-                const payload = formatPayload(ctx, {
+                const payloads = [].concat(formatPayload(ctx, {
                     objectType,
                     eventType,
                     objectId,
                     data,
                     service,
                     method
-                });
+                }));
 
-                await sendToQueue({
-                    payload,
-                    options,
-                    exchange,
-                    routingKey
-                });
+                for (let i = 0, n = payloads.length; i < n; i += 1) {
+                    await sendToQueue({
+                        payload: payloads[i],
+                        options,
+                        exchange,
+                        routingKey
+                    });
+                }
             } catch (e) {
                 if (port.log.error) port.log.error(e);
             }
