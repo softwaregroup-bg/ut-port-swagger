@@ -1,3 +1,12 @@
+# [3.12.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.11.0...v3.12.0) (2020-01-21)
+
+
+### Features
+
+* support multiple payloads when sending reporting/auditing messages ([5adb28e](https://github.com/softwaregroup-bg/ut-port-swagger/commit/5adb28e))
+
+
+
 # [3.11.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.10.0...v3.11.0) (2019-12-20)
 
 
