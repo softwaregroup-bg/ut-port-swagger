@@ -496,6 +496,8 @@ to the backend.
   * `authorize` (optional) [ string | function ] - Authorization handler.
   The authorization would fail if the handler returns
   a falsy value or throws an error.
+  * `*request`, `*response` (optional) [ function ] - Transform handler
+  Useful for transofrming some field name.
 
   Examples:
 
