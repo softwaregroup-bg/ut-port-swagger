@@ -1,5 +1,5 @@
 module.exports = ({port, options}) => {
-    const { authorize } = options;
+    const { authorize, '*.request': defaultRequest, '*.response': defaultResponse } = options;
     return async(ctx, next) => {
         const { $meta, successCode } = ctx.ut;
         const { params, query, path } = ctx;
@@ -76,12 +76,12 @@ module.exports = ({port, options}) => {
 
                 switch (mtid) {
                     case 'response':
-                        ctx.body = response;
+                        ctx.body = (defaultResponse && defaultResponse(response)) || response;
                         ctx.status = successCode;
                         return resolve(next());
                     case 'error':
                         ctx.status = (response.details && response.details.statusCode) || 400;
-                        return reject(response);
+                        return reject((defaultResponse && defaultResponse(response)) || response);
                     default:
                         ctx.status = 400;
                         return reject(port.errors.swagger({
@@ -89,6 +89,9 @@ module.exports = ({port, options}) => {
                         }));
                 }
             };
+            if (defaultRequest) {
+                port.stream.push([defaultRequest(message), $meta]);
+            }
             port.stream.push([message, $meta]);
         });
     };
