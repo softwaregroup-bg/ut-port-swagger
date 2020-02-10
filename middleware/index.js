@@ -40,6 +40,10 @@ module.exports = [ // middleware order
         factory: require('./router')
     },
     {
+        name: 'basicAuth',
+        factory: require('./basicAuth')
+    },
+    {
         name: 'jwt',
         factory: require('./jwt')
     },
