@@ -16,15 +16,7 @@ module.exports = ({options: {identities, realm = 'Secure Area'} = {}} = {}) => {
                 }
             }, false);
         if (!identityCheckResult) {
-            return ctx.throw(
-                401,
-                null,
-                {
-                    headers: {
-                        'WWW-Authenticate': 'Basic realm="' + realm.replace(/"/g, '\\"') + '"'
-                    }
-                }
-            );
+            throw new Error('authentication');
         }
         return next();
     };
