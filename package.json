@@ -28,7 +28,8 @@
   ],
   "devDependencies": {
     "tap": "^12.6.2",
-    "ut-tools": "^6.30.6"
+    "ut-tools": "^6.33.1",
+    "swagger-ui-dist": "^3.24.0"
   },
   "dependencies": {
     "@koa/cors": "3.0.0",
@@ -45,7 +46,6 @@
     "koa-send": "5.0.0",
     "koa2-formidable": "1.0.2",
     "swagger-parser": "6.0.5",
-    "swagger-ui-dist": "^3.24.0",
     "swagger2": "1.0.4",
     "ut-function.interpolate": "^1.1.0",
     "ut-swagger2-validator": "^0.3.1",
