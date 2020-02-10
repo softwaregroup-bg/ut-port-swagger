@@ -1,5 +1,10 @@
+const defaultTransform = x => x;
 module.exports = ({port, options}) => {
-    const { authorize } = options;
+    const {
+        authorize,
+        transformRequest = defaultTransform,
+        transformResponse = defaultTransform
+    } = options;
     return async(ctx, next) => {
         const { $meta, successCode } = ctx.ut;
         const { params, query, path } = ctx;
@@ -65,7 +70,8 @@ module.exports = ({port, options}) => {
                 break;
         }
         return new Promise((resolve, reject) => {
-            $meta.reply = (response, {responseHeaders, cookies, mtid}) => {
+            $meta.reply = (response, $meta) => {
+                const {responseHeaders, cookies, mtid} = $meta;
                 if (responseHeaders) {
                     Object.keys(responseHeaders).forEach(header => {
                         ctx.set(header, responseHeaders[header]);
@@ -76,7 +82,7 @@ module.exports = ({port, options}) => {
 
                 switch (mtid) {
                     case 'response':
-                        ctx.body = response;
+                        ctx.body = transformResponse(response, $meta);
                         ctx.status = successCode;
                         return resolve(next());
                     case 'error':
@@ -89,7 +95,7 @@ module.exports = ({port, options}) => {
                         }));
                 }
             };
-            port.stream.push([message, $meta]);
+            port.stream.push([transformRequest(message, $meta), $meta]);
         });
     };
 };

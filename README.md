@@ -496,6 +496,10 @@ to the backend.
   * `authorize` (optional) [ string | function ] - Authorization handler.
   The authorization would fail if the handler returns
   a falsy value or throws an error.
+  * `transformRequest` (optional) [ function ] - Global request
+  transformation handler.
+  * `transformResponse` (optional) [ function ] - Global response
+   transformation handler.
 
   Examples:
 
@@ -520,6 +524,12 @@ to the backend.
 
                   // reject unauthorized with specific error
                   // throw new Error('xxx')
+                },
+                transformRequest: function(message, $meta) {
+                  return message;
+                },
+                transformResponse: function(message, $meta) {
+                  return message;
                 }
               }
             }
