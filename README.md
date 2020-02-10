@@ -691,3 +691,14 @@ Example:
   }
 
 ```
+
+## Known issues
+
+Setting `ut-port-swagger` as a
+dependency will not work out of the box!!!
+
+Temporary solution:
+
+Explicitly set a dependency to
+[swagger-ui-dist](https://www.npmjs.com/package/swagger-ui-dist)
+in your package.json
