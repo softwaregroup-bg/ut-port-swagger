@@ -1,3 +1,27 @@
+# [4.0.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.12.0...v4.0.0) (2020-02-10)
+
+
+### Bug Fixes
+
+* build ([05a6ca1](https://github.com/softwaregroup-bg/ut-port-swagger/commit/05a6ca17bda4bbe87ea2ba0f8a0724861b256ca0))
+* deps ([f712cc4](https://github.com/softwaregroup-bg/ut-port-swagger/commit/f712cc472817adf31ce635adcda1ec4d2843a4a6))
+
+
+### Features
+
+* global request/response transform handlers ([78f5269](https://github.com/softwaregroup-bg/ut-port-swagger/commit/78f5269288a26c2e9775b51234d681b843b9b425))
+
+
+* BREAKING CHANGE: swagger-ui-dist ([5db3af5](https://github.com/softwaregroup-bg/ut-port-swagger/commit/5db3af5c55c5694f656c559b97b77190fcf596ce))
+
+
+### BREAKING CHANGES
+
+* swagger-ui-dist
+* swagger-ui-dist
+
+
+
 # [3.12.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.11.0...v3.12.0) (2020-01-21)
 
 
