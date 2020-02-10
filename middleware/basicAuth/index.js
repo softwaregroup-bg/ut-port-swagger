@@ -5,7 +5,7 @@ module.exports = ({options: {identities, realm = 'Secure Area'} = {}} = {}) => {
     return async(ctx, next) => {
         const user = auth(ctx);
 
-        let identityCheckResult = await ([].concat(identities))
+        let identityCheckResult = [].concat(identities)
             .reduce((ac, opts) => {
                 if (ac) {
                     return ac;
