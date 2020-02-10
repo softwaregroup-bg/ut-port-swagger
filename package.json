@@ -28,7 +28,8 @@
   ],
   "devDependencies": {
     "tap": "^12.6.2",
-    "ut-tools": "^6.33.1"
+    "ut-tools": "^6.33.1",
+    "swagger-ui-dist": "^3.24.0"
   },
   "dependencies": {
     "@koa/cors": "3.0.0",
