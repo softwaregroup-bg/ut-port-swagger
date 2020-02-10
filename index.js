@@ -109,12 +109,10 @@ module.exports = ({utPort, registerErrors}) => {
                 let {name, factory} = middleware[i];
                 let options = this.config.middleware[name];
                 if (typeof options === 'object') {
-                    let factoryResult = await factory({
+                    this.app.use(await factory({
                         port: this,
                         options
-                    });
-                    typeof(factoryResult) === 'function' && this.app.use(factoryResult);
-                    Array.isArray(factoryResult) && factoryResult.map((o) => this.app.use(o));
+                    }));
                 }
             }
 
