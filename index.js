@@ -49,6 +49,7 @@ module.exports = ({utPort, registerErrors}) => {
                 server: {}
             };
         }
+
         async init(...params) {
             Object.assign(this.errors, registerErrors(errors));
 
@@ -131,12 +132,14 @@ module.exports = ({utPort, registerErrors}) => {
 
             return super.init(...params);
         }
+
         async start(...params) {
             const startResult = await super.start(...params);
             this.stream = this.pull(false, { requests: {} });
             this.server = this.app.listen(this.config.server);
             return startResult;
         }
+
         stop() {
             this.server && this.server.close();
             return super.stop();

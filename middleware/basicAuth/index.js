@@ -6,8 +6,8 @@ module.exports = ({options: {identities, realm = 'Secure Area'} = {}} = {}) => {
         const user = auth(ctx);
         let iLen = [].concat(identities).length;
 
-        for (var i = 0; i < iLen; i++) {
-            let opts = identities[i];
+        for (let i = 0; i < iLen; i++) {
+            const opts = identities[i];
             if (user && (opts.name && compare(opts.name, user.name)) && (opts.pass && compare(opts.pass, user.pass))) {
                 return next();
             }
