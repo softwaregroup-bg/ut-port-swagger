@@ -4,7 +4,7 @@ const compare = require('tsscmp');
 module.exports = ({options: {identities, realm = 'Secure Area'} = {}} = {}) => {
     return async(ctx, next) => {
         const user = auth(ctx);
-        let iLen = [].concat(identities).length;
+        const iLen = [].concat(identities).length;
 
         for (let i = 0; i < iLen; i++) {
             const opts = identities[i];

@@ -107,8 +107,8 @@ module.exports = ({utPort, registerErrors}) => {
             this.config.middleware.contextProvider = {handlers};
 
             for (let i = 0, n = middleware.length; i < n; i += 1) {
-                let {name, factory} = middleware[i];
-                let options = this.config.middleware[name];
+                const {name, factory} = middleware[i];
+                const options = this.config.middleware[name];
                 if (typeof options === 'object') {
                     this.app.use(await factory({
                         port: this,
