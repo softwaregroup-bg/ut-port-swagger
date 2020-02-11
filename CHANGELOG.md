@@ -1,3 +1,27 @@
+# [4.1.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.0.0...v4.1.0) (2020-02-11)
+
+
+### Bug Fixes
+
+* build ([65a695c](https://github.com/softwaregroup-bg/ut-port-swagger/commit/65a695c1ab482cd0fdcc8541253bb70e0ab0cfa4))
+* cnealup ([a7ae5cb](https://github.com/softwaregroup-bg/ut-port-swagger/commit/a7ae5cb733579230d16d0e010e6c8b3bdbfb82aa))
+* deps ([6ddd529](https://github.com/softwaregroup-bg/ut-port-swagger/commit/6ddd5290021fb0b250ebbc777573d76ef7ce1dbe))
+* error ([1a71db1](https://github.com/softwaregroup-bg/ut-port-swagger/commit/1a71db1c9687488030bbc7755f0b9307c5165a6d))
+* for for reduce ([50faa14](https://github.com/softwaregroup-bg/ut-port-swagger/commit/50faa1439974308abb72c61af3f8e8d4b75dd607))
+* Jenkins ([629b298](https://github.com/softwaregroup-bg/ut-port-swagger/commit/629b298a0a8d70e30697b2ddbbb62b152923ef84))
+* lint ([5ffda5a](https://github.com/softwaregroup-bg/ut-port-swagger/commit/5ffda5a453c2479bd54caa2f419e5d8482747073))
+* lint ([ed7fa1c](https://github.com/softwaregroup-bg/ut-port-swagger/commit/ed7fa1c7852eb46efd64125fc7eff39683e2f89e))
+* multiple use aurh ([d8dd1fe](https://github.com/softwaregroup-bg/ut-port-swagger/commit/d8dd1fe106a3ad3cfa7c97580b33a3234e3ee6bc))
+* multiple use auth ([a8ae116](https://github.com/softwaregroup-bg/ut-port-swagger/commit/a8ae11621e73086d20c431ce0cefd9b04199fe5d))
+* trigger build ([63d07af](https://github.com/softwaregroup-bg/ut-port-swagger/commit/63d07af064f366a336fbbebf43a37322a5ad6fb6))
+
+
+### Features
+
+* basic auth middleware ([26a308b](https://github.com/softwaregroup-bg/ut-port-swagger/commit/26a308b7c1519edbe224f89e2287daa6b16bb3e8))
+
+
+
 # [4.0.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v3.12.0...v4.0.0) (2020-02-10)
 
 
