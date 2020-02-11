@@ -34,6 +34,7 @@ module.exports = ({utPort, registerErrors}) => {
                     etag: {},
                     formParser: false,
                     bodyParser: {},
+                    basicAuth: false,
                     jwt: false,
                     router: {},
                     validator: {
@@ -48,6 +49,7 @@ module.exports = ({utPort, registerErrors}) => {
                 server: {}
             };
         }
+
         async init(...params) {
             Object.assign(this.errors, registerErrors(errors));
 
@@ -105,14 +107,9 @@ module.exports = ({utPort, registerErrors}) => {
             this.config.middleware.contextProvider = {handlers};
 
             for (let i = 0, n = middleware.length; i < n; i += 1) {
-                let {name, factory} = middleware[i];
-                let options = this.config.middleware[name];
-                if (typeof options === 'object') {
-                    this.app.use(await factory({
-                        port: this,
-                        options
-                    }));
-                }
+                const {name, factory} = middleware[i];
+                const options = this.config.middleware[name];
+                if (typeof options === 'object') this.app.use(await factory({port: this, options}));
             }
 
             if (this.config.server.host) {
@@ -130,12 +127,14 @@ module.exports = ({utPort, registerErrors}) => {
 
             return super.init(...params);
         }
+
         async start(...params) {
             const startResult = await super.start(...params);
             this.stream = this.pull(false, { requests: {} });
             this.server = this.app.listen(this.config.server);
             return startResult;
         }
+
         stop() {
             this.server && this.server.close();
             return super.stop();

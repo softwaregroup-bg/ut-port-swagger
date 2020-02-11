@@ -79,6 +79,7 @@
       'etag',
       'formParser',
       'bodyParser',
+      'basicAuth',
       'jwt',
       'router',
       'validator',
@@ -103,6 +104,7 @@
       etag: {},
       formParser: false,
       bodyParser: {},
+      basicAuth: false,
       jwt: false,
       router: {},
       validator: {
@@ -302,6 +304,11 @@ TO DO: `formParser` middleware description
 ### bodyParser
 
 TO DO: `bodyParser` middleware description
+
+### basicAuth
+
+For configuration options please check
+[basic-auth](https://github.com/koajs/basic-auth)
 
 ### jwt
 
