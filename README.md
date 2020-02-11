@@ -709,4 +709,3 @@ Temporary solution:
 Explicitly set a dependency to
 [swagger-ui-dist](https://www.npmjs.com/package/swagger-ui-dist)
 in your package.json
-- 
