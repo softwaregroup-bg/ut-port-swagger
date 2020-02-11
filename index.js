@@ -109,7 +109,7 @@ module.exports = ({utPort, registerErrors}) => {
             for (let i = 0, n = middleware.length; i < n; i += 1) {
                 const {name, factory} = middleware[i];
                 const options = this.config.middleware[name];
-                (typeof options === 'object') && this.app.use(await factory({port: this, options}));
+                if (typeof options === 'object') this.app.use(await factory({port: this, options}));
             }
 
             if (this.config.server.host) {

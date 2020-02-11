@@ -1,7 +1,7 @@
 const auth = require('basic-auth');
 const compare = require('tsscmp');
 
-module.exports = ({options: {identities, realm = 'Secure Area'} = {}} = {}) => {
+module.exports = ({options: {identities, realm = 'Secure Area'}}) => {
     return async(ctx, next) => {
         const user = auth(ctx);
         const iLen = [].concat(identities).length;
