@@ -1,3 +1,14 @@
+## [4.1.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.1.1...v4.1.2) (2020-02-12)
+
+
+### Bug Fixes
+
+* correct error handling ([a877e4d](https://github.com/softwaregroup-bg/ut-port-swagger/commit/a877e4d43f040d6fc2687bfc4cc45428facf56c2))
+* log error in ut ([a5b2556](https://github.com/softwaregroup-bg/ut-port-swagger/commit/a5b25566bd9e8491a064c6907a6ee16638ff2406))
+* typo ([32e5fe5](https://github.com/softwaregroup-bg/ut-port-swagger/commit/32e5fe57b8829d35b38b7dcd05134abf36b7fcef))
+
+
+
 ## [4.1.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.1.0...v4.1.1) (2020-02-12)
 
 
