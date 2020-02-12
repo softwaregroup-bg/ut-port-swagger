@@ -1,7 +1,7 @@
 
 module.exports = ({port, options}) => {
     const { errors } = port;
-    const { debug = false } = port.config;
+    const { debug = true } = port.config;
     return async(ctx, next) => {
         // request
         ctx.ut = {};
@@ -11,7 +11,6 @@ module.exports = ({port, options}) => {
         } catch (e) {
             // error
             let error = e;
-            port.log.error && port.log.error(e);
             if (!e.type || !errors.getError(e.type)) {
                 if (debug) e.debug = {stack: e.stack.split('\n')};
                 error = errors.swagger(e);
