@@ -1,7 +1,7 @@
 
 module.exports = ({port, options}) => {
     const { errors } = port;
-    const { debug = true } = port.config;
+    const { debug = false } = port.config;
     return async(ctx, next) => {
         // request
         ctx.ut = {};
