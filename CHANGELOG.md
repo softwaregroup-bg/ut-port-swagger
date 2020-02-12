@@ -1,3 +1,14 @@
+## [4.1.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.1.0...v4.1.1) (2020-02-12)
+
+
+### Bug Fixes
+
+* cleanup ([f178f9b](https://github.com/softwaregroup-bg/ut-port-swagger/commit/f178f9b255e0c9a55dd04d17972c4a66f908df49))
+* store user name in ut ctx ([59cf4eb](https://github.com/softwaregroup-bg/ut-port-swagger/commit/59cf4eb2acd26a28a2bbaf5d85c2b2e4dc008827))
+* ut tooolz ([283d934](https://github.com/softwaregroup-bg/ut-port-swagger/commit/283d93493a03b89d5976b45e144f8a884835ced4))
+
+
+
 # [4.1.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.0.0...v4.1.0) (2020-02-11)
 
 
