@@ -310,6 +310,12 @@ TO DO: `bodyParser` middleware description
 For configuration options please check
 [basic-auth](https://github.com/koajs/basic-auth)
 
+* configuration options
+  * `identities` (required) [ array | function ] -
+    * if array: array of objects `{name: 'username', pass: 'password'}`
+    * if function: function receives 1 argument, object: `{name: 'username', pass: 'password'}` so it can validate against this object
+  * `realm` (optional) [ string ] - Response header text on wrong auth
+
 ### jwt
 
 This middleware lets you authenticate HTTP requests
