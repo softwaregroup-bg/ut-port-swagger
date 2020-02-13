@@ -1,3 +1,12 @@
+## [4.1.3](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.1.2...v4.1.3) (2020-02-13)
+
+
+### Bug Fixes
+
+* remote indentity check ([dd6a51b](https://github.com/softwaregroup-bg/ut-port-swagger/commit/dd6a51bdba08bfb82021f23ef17854aa951c44a1))
+
+
+
 ## [4.1.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.1.1...v4.1.2) (2020-02-12)
 
 
