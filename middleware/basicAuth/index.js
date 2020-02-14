@@ -7,7 +7,7 @@ module.exports = ({options: {identities, realm = 'Secure Area'}}) => {
         // when identities is function it gets called
         // this is very useful when you want to call some external identity check.
         if (typeof identities === 'function') {
-            await identities(user);
+            await identities(user, ctx);
             ctx.ut.$meta.basicAuth = {name: user.name};
             return next();
         }
