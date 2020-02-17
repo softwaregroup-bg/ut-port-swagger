@@ -3,6 +3,11 @@ const compare = require('tsscmp');
 
 module.exports = ({options: {identities, realm = 'Secure Area'}}) => {
     return async(ctx, next) => {
+        const {ut: {security: {basicAuth}}} = ctx;
+        // check if basicAuth is enabled for this method
+        if (!basicAuth) {
+            return next();
+        }
         const user = auth(ctx);
         // when identities is function it gets called
         // this is very useful when you want to call some external identity check.

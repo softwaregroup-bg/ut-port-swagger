@@ -27,10 +27,12 @@ module.exports = ({port, options}) => {
                 });
             }
             // build once upon initialization
+            const securityList = (security && security.map((s) => Object.keys(s).pop())) || [];
             const ut = {
                 successCode: successCodes[0] ? parseInt(successCodes[0]) : 200,
                 security: {
-                    jwt: Array.isArray(security) && security.length > 0
+                    jwt: securityList.indexOf('jwt') > -1,
+                    basicAuth: securityList.indexOf('basicAuth') > -1
                 },
                 method: operationId
             };
