@@ -313,7 +313,8 @@ For configuration options please check
 * configuration options
   * `identities` (required) [ array | function ] -
     * if array: array of objects `{name: 'username', pass: 'password'}`
-    * if function: function receives 1 argument, object: `{name: 'username', pass: 'password'}` so it can validate against this object
+    * if function: function receives 1 argument, object:
+    `{name: 'username', pass: 'password'}` so it can validate against this object
   * `realm` (optional) [ string ] - Response header text on wrong auth
 
 ### jwt
