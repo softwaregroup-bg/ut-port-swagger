@@ -41,7 +41,8 @@ module.exports = ({port, options}) => {
             const ut = {
                 successCode: successCodes[0] ? parseInt(successCodes[0]) : 200,
                 security: secObj.all,
-                securityRule: {and: secObj.and, or: secObj.or},
+                securitySatisfied: false,
+                securityRules: {and: secObj.and, or: secObj.or},
                 method: operationId
             };
             router[methodName](fullPath, (ctx, next) => {
