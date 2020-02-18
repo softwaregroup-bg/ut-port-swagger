@@ -3,9 +3,9 @@ module.exports = ({port}) => {
         if (!Array.isArray(ctx.ut.security)) return next();
         const types = {};
         for (let i = 0, n = ctx.ut.security.length; i < n; i += 1) {
-            const types = Object.keys(ctx.ut.security[i]);
-            if (types.length === 0) return next(); // empty authentication set
-            types.forEach(type => { types[type] = true; });
+            const typesArr = Object.keys(ctx.ut.security[i]);
+            if (typesArr.length === 0) return next(); // empty authentication set
+            typesArr.forEach(type => { types[type] = true; });
         }
         let verified = false;
         const securityRules = ctx.ut.security.map(rules => {
