@@ -48,6 +48,10 @@ module.exports = [ // middleware order
         factory: require('./jwt')
     },
     {
+        name: 'authCheck',
+        factory: require('./authCheck')
+    },
+    {
         name: 'validator',
         factory: require('./validator')
     },

@@ -36,6 +36,7 @@ module.exports = ({utPort, registerErrors}) => {
                     bodyParser: {},
                     basicAuth: false,
                     jwt: false,
+                    authCheck: {},
                     router: {},
                     validator: {
                         request: true,

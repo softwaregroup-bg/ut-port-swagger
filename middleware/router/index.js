@@ -9,11 +9,22 @@ const sanitize = (path) => {
 // Using Multiple Authentication Types
 const extractSecurity = (securityDefinition) => securityDefinition.reduce((a, s) => {
     const auth = Object.keys(s);
-    (auth.length === 1) && a.or.push(auth.slice().pop());
-    (auth.length > 1) && (a.and = a.and.concat([auth]));
-    a.all = a.all.concat(auth);
+    a = a.concat((auth.length > 1 && [auth]) || auth);
     return a;
-}, {or: [], and: [], all: []});
+}, []);
+
+const evaluateStateAnd = (arr, checkState) => arr.reduce((a, c) => (!a && false) || (a && !!checkState[c]), true);
+
+const evaluateStateOr = (checkArray) => (checkState) => checkArray.reduce((final, current) => {
+    if (final) {
+        return final;
+    }
+    if (Array.isArray(current)) {
+        return !!evaluateStateAnd(current, checkState);
+    } else {
+        return !!checkState[current];
+    }
+}, false);
 
 module.exports = ({port, options}) => {
     const router = koaRouter(options);
@@ -37,18 +48,15 @@ module.exports = ({port, options}) => {
                 });
             }
             // build once upon initialization
-            const secObj = extractSecurity(security || []);
-            const ut = {
-                successCode: successCodes[0] ? parseInt(successCodes[0]) : 200,
-                security: secObj.all,
-                securitySatisfied: false,
-                securityRules: {and: secObj.and, or: secObj.or},
-                method: operationId
-            };
+            const successCodeResult = successCodes[0] ? parseInt(successCodes[0]) : 200;
+            const securityRules = (security && extractSecurity(security)) || [];
+
             router[methodName](fullPath, (ctx, next) => {
-                ctx.ut.successCode = ut.successCode;
-                ctx.ut.security = ut.security;
-                ctx.ut.method = ut.method;
+                ctx.ut.successCode = successCodeResult;
+                ctx.ut.securityCheck = evaluateStateOr(securityRules);
+                ctx.ut.security = securityRules.reduce((a, c) => a.concat(c), []);
+                ctx.ut.securityCheckState = {};
+                ctx.ut.method = operationId;
                 ctx.ut.$meta = {
                     mtid: 'request',
                     trace: ctx.request.headers['x-trace'] || uuid.v4(),
