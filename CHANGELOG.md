@@ -1,3 +1,17 @@
+# [4.2.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.1.3...v4.2.0) (2020-02-18)
+
+
+### Bug Fixes
+
+* typo ([ef47187](https://github.com/softwaregroup-bg/ut-port-swagger/commit/ef4718727478e64d2bc88ddc1e91e82b88aac0e7))
+
+
+### Features
+
+* multi-factor authentication ([3741b7a](https://github.com/softwaregroup-bg/ut-port-swagger/commit/3741b7a7a5eea775fc631d72009f34cd363fc401))
+
+
+
 ## [4.1.3](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.1.2...v4.1.3) (2020-02-13)
 
 
