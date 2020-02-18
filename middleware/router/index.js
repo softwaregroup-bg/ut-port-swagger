@@ -5,6 +5,16 @@ const sanitize = (path) => {
     // transform path parameter definitions from swagger 2 to koa 2 standard: /{id} -> /:id
     return path.replace(/\{([^}]*)\}/g, (placeHolder, label) => `:${label}`);
 };
+// https://swagger.io/docs/specification/2-0/authentication/
+// Using Multiple Authentication Types
+const extractSecurity = (securityDefinition) => securityDefinition.reduce((a, s) => {
+    const auth = Object.keys(s);
+    (auth.length === 1) && a.or.push(auth.slice().pop());
+    (auth.length > 1) && (a.and = a.and.concat([auth]));
+    a.all = a.all.concat(auth);
+    return a;
+}, {or: [], and: [], all: []});
+
 module.exports = ({port, options}) => {
     const router = koaRouter(options);
     Object.keys(port.swaggerDocument.paths).forEach(path => {
@@ -27,13 +37,11 @@ module.exports = ({port, options}) => {
                 });
             }
             // build once upon initialization
-            const securityList = (security && security.map((s) => Object.keys(s).pop())) || [];
+            const secObj = extractSecurity(security || []);
             const ut = {
                 successCode: successCodes[0] ? parseInt(successCodes[0]) : 200,
-                security: {
-                    jwt: securityList.indexOf('jwt') > -1,
-                    basicAuth: securityList.indexOf('basicAuth') > -1
-                },
+                security: secObj.all,
+                securityRule: {and: secObj.and, or: secObj.or},
                 method: operationId
             };
             router[methodName](fullPath, (ctx, next) => {

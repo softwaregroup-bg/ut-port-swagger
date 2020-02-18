@@ -3,9 +3,9 @@ const compare = require('tsscmp');
 
 module.exports = ({options: {identities, realm = 'Secure Area'}}) => {
     return async(ctx, next) => {
-        const {ut: {security: {basicAuth}}} = ctx;
+        const {ut: {security}} = ctx;
         // check if basicAuth is enabled for this method
-        if (!basicAuth) {
+        if (security.indexOf('basicAuth') === -1) {
             return next();
         }
         const user = auth(ctx);
