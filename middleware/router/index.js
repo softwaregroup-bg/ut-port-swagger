@@ -26,22 +26,17 @@ module.exports = ({port, options}) => {
                     responses
                 });
             }
-            // build once upon initialization
-            const ut = {
-                successCode: successCodes[0] ? parseInt(successCodes[0]) : 200,
-                security: {
-                    jwt: Array.isArray(security) && security.length > 0
-                },
-                method: operationId
-            };
+
+            const successCode = successCodes[0] ? parseInt(successCodes[0]) : 200;
+
             router[methodName](fullPath, (ctx, next) => {
-                ctx.ut.successCode = ut.successCode;
-                ctx.ut.security = ut.security;
-                ctx.ut.method = ut.method;
+                ctx.ut.successCode = successCode;
+                ctx.ut.security = security;
+                ctx.ut.method = operationId;
                 ctx.ut.$meta = {
                     mtid: 'request',
                     trace: ctx.request.headers['x-trace'] || uuid.v4(),
-                    method: ctx.ut.method,
+                    method: operationId,
                     headers: ctx.request.headers
                 };
                 return next();

@@ -10,5 +10,6 @@
     "swagger.responseValidation": "Response validation error",
     "swagger.contextProviderError": "Context provider error",
     "swagger.jwtFormatError": "JWT format error",
-    "swagger.authorizationError": "Authorization error"
+    "swagger.authorizationError": "Authorization error",
+    "swagger.securityViolation": "Security violation error"
 }
