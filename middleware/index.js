@@ -40,20 +40,24 @@ module.exports = [ // middleware order
         factory: require('./router')
     },
     {
-        name: 'basicAuth',
-        factory: require('./basicAuth')
-    },
-    {
-        name: 'jwt',
-        factory: require('./jwt')
-    },
-    {
         name: 'validator',
         factory: require('./validator')
     },
     {
         name: 'contextProvider',
         factory: require('./contextProvider')
+    },
+    {
+        name: 'auth',
+        factory: require('./auth')
+    },
+    {
+        name: 'basicAuth',
+        factory: require('./basicAuth')
+    },
+    {
+        name: 'jwt',
+        factory: require('./jwt')
     },
     {
         name: 'requestHandler',

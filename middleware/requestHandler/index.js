@@ -6,6 +6,7 @@ module.exports = ({port, options}) => {
         transformResponse = defaultTransform
     } = options;
     return async(ctx, next) => {
+        if (ctx.ut.auth) ctx.ut.auth.verify();
         const { $meta, successCode } = ctx.ut;
         const { params, query, path } = ctx;
         const { body, files } = ctx.request;

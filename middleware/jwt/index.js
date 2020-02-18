@@ -28,7 +28,7 @@ module.exports = ({port, options}) => {
     return koaCompose([
         jwt(options).unless({
             custom: ctx => {
-                return !ctx.ut.security || ctx.ut.security.jwt === false;
+                return !ctx.ut.auth || !ctx.ut.auth.getResolver('jwt');
             }
         }),
         (ctx, next) => {
@@ -41,6 +41,7 @@ module.exports = ({port, options}) => {
             } else {
                 ctx.ut.$meta.auth = false;
             }
+            ctx.ut.auth.getResolver('jwt')();
             return next();
         }
     ]);
