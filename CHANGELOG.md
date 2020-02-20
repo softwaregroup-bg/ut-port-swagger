@@ -1,3 +1,17 @@
+# [4.3.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.2.0...v4.3.0) (2020-02-20)
+
+
+### Bug Fixes
+
+* lint ([457fafc](https://github.com/softwaregroup-bg/ut-port-swagger/commit/457fafce61fcb59ed52559622645e9be3984bce9))
+
+
+### Features
+
+* map/transform error responses ([f9f89ba](https://github.com/softwaregroup-bg/ut-port-swagger/commit/f9f89ba3d41847912fcbabc5092d5e8cbb24abae))
+
+
+
 # [4.2.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.1.3...v4.2.0) (2020-02-18)
 
 
