@@ -1,3 +1,15 @@
+## [4.3.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.3.0...v4.3.1) (2020-02-20)
+
+
+### Bug Fixes
+
+* clenaup ([4e9524c](https://github.com/softwaregroup-bg/ut-port-swagger/commit/4e9524c5368ce41d06f5d6ce7eca39c98dec2a6a))
+* refactor naming and ability ([87b1dd7](https://github.com/softwaregroup-bg/ut-port-swagger/commit/87b1dd76d3112d5f7e73192b07068712bb1feace))
+* refactor naming and ability ([6d24ba9](https://github.com/softwaregroup-bg/ut-port-swagger/commit/6d24ba9543a8cbd68639ab575ad0a33041a02409))
+* switch on/off ut errors ([4a8478a](https://github.com/softwaregroup-bg/ut-port-swagger/commit/4a8478ac87c5c0aed3f7d85e7e95cf0690c384ec))
+
+
+
 # [4.3.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.2.0...v4.3.0) (2020-02-20)
 
 
