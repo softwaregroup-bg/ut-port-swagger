@@ -126,6 +126,9 @@
 
 TO DO: `wrapper` middleware description
 
+* configuration options
+  * `utError` [ boolean ] - Whether to map errors to defined ut fw errors
+
 ### audit
 
 This middleware is responsible for sending audit data events
@@ -513,6 +516,8 @@ to the backend.
   * `transformRequest` (optional) [ function ] - Global request
   transformation handler.
   * `transformResponse` (optional) [ function ] - Global response
+   transformation handler.
+  * `transformErrorResponse` (optional) [ function ] - Global error response
    transformation handler.
 
   Examples:

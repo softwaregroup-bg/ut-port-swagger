@@ -1,5 +1,5 @@
 
-module.exports = ({port, options}) => {
+module.exports = ({port, options: {utError = true}}) => {
     const { errors } = port;
     const { debug = false } = port.config;
     return async(ctx, next) => {
@@ -9,7 +9,14 @@ module.exports = ({port, options}) => {
             await next();
             // response
         } catch (e) {
-            // error
+            // return error as is, without meta
+            if (!utError) {
+                const {meta: {status} = {}, ...error} = e;
+                ctx.status = status || 400;
+                ctx.body = error;
+                return ctx.app.emit('error', error, ctx);
+            }
+            // ut error
             let error = e;
             if (!e.type || !errors.getError(e.type)) {
                 if (debug) e.debug = {stack: e.stack.split('\n')};
