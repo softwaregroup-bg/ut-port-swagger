@@ -127,7 +127,7 @@
 TO DO: `wrapper` middleware description
 
 * configuration options
-  * `errorFormat` [ string | function ]
+  * `formatError` [ string | function ]
     * string: one of plain, ut. default ut
     * function (error, ctx): give ability to developer to do what it wants
 

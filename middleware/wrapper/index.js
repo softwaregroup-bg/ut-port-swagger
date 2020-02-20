@@ -1,5 +1,5 @@
 
-module.exports = ({port, options: {errorFormat = 'ut'}}) => {
+module.exports = ({port, options: {formatError = 'ut'}}) => {
     const { errors } = port;
     const { debug = false } = port.config;
     return async(ctx, next) => {
@@ -10,13 +10,13 @@ module.exports = ({port, options: {errorFormat = 'ut'}}) => {
             // response
         } catch (e) {
             // return error as is, without meta
-            if (errorFormat === 'plain') {
+            if (formatError === 'plain') {
                 const {meta: {status} = {}, ...error} = e;
                 ctx.status = status || 400;
                 ctx.body = error;
                 return ctx.app.emit('error', error, ctx);
-            } else if (typeof (errorFormat) === 'function') {
-                return errorFormat(e, ctx);
+            } else if (typeof (formatError) === 'function') {
+                return formatError(e, ctx);
             }
             // ut error
             let error = e;
