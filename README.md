@@ -127,7 +127,9 @@
 TO DO: `wrapper` middleware description
 
 * configuration options
-  * `utError` [ boolean ] - Whether to map errors to defined ut fw errors
+  * `errorFormat` [ string | function ]
+    * string: one of plain, ut. default ut
+    * function (error, ctx): give ability to developer to do what it wants
 
 keep in mind that if error have meta property with property status (meta.status)
 it will remove meta property from the error and set status to return status
