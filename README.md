@@ -129,8 +129,9 @@ TO DO: `wrapper` middleware description
 * configuration options
   * `utError` [ boolean ] - Whether to map errors to defined ut fw errors
 
-keep in mind that if error hame meta property with property status it will remove
-meta property from the error and set status to return status code of http server
+keep in mind that if error have meta property with property status (meta.status)
+it will remove meta property from the error and set status to return status
+code of http server
 
 ### audit
 
