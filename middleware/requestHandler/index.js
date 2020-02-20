@@ -3,7 +3,8 @@ module.exports = ({port, options}) => {
     const {
         authorize,
         transformRequest = defaultTransform,
-        transformResponse = defaultTransform
+        transformResponse = defaultTransform,
+        transformErrorResponse = defaultTransform
     } = options;
     return async(ctx, next) => {
         if (ctx.ut.auth) ctx.ut.auth.verify();
@@ -87,6 +88,7 @@ module.exports = ({port, options}) => {
                         ctx.status = successCode;
                         return resolve(next());
                     case 'error':
+                        response = transformErrorResponse(response);
                         ctx.status = (response.details && response.details.statusCode) || 400;
                         return reject(response);
                     default:
