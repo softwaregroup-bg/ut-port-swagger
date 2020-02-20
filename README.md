@@ -126,6 +126,13 @@
 
 TO DO: `wrapper` middleware description
 
+* configuration options
+  * `formatError` [ function ]: fn (error, ctx): give ability to developer to do what it wants
+
+keep in mind that if error have meta property with property status (meta.status)
+it will remove meta property from the error and set status to return status
+code of http server
+
 ### audit
 
 This middleware is responsible for sending audit data events
@@ -513,6 +520,8 @@ to the backend.
   * `transformRequest` (optional) [ function ] - Global request
   transformation handler.
   * `transformResponse` (optional) [ function ] - Global response
+   transformation handler.
+  * `transformErrorResponse` (optional) [ function ] - Global error response
    transformation handler.
 
   Examples:

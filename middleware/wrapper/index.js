@@ -1,5 +1,5 @@
 
-module.exports = ({port, options}) => {
+module.exports = ({port, options: {formatError}}) => {
     const { errors } = port;
     const { debug = false } = port.config;
     return async(ctx, next) => {
@@ -9,7 +9,10 @@ module.exports = ({port, options}) => {
             await next();
             // response
         } catch (e) {
-            // error
+            if (typeof (formatError) === 'function') {
+                return formatError(e, ctx);
+            }
+            // ut error
             let error = e;
             if (!e.type || !errors.getError(e.type)) {
                 if (debug) e.debug = {stack: e.stack.split('\n')};
