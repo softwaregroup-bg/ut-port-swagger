@@ -1,3 +1,12 @@
+## [4.3.2](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.3.1...v4.3.2) (2020-03-23)
+
+
+### Bug Fixes
+
+* resolve jwt check only in case it is specified in route definition ([1ac19a7](https://github.com/softwaregroup-bg/ut-port-swagger/commit/1ac19a7079c5e8d40d75c03461ef7f91e9553faf))
+
+
+
 ## [4.3.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.3.0...v4.3.1) (2020-02-20)
 
 
