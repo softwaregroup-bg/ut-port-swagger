@@ -28,7 +28,7 @@
   ],
   "devDependencies": {
     "tap": "^12.6.2",
-    "ut-tools": "^6.33.2",
+    "ut-tools": "^6.33.4",
     "swagger-ui-dist": "^3.24.0"
   },
   "dependencies": {
@@ -47,8 +47,8 @@
     "koa2-formidable": "1.0.2",
     "swagger-parser": "6.0.5",
     "swagger2": "1.0.4",
-    "ut-function.interpolate": "^1.1.0",
-    "ut-swagger2-validator": "^0.3.1",
+    "ut-function.interpolate": "^1.1.2",
+    "ut-swagger2-validator": "^0.3.4",
     "uuid": "3.3.2",
     "basic-auth": "^2.0.1",
     "tsscmp": "^1.0.6"
