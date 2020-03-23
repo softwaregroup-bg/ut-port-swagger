@@ -35,13 +35,13 @@ module.exports = ({port, options}) => {
             if (ctx.state[key]) {
                 try {
                     ctx.ut.$meta.auth = normalize(ctx.state[key]);
+                    ctx.ut.auth.getResolver('jwt')();
                 } catch (e) {
                     throw port.errors['swagger.jwtFormatError'](e);
                 }
             } else {
                 ctx.ut.$meta.auth = false;
             }
-            ctx.ut.auth.getResolver('jwt')();
             return next();
         }
     ]);
