@@ -79,6 +79,7 @@
       'etag',
       'formParser',
       'bodyParser',
+      'auth',
       'basicAuth',
       'jwt',
       'router',
@@ -107,6 +108,7 @@
       basicAuth: false,
       jwt: false,
       router: {},
+      auth: {},
       validator: {
           request: true,
           response: true
@@ -495,6 +497,14 @@ For example:
   }
 }
 ```
+
+### auth
+
+This middleware can be used to switch on / off
+the authorization of the incoming http requests.
+if `auth` is explicitly set to `false` the authorization
+mechanisms will be disabled even if `jwt` or `basicAuth`
+middlewares are enabled.
 
 ### router
 
