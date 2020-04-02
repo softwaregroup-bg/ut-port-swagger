@@ -1,3 +1,17 @@
+# [4.4.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.3.3...v4.4.0) (2020-04-02)
+
+
+### Bug Fixes
+
+* populte obj if no ([8644ff9](https://github.com/softwaregroup-bg/ut-port-swagger/commit/8644ff960f670e4b790d8ec638b22aa5722ea2f5))
+
+
+### Features
+
+* when auth in request handler returns, we check for .local, if any we put it in .local. this will help in pass some request specific data, like, what resource is allowed for this user ([7db109d](https://github.com/softwaregroup-bg/ut-port-swagger/commit/7db109d467735548ce5dc6fd21b0a21bc3e59e8d))
+
+
+
 ## [4.3.3](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.3.2...v4.3.3) (2020-03-25)
 
 
