@@ -57,7 +57,7 @@ module.exports = ({port, options}) => {
                                         ctx.status = 401;
                                         return reject(port.errors['swagger.authorizationError']());
                                     }
-                                    if (result.$meta) Object.assign($meta, result.$meta);
+                                    if (response.$meta) Object.assign($meta, response.$meta);
                                     return resolve();
                                 case 'error':
                                     ctx.status = 401;
