@@ -129,7 +129,8 @@
 TO DO: `wrapper` middleware description
 
 * configuration options
-  * `formatError` [ function ]: fn (error, ctx): give ability to developer to do what it wants
+  * `formatError` [ function ]: fn (error, ctx): give ability to
+  developer to do what it wants
 
 keep in mind that if error have meta property with property status (meta.status)
 it will remove meta property from the error and set status to return status
@@ -322,7 +323,8 @@ For configuration options please check
 * configuration options
   * `identities` (required) [ array | function ] -
     * if array: array of objects `{name: 'username', pass: 'password'}`
-    * if function: function receives 1 argument, object: `{name: 'username', pass: 'password'}`
+    * if function: function receives 1 argument,
+    object: `{name: 'username', pass: 'password'}`
     so it can validate against this object
   * `realm` (optional) [ string ] - Response header text on wrong auth
 
