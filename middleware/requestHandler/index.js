@@ -38,12 +38,8 @@ module.exports = ({port, options}) => {
                     if (!result) {
                         ctx.status = 401;
                         throw port.errors['swagger.authorizationError']();
-                    } else {
-                        const {$meta: {local}} = result;
-                        if (local) {
-                            $meta.local = {...($meta.local || {}), ...local};
-                        }
                     }
+                    if (result.$meta) Object.assign($meta, result.$meta);
                 } catch (e) {
                     ctx.status = 401;
                     throw port.errors['swagger.authorizationError'](e);
@@ -60,12 +56,8 @@ module.exports = ({port, options}) => {
                                     if (!response) {
                                         ctx.status = 401;
                                         return reject(port.errors['swagger.authorizationError']());
-                                    } else {
-                                        const {$meta: {local}} = result;
-                                        if (local) {
-                                            $meta.local = {...($meta.local || {}), ...local};
-                                        }
                                     }
+                                    if (result.$meta) Object.assign($meta, result.$meta);
                                     return resolve();
                                 case 'error':
                                     ctx.status = 401;
