@@ -41,7 +41,7 @@ module.exports = ({port, options}) => {
                     } else {
                         const {$meta: {local}} = result;
                         if (local) {
-                            $meta.local = local;
+                            $meta.local = {...($meta.local || {}), ...local};
                         }
                     }
                 } catch (e) {
@@ -63,7 +63,7 @@ module.exports = ({port, options}) => {
                                     } else {
                                         const {$meta: {local}} = result;
                                         if (local) {
-                                            $meta.local = local;
+                                            $meta.local = {...($meta.local || {}), ...local};
                                         }
                                     }
                                     return resolve();
