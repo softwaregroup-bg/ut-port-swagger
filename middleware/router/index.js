@@ -37,7 +37,8 @@ module.exports = ({port, options}) => {
                     mtid: 'request',
                     trace: ctx.request.headers['x-trace'] || uuid.v4(),
                     method: operationId,
-                    headers: ctx.request.headers
+                    headers: ctx.request.headers,
+                    ctx
                 };
                 return next();
             });
