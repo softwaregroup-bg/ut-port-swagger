@@ -1,3 +1,14 @@
+## [4.4.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.4.0...v4.4.1) (2020-04-21)
+
+
+### Bug Fixes
+
+* more restrictive ([b88eee6](https://github.com/softwaregroup-bg/ut-port-swagger/commit/b88eee6d5384bbebb069f58e80f5581a86c4354e))
+* more restrictive ([7501e7a](https://github.com/softwaregroup-bg/ut-port-swagger/commit/7501e7a2a8010389915f690adb4f5ee1e8436225))
+* share entire contcontext in meta ([3a1e460](https://github.com/softwaregroup-bg/ut-port-swagger/commit/3a1e4602d6579dbb4eb6c518ee1bf7fe7fee908f))
+
+
+
 # [4.4.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.3.3...v4.4.0) (2020-04-02)
 
 
