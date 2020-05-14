@@ -10,7 +10,7 @@ const getDataByPath = (path = [], obj = {}) => {
 module.exports = ({port, options: {logPaths = []}}) => {
     return (ctx, next) => {
         logPaths.map((path) => {
-            const data = getDataByPath(path, ctx)
+            const data = getDataByPath(path, ctx);
             data && port.log.info({path, data});
         });
         next();
