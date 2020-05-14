@@ -9,10 +9,10 @@ const getDataByPath = (path = [], obj = {}) => {
 };
 module.exports = ({port, options: {logPaths = []}}) => {
     return (ctx, next) => {
-        logPaths.map((path) => {
-            const data = getDataByPath(path, ctx);
-            data && port.log.info({path, data});
-        });
+        const data = logPaths
+            .map((path) => getDataByPath(path, ctx))
+            .filter(Boolean);
+        data && port.log.info({logPaths, data});
         next();
     };
 };

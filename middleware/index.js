@@ -16,6 +16,14 @@ module.exports = [ // middleware order
         factory: require('./swaggerUI')
     },
     {
+        name: 'formParser',
+        factory: require('./formParser')
+    },
+    {
+        name: 'bodyParser',
+        factory: require('./bodyParser')
+    },
+    {
         name: 'logger',
         factory: require('./logger')
     },
@@ -30,14 +38,6 @@ module.exports = [ // middleware order
     {
         name: 'etag',
         factory: require('./etag')
-    },
-    {
-        name: 'formParser',
-        factory: require('./formParser')
-    },
-    {
-        name: 'bodyParser',
-        factory: require('./bodyParser')
     },
     {
         name: 'router',
