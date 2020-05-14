@@ -16,6 +16,10 @@ module.exports = [ // middleware order
         factory: require('./swaggerUI')
     },
     {
+        name: 'logger',
+        factory: require('./logger')
+    },
+    {
         name: 'cors',
         factory: require('./cors')
     },
