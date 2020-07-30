@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@koa/cors": "3.0.0",
-    "dot-prop": "4.2.0",
+    "dot-prop": "5.2.0",
     "generate-schema": "2.6.0",
     "jwks-rsa": "1.6.2",
     "koa": "2.7.0",
