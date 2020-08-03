@@ -56,10 +56,10 @@ module.exports = ({utPort, registerErrors}) => {
 
             const {context} = this.config;
 
-            const regExp = /\$(%7B|{)(.*)(}|%7D)$/i;
             const schemas = interpolate(this.config.schemas, {context}, false, regExp);
 
             let document;
+            const regExpLocal = /\$(%7B|{)(.*)(}|%7D)$/i;
             switch (typeof this.config.document) {
                 case 'function':
                     document = this.config.document.call(this);
@@ -69,9 +69,9 @@ module.exports = ({utPort, registerErrors}) => {
                         resolve: {
                             schemas: {
                                 order: 1,
-                                canRead: regExp,
+                                canRead: regExpLocal,
                                 read({url}, cb) {
-                                    const selector = regExp.exec(url)[2];
+                                    const selector = regExpLocal.exec(url)[2];
                                     cb(null, dotProp.get({schemas}, selector, selector));
                                 }
                             }
