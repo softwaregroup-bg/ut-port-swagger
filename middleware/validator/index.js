@@ -26,7 +26,14 @@ module.exports = async({port, options}) => {
             });
             if (errors.length > 0) {
                 ctx.status = 400;
-                throw port.errors['swagger.requestValidation']({errors});
+                throw port.errors['swagger.requestValidation']({
+                    errors,
+                    query: ctx.request.query,
+                    body: ctx.request.body,
+                    files: ctx.request.files,
+                    headers: ctx.request.headers,
+                    pathParameters: ctx.params
+                });
             }
         }
 

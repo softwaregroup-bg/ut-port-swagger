@@ -103,7 +103,7 @@ module.exports = ({utPort, registerErrors}) => {
             this.swaggerDocument = swaggerDocument;
 
             this.app = new Koa();
-            this.app.on('error', (e) => (this.log.error && this.log.error(e)));
+            this.app.on('error', (e) => (this.log.error && this.log.error(e, e.errors && JSON.stringify(e.errors))));
 
             if (!this.config.middleware) this.config.middleware = {};
             this.config.middleware.contextProvider = {handlers};
