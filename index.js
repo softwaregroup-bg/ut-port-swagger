@@ -56,6 +56,7 @@ module.exports = ({utPort, registerErrors}) => {
 
             const {context} = this.config;
 
+            const regExp = /\$(%7B|{)(.*)(}|%7D)$/i;
             const schemas = interpolate(this.config.schemas, {context}, false, regExp);
 
             let document;
@@ -64,7 +65,6 @@ module.exports = ({utPort, registerErrors}) => {
                     document = this.config.document.call(this);
                     break;
                 case 'string':
-                    const regExp = /\$(%7B|{)(.*)(}|%7D)$/i;
                     document = await swaggerParser.bundle(this.config.document, {
                         resolve: {
                             schemas: {

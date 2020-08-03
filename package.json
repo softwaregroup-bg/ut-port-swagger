@@ -29,11 +29,11 @@
   "devDependencies": {
     "tap": "^12.6.2",
     "ut-tools": "^6.33.4",
-    "swagger-ui-dist": "^3.24.0"
+    "swagger-ui-dist": "^3.25.4"
   },
   "dependencies": {
     "@koa/cors": "3.0.0",
-    "dot-prop": "4.2.0",
+    "dot-prop": "5.2.0",
     "generate-schema": "2.6.0",
     "jwks-rsa": "1.6.2",
     "koa": "2.7.0",
