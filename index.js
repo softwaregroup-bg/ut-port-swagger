@@ -59,19 +59,19 @@ module.exports = ({utPort, registerErrors}) => {
             const schemas = interpolate(this.config.schemas, {context}, false, regExp);
 
             let document;
+            const regExpLocal = /\$(%7B|{)(.*)(}|%7D)$/i;
             switch (typeof this.config.document) {
                 case 'function':
                     document = this.config.document.call(this);
                     break;
                 case 'string':
-                    const regExp = /\$(%7B|{)(.*)(}|%7D)$/i;
                     document = await swaggerParser.bundle(this.config.document, {
                         resolve: {
                             schemas: {
                                 order: 1,
-                                canRead: regExp,
+                                canRead: regExpLocal,
                                 read({url}, cb) {
-                                    const selector = regExp.exec(url)[2];
+                                    const selector = regExpLocal.exec(url)[2];
                                     cb(null, dotProp.get({schemas}, selector, selector));
                                 }
                             }
@@ -103,7 +103,7 @@ module.exports = ({utPort, registerErrors}) => {
             this.swaggerDocument = swaggerDocument;
 
             this.app = new Koa();
-            this.app.on('error', (e) => (this.log.error && this.log.error(e)));
+            this.app.on('error', (e) => (this.log.error && this.log.error(e, e.errors && JSON.stringify(e.errors))));
 
             if (!this.config.middleware) this.config.middleware = {};
             this.config.middleware.contextProvider = {handlers};
