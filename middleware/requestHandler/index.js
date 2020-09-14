@@ -1,4 +1,7 @@
 const defaultTransform = x => x;
+const send = require('koa-send');
+const url = require('url');
+const { parse } = require('path');
 module.exports = ({port, options}) => {
     const {
         authorize,
@@ -74,30 +77,55 @@ module.exports = ({port, options}) => {
                 break;
         }
         return new Promise((resolve, reject) => {
-            $meta.reply = (response, $meta) => {
-                const {responseHeaders, cookies, mtid} = $meta;
-                if (responseHeaders) {
-                    Object.keys(responseHeaders).forEach(header => {
-                        ctx.set(header, responseHeaders[header]);
-                    });
-                }
+            $meta.reply = async(response, $meta) => {
+                try {
+                    const {responseHeaders, cookies, mtid} = $meta;
+                    if (responseHeaders) {
+                        Object.keys(responseHeaders).forEach(header => {
+                            ctx.set(header, responseHeaders[header]);
+                        });
+                    }
 
-                if (Array.isArray(cookies)) cookies.forEach(cookie => ctx.cookies.set(...cookie));
+                    if (Array.isArray(cookies)) cookies.forEach(cookie => ctx.cookies.set(...cookie));
 
-                switch (mtid) {
-                    case 'response':
-                        ctx.body = transformResponse(response, $meta);
-                        ctx.status = successCode;
-                        return resolve(next());
-                    case 'error':
-                        response = transformErrorResponse(response);
-                        ctx.status = (response.details && response.details.statusCode) || 400;
-                        return reject(response);
-                    default:
-                        ctx.status = 400;
-                        return reject(port.errors.swagger({
-                            cause: response
-                        }));
+                    switch (mtid) {
+                        case 'response':
+                            if (response instanceof URL) {
+                                switch (response.protocol) {
+                                    case 'file:': {
+                                        const filePath = url.fileURLToPath(response);
+                                        const options = {...$meta.options};
+                                        if (!options.root) options.root = parse(filePath).root;
+                                        await send(ctx, filePath, options);
+                                    } break;
+                                    default:
+                                        throw port.errors['swagger.unsupportedUrlProtocol']({
+                                            params: {
+                                                protocol: response.protocol
+                                            }
+                                        });
+                                }
+                            } else {
+                                ctx.body = transformResponse(response, $meta);
+                                ctx.status = successCode;
+                            }
+                            break;
+                        case 'error':
+                            response = transformErrorResponse(response);
+                            ctx.status = (response.details && response.details.statusCode) || 400;
+                            if (response instanceof Error) throw response;
+                            throw port.errors.swagger({
+                                cause: response
+                            });
+                        default:
+                            ctx.status = 400;
+                            throw port.errors.swagger({
+                                cause: response
+                            });
+                    }
+                    resolve(next);
+                } catch (e) {
+                    reject(e);
                 }
             };
             port.stream.push([transformRequest(message, $meta), $meta]);
