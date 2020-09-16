@@ -1,3 +1,13 @@
+# [4.5.0](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.4.1...v4.5.0) (2020-09-16)
+
+
+### Features
+
+* allow url strings in addition to url objects when instructing for serving static files ([ceebe8f](https://github.com/softwaregroup-bg/ut-port-swagger/commit/ceebe8f2bdf76d2c791802f4f759dabd284bf7b1))
+* provide possibility to serve static files ([b15688e](https://github.com/softwaregroup-bg/ut-port-swagger/commit/b15688e58b85fef34442421078c3050c47bd8a34))
+
+
+
 ## [4.4.1](https://github.com/softwaregroup-bg/ut-port-swagger/compare/v4.4.0...v4.4.1) (2020-04-21)
 
 
