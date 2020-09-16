@@ -36,6 +36,10 @@ module.exports = [ // middleware order
         factory: require('./bodyParser')
     },
     {
+        name: 'logger',
+        factory: require('./logger')
+    },
+    {
         name: 'router',
         factory: require('./router')
     },
