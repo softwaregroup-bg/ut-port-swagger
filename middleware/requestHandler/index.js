@@ -90,6 +90,11 @@ module.exports = ({port, options}) => {
 
                     switch (mtid) {
                         case 'response':
+                            if (typeof response === 'string') {
+                                try {
+                                    response = new URL(response);
+                                } catch (e) {}
+                            }
                             if (response instanceof URL) {
                                 switch (response.protocol) {
                                     case 'file:': {
@@ -123,10 +128,10 @@ module.exports = ({port, options}) => {
                                 cause: response
                             });
                     }
-                    resolve(next);
                 } catch (e) {
                     reject(e);
                 }
+                resolve(next);
             };
             port.stream.push([transformRequest(message, $meta), $meta]);
         });
