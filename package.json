@@ -32,7 +32,7 @@
     "swagger-ui-dist": "^3.25.4"
   },
   "dependencies": {
-    "@koa/cors": "3.0.0",
+    "@koa/cors": "5.0.0",
     "dot-prop": "5.2.0",
     "generate-schema": "2.6.0",
     "jwks-rsa": "1.6.2",
